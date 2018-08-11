@@ -7,12 +7,14 @@ int main(int argc, char *argv[]) {
 	int exit = 0;
 	mode_e mode = INIT;
 	char *command;
+	char *fname;
 	int x = -1, y = -1, z = -1;
+	int mark_errors = 1;
 
 	/*while the user does not exit, start new game*/
 	while(!exit) {
 		while (1) {
-			if (getCommand(mode, command, &x, &y, &z) > 0) {
+			if (getCommand(mode, command, &x, &y, &z, fname) > 0) {
 				if (strcmp(command,"exit") == 0) {
 					exit = 1;
 					break;
