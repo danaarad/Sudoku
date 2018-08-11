@@ -7,6 +7,7 @@
 
 #include "MainAux.h"
 #include "Board.h"
+#include "settings.h"
 
 #include <errno.h>
 #include <stdio.h>
@@ -24,9 +25,12 @@ int writeToFile (FILE *file_ptr, mode_e mode){
 	return 1;
 }
 
-int ReadFromFile (char* filename){
-	FILE* file_ptr = NULL;
-	file_ptr = fopen(filename,"r");
+int ReadFromFile (FILE *file_ptr){
+	char* line;
+
+	fscanf(file_ptr, "%d %d", BLOCK_HEIGHT, BLOCK_WIDTH);//get the size and set it
+	createNewBord(BLOCK_HEIGHT, BLOCK_WIDTH);
+
 
 
 	return 0;
