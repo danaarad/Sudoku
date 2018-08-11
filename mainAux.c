@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 
-int getCommand(mode_e mode, char *command_p, int *x_p, int *y_p, int *z_p){
+int getCommand(mode_e mode, char *command_p, int *x_p, int *y_p, int *z_p, char *fname_p){
 	char *str = (char*) calloc(MAX_SIZE, sizeof(char));
 	int valid = 0;
 	int parsed;
@@ -14,12 +14,12 @@ int getCommand(mode_e mode, char *command_p, int *x_p, int *y_p, int *z_p){
 		printf("Error: calloc has failed\n ***edit error***");
 		return -1;
 	}
-
+	printf("Enter your command:\n");
+	fflush(stdout);
 	 /*
 	 * get command string, ignore \n
 	 */
 	while (valid == 0) {
-		printf("Enter your command:\n");
 		if (fgets(str, MAX_SIZE, stdin) == NULL){
 			strcpy(str, "exit");
 			valid = 1;
@@ -31,10 +31,12 @@ int getCommand(mode_e mode, char *command_p, int *x_p, int *y_p, int *z_p){
 			}
 		}
 
-		if ((parsed = parse(str, command_p, x_p, y_p, z_p)) == 0) {
+		parsed = parse(str, command_p, x_p, y_p, z_p, fname_p);
+		fflush(stdout);
+		if (parsed == 0) {
 			printf("ERROR: invalid command\n");
-			free(str);
-			return 0;
+			printf("Enter your command:\n");
+			fflush(stdout);
 		} else if (parsed == 1) {
 			valid = 1;
 		}
@@ -49,38 +51,60 @@ int getCommand(mode_e mode, char *command_p, int *x_p, int *y_p, int *z_p){
  *
  * returns 1 if success, 0 else.
  */
-int parse(char str[], char *command, int *x_pointer, int *y_pointer, int *z_pointer) {
+int parse(char str[], char *command, int *x_pointer, int *y_pointer, int *z_pointer, char *fname_pointer) {
 	const char delim[2] = " ";
 	char *token = {0};
+	int i = 0;
 
 	token = strtok(str, delim);
 	if (sscanf(token, "%s", command) != 1) {
 		return -1;
 	}
 
-	if ((strcmp(command, "exit") == 0) || (strcmp(command, "restart") == 0) || (strcmp(command, "validate") == 0)) {
-		return 1;
-	} else if ((strcmp(command, "hint") == 0)  || (strcmp(command, "set") == 0)){
-		token = strtok(NULL, delim);
-		if ((token == NULL) ||(sscanf(token, "%d", x_pointer) != 1)) {
-			return 0;
+	for(i = 0; i < len_commands_with_zero_params; i++){
+		if (strcmp(command, commands_with_zero_params[i]) == 0) {
+			return 1;
 		}
+	}
 
-		token = strtok(NULL, delim);
-		if ((token == NULL) || (sscanf(token, "%d", y_pointer) != 1)) {
-			return 0;
-		}
-
-		if (strcmp(command, "set") == 0) {
+	for(i = 0; i < len_commands_with_str_params; i++){
+		if (strcmp(command, commands_with_str_params[i]) == 0) {
 			token = strtok(NULL, delim);
-			if ((token == NULL) ||(sscanf(token, "%d", z_pointer) != 1)) {
+			if ((token == NULL) ||(sscanf(token, "%s", fname_pointer) != 1)) {
+				if (strcmp(command, "edit") == 0) {
+					strcpy(command, "edit_default");
+					return 1;
+				}
 				return 0;
 			}
+			return 1;
 		}
-		return 1;
 	}
-	return 0;
 
+	for(i = 0; i < len_commands_with_int_params; i++){
+			if (strcmp(command, commands_with_int_params[i]) == 0) {
+				token = strtok(NULL, delim);
+				if ((token == NULL) ||(sscanf(token, "%d", x_pointer) != 1)) {
+					return 0;
+				}
+				if ((strcmp(command, "generate") == 0) ||
+						(strcmp(command, "hint") == 0) ||
+						(strcmp(command, "set") == 0)) {
+					token = strtok(NULL, delim);
+					if ((token == NULL) || (sscanf(token, "%d", y_pointer) != 1)) {
+						return 0;
+					}
+				}
+				if (strcmp(command, "set") == 0) {
+					token = strtok(NULL, delim);
+					if ((token == NULL) || (sscanf(token, "%d", z_pointer) != 1)) {
+						return 0;
+					}
+				}
+				return 1;
+			}
+		}
+	return 0;
 	}
 
 int executeCommand(mode_e mode, char *command, int *x, int *y, int *z) {
