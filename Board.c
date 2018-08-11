@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct Node gameBoard[ROW_SIZE][COL_SIZE];
+Node gameBoard[][];
 int isUpdatedSol = 0;
 
 

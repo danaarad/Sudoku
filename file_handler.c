@@ -20,8 +20,6 @@ int writeToFile (FILE *file_ptr, mode_e mode){
 	fprintf(file_ptr, "%d %d\n", BLOCK_HEIGHT, BLOCK_WIDTH);
 	printBoard(file_ptr, 0, mode, 1);
 	fclose(&file_ptr);
-
-	printf("Saved to: %s\n",filename);
 	return 1;
 }
 

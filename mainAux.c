@@ -125,11 +125,11 @@ void printBoard(FILE* file_ptr, int markErrorsOn, mode_e mode, int toFileModeOn)
 
 	int i = 0, j = 0, k = 0, l = 0, x = 0, y = 0;
 
-	/* i is my block y */
-	for (i = 0; i < BLOCKS_IN_COL; ++i) {
+	/* i is my block y this runs for every block n the col*/
+	for (i = 0; i < BLOCK_WIDTH; ++i) {
 		printSeperator(file_ptr);
-		/* j is my local y */
-		for (j = 0; j < BLOCKS_IN_ROW; ++j) {
+		/* j is my local y  this runs for every block n the row*/
+		for (j = 0; j < BLOCK_HEIGHT; ++j) {
 			fprintf(file_ptr,"|");
 			/*is my block x*/
 			for (k=0; k<BLOCK_HEIGHT; ++k) {
