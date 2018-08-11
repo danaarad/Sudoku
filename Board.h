@@ -16,13 +16,13 @@ extern int BLOCK_WIDTH =  3;
 #define COL_SIZE (BLOCK_HEIGHT*BLOCK_WIDTH)
 
 
-struct Node {
+typedef struct Node {
 	int value;
 	int isGiven;
 	int solution;
 	int tempValue;
 	int error;
-};
+}Node;
 
 int initBoard(int block_height, int block_width);
 int initTempBoard();
