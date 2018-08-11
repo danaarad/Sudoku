@@ -96,7 +96,7 @@ void printSeperator(FILE* file_ptr){
 	printf("\n");
 }
 
-void printBoard(FILE* file_ptr) {
+void printBoard(FILE* file_ptr, int markErrors) {
 
 	int i = 0, j = 0, k = 0, l = 0, x = 0, y = 0;
 
@@ -117,7 +117,7 @@ void printBoard(FILE* file_ptr) {
 						fprintf(file_ptr," %2d",getNodeValue(x,y));
 						if (getNodeGiven(x, y) == 1) {
 							fprintf(file_ptr,".");
-						}else if(getNodeError(x, y) == 1){
+						}else if(getNodeError(x, y) == 1 & markErrors){
 							fprintf(file_ptr,"*");
 						}else {
 							fprintf(file_ptr," ");
