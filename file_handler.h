@@ -8,7 +8,7 @@
 #ifndef FILE_HANDLER_H_
 #define FILE_HANDLER_H_
 
-int writeToFile (char* filename);
+int writeToFile (FILE *file_ptr, mode_e mode);
 int readFromFile (char* filename);
 
 #endif /* FILE_HANDLER_H_ */
