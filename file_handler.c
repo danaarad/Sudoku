@@ -6,6 +6,7 @@
  */
 
 #include "MainAux.h"
+#include "Board.h"
 
 #include <errno.h>
 #include <stdio.h>
@@ -13,29 +14,20 @@
 #include <string.h>
 
 
-int writeToFile (char* filename){
-	FILE* file_ptr = NULL;
-	if (!isErrornousBoard()){
-		if (isSolvableBoard()){
-			file_ptr = fopen(filename,"w");
-			if (file_ptr != NULL){//success
-				printBoard(file_ptr);
-				printf("Saved to: %s\n",filename);
-				return 1;
-			}else{//couldn't open file
-				printf("Error: File cannot be created or modified\n");
-			}
-		}else{ //board is not solvable
-			printf("Error: board validation failed\n");
-		}
-	}else{//there are bad values in the board
-		printf( "Error: board contains erroneous values\n");
-	}
-	return 0;
+int writeToFile (FILE *file_ptr, mode_e mode){
+
+	fprintf(file_ptr, "%d %d\n", BLOCK_HEIGHT, BLOCK_WIDTH);
+	printBoard(file_ptr, 0, mode, 1);
+	fclose(&file_ptr);
+
+	printf("Saved to: %s\n",filename);
+	return 1;
 }
 
 int ReadFromFile (char* filename){
 	FILE* file_ptr = NULL;
 	file_ptr = fopen(filename,"r");
+
+
 	return 0;
 }

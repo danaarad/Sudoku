@@ -96,7 +96,7 @@ void printSeperator(FILE* file_ptr){
 	printf("\n");
 }
 
-void printBoard(FILE* file_ptr, int markErrors) {
+void printBoard(FILE* file_ptr, int markErrorsOn, mode_e mode, int toFileModeOn) {
 
 	int i = 0, j = 0, k = 0, l = 0, x = 0, y = 0;
 
@@ -115,9 +115,9 @@ void printBoard(FILE* file_ptr, int markErrors) {
 
 					if (getNodeValue(x,y) != 0) {
 						fprintf(file_ptr," %2d",getNodeValue(x,y));
-						if (getNodeGiven(x, y) == 1) {
+						if ((getNodeGiven(x, y) == 1 && mode != mode_e.EDIT) || (toFileModeOn == 1 && mode == mode_e.EDIT)) {
 							fprintf(file_ptr,".");
-						}else if(getNodeError(x, y) == 1 & markErrors){
+						}else if(getNodeError(x, y) == 1 && markErrorsOn && !toFileModeOn){
 							fprintf(file_ptr,"*");
 						}else {
 							fprintf(file_ptr," ");

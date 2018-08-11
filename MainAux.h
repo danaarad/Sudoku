@@ -10,7 +10,7 @@
 
 int getCommand(mode_e mode, char *command, int *x, int *y, int *z);
 int executeCommand(mode_e mode, char *command, int *x, int *y, int *z);
-void printBoard(FILE* file_ptr, int markErrors);
+void printBoard(FILE* file_ptr, int markErrorsOn, mode_e mode, int toFileModeOn);
 
 
 
