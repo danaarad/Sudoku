@@ -16,6 +16,7 @@ int doAutofill();
 int doGetNumofSols();
 int doHint(int x, int y);
 int doSave(char *fileName, mode_e mode);
+int doEdit();
 int doEditFile(char *fileName);
 int doSolveFile(char *fileName);
 int doUndo();
