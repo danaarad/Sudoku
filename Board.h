@@ -26,7 +26,9 @@ typedef struct Node {
 
 int initBoard(int block_height, int block_width);
 int initTempBoard();
-int varifyBoard();
+int isErrornousBoard();
+int isSolvableBoard();
+
 int tempToSolution();
 
 int varifyValueGame(int x, int y, int z);
