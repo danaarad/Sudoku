@@ -29,7 +29,7 @@ int ReadFromFile (FILE *file_ptr){
 	char* line;
 
 	fscanf(file_ptr, "%d %d", BLOCK_HEIGHT, BLOCK_WIDTH);//get the size and set it
-	createNewBord(BLOCK_HEIGHT, BLOCK_WIDTH);
+	initBoard(BLOCK_HEIGHT, BLOCK_WIDTH);
 
 
 

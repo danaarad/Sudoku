@@ -19,7 +19,9 @@ int doSave(char *fileName, mode_e mode){
 			if (isSolvableBoard()){
 				file_ptr = fopen(fileName,"w");
 				if (file_ptr != NULL){//success
-					return writeToFile(file_ptr, mode);
+					writeToFile(file_ptr, mode);
+					printf("Saved to: %s\n",filename);
+					return 0;
 				}else{//couldn't open file
 					printf("Error: File cannot be created or modified\n");
 				}
