@@ -15,6 +15,8 @@ int main(int argc, char *argv[]) {
 	while(!exit) {
 		while (1) {
 			if (getCommand(mode, command, &x, &y, &z, fname) > 0) {
+				printf("%d, %d, %d, %s, %s\n", x, y, z, fname, command);
+				fflush(stdout);
 				if (strcmp(command,"exit") == 0) {
 					exit = 1;
 					break;
