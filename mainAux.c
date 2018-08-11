@@ -1,4 +1,5 @@
 #include "settings.h"
+#include "mainAux.h"
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
