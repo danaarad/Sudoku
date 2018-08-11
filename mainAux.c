@@ -19,6 +19,7 @@ void printSeperator(FILE* file_ptr){
 }
 
 void printBoard(FILE* file_ptr) {
+
 	int i = 0, j = 0, k = 0, l = 0, x = 0, y = 0;
 
 	/* i is my block y */
