@@ -1,15 +1,13 @@
 /*
- * Board.h
+ * Node.h
  *
- *  Created on: May 22, 2018
- *      Author: Dana Arad
+ *  Created on: 17 баев 2018
+ *      Author: yael sapir
  */
 
-#ifndef BOARD_H_
-#define BOARD_H_
+#ifndef NODE_H_
+#define NODE_H_
 
-extern int BLOCK_HEIGHT =  3;
-extern int BLOCK_WIDTH =  3;
 
 typedef struct Node {
 	int value;
@@ -18,11 +16,6 @@ typedef struct Node {
 	int tempValue;
 	int error;
 }Node;
-
-int initBoard(int block_height, int block_width);
-int initTempBoard();
-int isErrornousBoard();
-int isSolvableBoard();
 
 int varifyValueGame(int x, int y, int z);
 int getValGame(int x, int y);
@@ -42,4 +35,4 @@ int getNodeSolution(int x, int y);
 int getNodeTemp(int x, int y);
 int getNodeError(int x, int y);
 
-#endif /* BOARD_H_ */
+#endif /* NODE_H_ */
