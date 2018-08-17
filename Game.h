@@ -9,14 +9,16 @@
 #define GAME_H_
 
 #include "Node.h"
+#include "Action.h"
 
 typedef struct Game {
-	int blockHieght;
+	int blockHeight;
 	int blockWidth;
 	Node** gameBoard;
 	mode_e mode;
 	int isErrornous;
 	int isSolvable;
+	Actoion* LatestAction
 
 }Game;
 

@@ -18,11 +18,18 @@ typedef struct Node {
 	int isError;
 }Node;
 
-int varifyValue(Game* gp, int x, int y, int z);
-int getValue(Game* gp, int x, int y);
+typedef enum valType {
+	VALUE,
+	ISGIVEN,
+	SOLUTION,
+	TEMP,
+	ISERROR
+} valType_e;
 
-int varifyTempValue(Game* gp, int x, int y, int z);
-int getTempValue(Game* gp, int x, int y);
+int varifyValue(Game* gp, valType_e valType, int x, int y, int z);
+
+int setNodeValByType(Game* gp, valType_e valType, int x, int y, int val);
+int getNodeValByType(Game* gp, valType_e valType, int x, int y);
 
 int setNodeValue(Game* gp, int x, int y, int z);
 int setNodeGiven(Game* gp, int x, int y, int z);

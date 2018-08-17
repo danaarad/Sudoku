@@ -12,52 +12,63 @@
 
 #include "Game.h"
 
-int varifyValue(Game* gp, int x, int y, int z);
-int getValue(Game* gp, int x, int y);
+int varifyValue(Game* gp, valType_e valType, int x, int y, int val){
+	int i = 0, j = 0, x_corner = 0, y_corner = 0, otherVal = 0;
+	int rowSize, colSize, blockWidth, blockHeidth;
 
-int varifyTempValue(Game* gp, int x, int y, int z);
-int getTempValue(Game* gp, int x, int y);
+	blockWidth = gp->blockWidth;
+	blockHeight = gp->blockHieght;
+	rowSize = colSize = blockWidth*blockHeight;
 
-int getNodeValue(Game* gp, int x, int y){
-	return gp->gameBoard[x][y].value;
+	/*check row*/
+	for (i = 1; i <= rowSize; ++i){
+
+		otherVal = getNodeValByType(gp, valType, i, y);
+		if (otherVal == val && i != x){
+			return 0;
+		}
+	}
+
+	/*check col*/
+	for (j = 1; j <= colSize; ++j){
+		otherVal = getNodeValByType(gp, valType, x, j);
+		if (otherVal == val && j != y){
+			return 0;
+		}
+	}
+
+	/*check block*/
+	x_corner = ((x-1)/blockWidth)*blockWidth + 1;
+	y_corner = ((y-1)/blockHeight)*blockHeight + 1;
+	for (i = x_corner; i < x_corner + blockWidth; ++i){
+		for(j = y_corner; j < y_corner + blockHeight; ++j){
+			otherVal = getNodeValByType(gp, valType, x, y);
+			if (otherVal == val && i != x && j != y){
+				return 0;
+			}
+		}
+	}
+	return 1;
 }
-int getNodeGiven(Game* gp, int x, int y){
-	return gp->gameBoard[x][y].isGiven;
-}
-int getNodeSolution(Game* gp, int x, int y){
-	return gp->gameBoard[x][y].solution;
-}
-int getNodeTemp(Game* gp, int x, int y){
-	return gp->gameBoard[x][y].tempValue;
-}
-int getNodeError(Game* gp, int x, int y){
-	return gp->gameBoard[x][y].isError;
+int getNodeValByType(Game* gp, valType_e valType, int x, int y){
+	switch(valType){
+	case VALUE: return gp->gameBoard[x][y].value;
+	case ISGIVEN: return gp->gameBoard[x][y].isGiven;
+	case SOLUTION: return gp->gameBoard[x][y].solution;
+	case TEMP: return gp->gameBoard[x][y].tempValue;
+	case ISERROR: return gp->gameBoard[x][y].isError;
+	}
 }
 
-int setNodeValue(Game* gp, int x, int y, int value){
-	Node node = gp->gameBoard[x][y];
-	node.value = value;
-	return node.value == value;
-}
-int setNodeGiven(Game* gp, int x, int y, int isgiven){
-	Node node = gp->gameBoard[x][y];
-	node.isGiven = isgiven;
-	return node.isGiven == isgiven;
-}
-int setNodeSolution(Game* gp, int x, int y, int sol){
-	Node node = gp->gameBoard[x][y];
-	node.solution = sol;
-	return node.solution == sol;
-}
-int setNodeTemp(Game* gp, int x, int y, int temp){
-	Node node = gp->gameBoard[x][y];
-	node.tempValue = temp;
-	return node.tempValue == temp;
-}
-int setNodeError(Game* gp, int x, int y, int iserror){
-	Node node = gp->gameBoard[x][y];
-	node.isError = iserror;
-	return node.isError == iserror;
+int setNodeValByType(Game* gp, valType_e valType, int x, int y, int val){
+	switch(valType){
+	case VALUE: gp->gameBoard[x][y].value = val;
+	case ISGIVEN: gp->gameBoard[x][y].isGiven = val;
+	case SOLUTION: gp->gameBoard[x][y].solution = val;
+	case TEMP: gp->gameBoard[x][y].tempValue = val;
+	case ISERROR: gp->gameBoard[x][y].isError = val;
+	}
+	return getNodeValByType(gp, valType, x, y);
 }
 
 
