@@ -17,11 +17,11 @@ typedef struct Node {
 	int error;
 }Node;
 
-int varifyValueGame(int x, int y, int z);
-int getValGame(int x, int y);
+int varifyValue(int x, int y, int z);
+int getValue(int x, int y);
 
-int varifyValueTemp(int x, int y, int z);
-int getValTemp(int x, int y);
+int varifyTempValue(int x, int y, int z);
+int getTempValue(int x, int y);
 
 int setNodeValue(int x, int y, int z);
 int setNodeGiven(int x, int y, int z);
