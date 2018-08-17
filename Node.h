@@ -8,31 +8,32 @@
 #ifndef NODE_H_
 #define NODE_H_
 
+#include "Game.h"
 
 typedef struct Node {
 	int value;
 	int isGiven;
 	int solution;
 	int tempValue;
-	int error;
+	int isError;
 }Node;
 
-int varifyValue(int x, int y, int z);
-int getValue(int x, int y);
+int varifyValue(Game* gp, int x, int y, int z);
+int getValue(Game* gp, int x, int y);
 
-int varifyTempValue(int x, int y, int z);
-int getTempValue(int x, int y);
+int varifyTempValue(Game* gp, int x, int y, int z);
+int getTempValue(Game* gp, int x, int y);
 
-int setNodeValue(int x, int y, int z);
-int setNodeGiven(int x, int y, int z);
-int setNodeSolution(int x, int y, int z);
-int setNodeTemp(int x, int y, int z);
-int setNodeError(int x, int y, int z);
+int setNodeValue(Game* gp, int x, int y, int z);
+int setNodeGiven(Game* gp, int x, int y, int z);
+int setNodeSolution(Game* gp, int x, int y, int z);
+int setNodeTemp(Game* gp, int x, int y, int z);
+int setNodeError(Game* gp, int x, int y, int z);
 
-int getNodeValue(int x, int y);
-int getNodeGiven(int x, int y);
-int getNodeSolution(int x, int y);
-int getNodeTemp(int x, int y);
-int getNodeError(int x, int y);
+int getNodeValue(Game* gp, int x, int y);
+int getNodeGiven(Game* gp, int x, int y);
+int getNodeSolution(Game* gp, int x, int y);
+int getNodeTemp(Game* gp, int x, int y);
+int getNodeError(Game* gp, int x, int y);
 
 #endif /* NODE_H_ */
