@@ -11,11 +11,6 @@
 extern int BLOCK_HEIGHT =  3;
 extern int BLOCK_WIDTH =  3;
 
-#define BLOCK_SIZE (BLOCK_HEIGHT*BLOCK_WIDTH)
-#define ROW_SIZE (BLOCK_HEIGHT*BLOCK_WIDTH)
-#define COL_SIZE (BLOCK_HEIGHT*BLOCK_WIDTH)
-
-
 typedef struct Node {
 	int value;
 	int isGiven;
@@ -28,8 +23,6 @@ int initBoard(int block_height, int block_width);
 int initTempBoard();
 int isErrornousBoard();
 int isSolvableBoard();
-
-int tempToSolution();
 
 int varifyValueGame(int x, int y, int z);
 int getValGame(int x, int y);
