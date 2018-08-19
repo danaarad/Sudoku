@@ -111,7 +111,7 @@ int parse(char str[], char *command, int *x_pointer, int *y_pointer, int *z_poin
 int executeCommand(mode_e mode, char *command, int *x, int *y, int *z) {
 }
 
-void printSeperator(FILE* file_ptr){
+void printSeperator(FILE* file_ptr, int BLOCK_HEIGHT, int BLOCK_WIDTH){
 	int  i = 0;
 	int numofchars = ( 4*BLOCK_HEIGHT*BLOCK_WIDTH + BLOCK_HEIGHT + 1 );
 
@@ -121,9 +121,11 @@ void printSeperator(FILE* file_ptr){
 	printf("\n");
 }
 
-void printBoard(FILE* file_ptr, int markErrorsOn, mode_e mode, int toFileModeOn) {
+
+void printBoard(Game* gp, mode_e mode, valType_e valtype, int markErrorsOn, int toFileModeOn, FILE* file_ptr) {
 
 	int i = 0, j = 0, k = 0, l = 0, x = 0, y = 0;
+	int BLOCK_WIDTH = gp->blockWidth, BLOCK_HEIGHT = gp->blockHieght;
 
 	/* i is my block y this runs for every block n the col*/
 	for (i = 0; i < BLOCK_WIDTH; ++i) {
@@ -138,11 +140,11 @@ void printBoard(FILE* file_ptr, int markErrorsOn, mode_e mode, int toFileModeOn)
 					x = (k * BLOCK_WIDTH) + l + 1;
 					y = (i * BLOCK_HEIGHT) + j + 1;
 
-					if (getNodeValue(x,y) != 0) {
-						fprintf(file_ptr," %2d",getNodeValue(x,y));
-						if ((getNodeGiven(x, y) == 1 && mode != mode_e.EDIT) || (toFileModeOn == 1 && mode == mode_e.EDIT)) {
+					if (getNodeValByType(gp, valType, x, y) != 0) {
+						fprintf(file_ptr," %2d",getNodeValByType(gp, valType, x, y));
+						if ((getNodeValByType(gp, GIVEN, x, y) == 1 && mode != mode_e.EDIT) || (toFileModeOn == 1 && mode == mode_e.EDIT)) {
 							fprintf(file_ptr,".");
-						}else if(getNodeError(x, y) == 1 && markErrorsOn && !toFileModeOn){
+						}else if(getNodeValByType(gp, ISERROR, x, y) == 1 && markErrorsOn && !toFileModeOn){
 							fprintf(file_ptr,"*");
 						}else {
 							fprintf(file_ptr," ");
@@ -156,6 +158,6 @@ void printBoard(FILE* file_ptr, int markErrorsOn, mode_e mode, int toFileModeOn)
 			fprintf(file_ptr,"\n");
 		}
 	}
-	printSeperator(file_ptr);
+	printSeperator(file_ptr, BLOCK_HEIGHT, BLOCK_WIDTH);
 	fflush(file_ptr);
 }
