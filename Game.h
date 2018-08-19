@@ -10,6 +10,7 @@
 
 #include "Node.h"
 #include "Action.h"
+#include "settings.h"
 
 typedef struct Game {
 	int blockHeight;

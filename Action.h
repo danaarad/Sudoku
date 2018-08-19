@@ -9,14 +9,15 @@
 #define ACTION_H_
 
 #include "Game.h"
+#include "Node.h"
 
 typedef struct Action {
 	int x;
 	int y;
 	Node* node_before_cahnge;
 	Node* node_after_cahnge;
-	Action* prev_action;
-	Action* next_action;
+	struct Action* prev_action;
+	struct Action* next_action;
 	int is_prev_connected;
 	int is_next_connected;
 }Action;

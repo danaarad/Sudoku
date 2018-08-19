@@ -1,5 +1,7 @@
 #include "settings.h"
 #include "mainAux.h"
+#include "Game.h"
+#include "Node.h"
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
@@ -122,14 +124,14 @@ void printSeperator(FILE* file_ptr, int BLOCK_HEIGHT, int BLOCK_WIDTH){
 }
 
 
-void printBoard(Game* gp, mode_e mode, valType_e valtype, int markErrorsOn, int toFileModeOn, FILE* file_ptr) {
+void printBoard(Game* gp, mode_e mode, valType_e valType, int markErrorsOn, int toFileModeOn, FILE* file_ptr) {
 
 	int i = 0, j = 0, k = 0, l = 0, x = 0, y = 0;
-	int BLOCK_WIDTH = gp->blockWidth, BLOCK_HEIGHT = gp->blockHieght;
+	int BLOCK_WIDTH = gp->blockWidth, BLOCK_HEIGHT = gp->blockHeight;
 
 	/* i is my block y this runs for every block n the col*/
 	for (i = 0; i < BLOCK_WIDTH; ++i) {
-		printSeperator(file_ptr);
+		printSeperator(file_ptr, BLOCK_HEIGHT, BLOCK_WIDTH);
 		/* j is my local y  this runs for every block n the row*/
 		for (j = 0; j < BLOCK_HEIGHT; ++j) {
 			fprintf(file_ptr,"|");
@@ -142,7 +144,7 @@ void printBoard(Game* gp, mode_e mode, valType_e valtype, int markErrorsOn, int 
 
 					if (getNodeValByType(gp, valType, x, y) != 0) {
 						fprintf(file_ptr," %2d",getNodeValByType(gp, valType, x, y));
-						if ((getNodeValByType(gp, GIVEN, x, y) == 1 && mode != mode_e.EDIT) || (toFileModeOn == 1 && mode == mode_e.EDIT)) {
+						if ((getNodeValByType(gp, ISGIVEN, x, y) == 1 && mode != EDIT) || (toFileModeOn == 1 && mode == EDIT)) {
 							fprintf(file_ptr,".");
 						}else if(getNodeValByType(gp, ISERROR, x, y) == 1 && markErrorsOn && !toFileModeOn){
 							fprintf(file_ptr,"*");
