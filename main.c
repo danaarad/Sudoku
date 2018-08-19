@@ -1,7 +1,7 @@
 
 
 #include "settings.h"
-#include <std.io>
+#include <stdio.h>
 
 int main(int argc, char *argv[]) {
 	int exit = 0;

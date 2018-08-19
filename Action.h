@@ -8,7 +8,7 @@
 #ifndef ACTION_H_
 #define ACTION_H_
 
-#include "Board.h"
+#include "Game.h"
 
 typedef struct Action {
 	int x;
