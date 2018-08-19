@@ -18,8 +18,7 @@ typedef struct Game {
 	mode_e mode;
 	int isErrornous;
 	int isSolvable;
-	Actoion* LatestAction
-
+	Action* LatestAction;
 }Game;
 
 Game* initGame(int block_height, int block_width);
