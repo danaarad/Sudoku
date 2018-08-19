@@ -11,6 +11,8 @@
 #define MAX_COMMAND_SIZE 256
 #define MAX_SIZE 1024
 
+#include <stdio.h>
+
 typedef enum mode {
 	INIT,
 	SOLVE,

@@ -10,17 +10,17 @@
 #include <string.h>
 
 #include "settings.h"
-#include "Board.h"
+#include "Game.h"
 #include "file_handler.h"
 
-int doSave(char *fileName, mode_e mode){
+int doSave(Game* gp, char *fileName, mode_e mode){
 	FILE* file_ptr = NULL;
-		if (!isErrornousBoard()){
-			if (isSolvableBoard()){
+		if (!isErrornousBoard(gp)){
+			if (isSolvableBoard(gp)){
 				file_ptr = fopen(fileName,"w");
 				if (file_ptr != NULL){//success
-					writeToFile(file_ptr, mode);
-					printf("Saved to: %s\n",filename);
+					writeToFile(gp, file_ptr, mode);
+					printf("Saved to: %s\n",fileName);
 					return 0;
 				}else{//couldn't open file
 					printf("Error: File cannot be created or modified\n");

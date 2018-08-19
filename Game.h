@@ -22,8 +22,8 @@ typedef struct Game {
 }Game;
 
 Game* initGame(int block_height, int block_width);
-int isErrornousBoard();
-int isSolvableBoard();
+int isErrornousBoard(Game* gp);
+int isSolvableBoard(Game* gp);
 
 
 #endif /* GAME_H_ */
