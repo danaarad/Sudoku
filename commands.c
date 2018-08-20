@@ -13,13 +13,13 @@
 #include "Game.h"
 #include "file_handler.h"
 
-int doSave(Game* gp, char *fileName, mode_e mode){
+int doSave(Game* gp, char *fileName){
 	FILE* file_ptr = NULL;
 		if (!isErrornousBoard(gp)){
 			if (isSolvableBoard(gp)){
 				file_ptr = fopen(fileName,"w");
 				if (file_ptr != NULL){//success
-					writeToFile(gp, file_ptr, mode);
+					writeToFile(gp, file_ptr);
 					printf("Saved to: %s\n",fileName);
 					return 0;
 				}else{//couldn't open file
