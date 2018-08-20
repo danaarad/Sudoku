@@ -129,7 +129,7 @@ void printBoard(Game* gp, valType_e valType, int markErrorsOn, int toFileModeOn,
 
 	int i = 0, j = 0, k = 0, l = 0, x = 0, y = 0;
 	int BLOCK_WIDTH = gp->blockWidth, BLOCK_HEIGHT = gp->blockHeight;
-	mose_e mode = gp->mode;
+	mode_e mode = gp->mode;
 
 	/* i is my block y this runs for every block n the col*/
 	for (i = 0; i < BLOCK_WIDTH; ++i) {
