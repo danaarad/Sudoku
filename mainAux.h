@@ -15,7 +15,7 @@
 int getCommand(mode_e mode, char *command, int *x, int *y, int *z, char *fname_p);
 int parse(char str[], char *command, int *x_pointer, int *y_pointer, int *z_pointer, char *fname_pointer);
 int executeCommand(mode_e mode, char *command, int *x, int *y, int *z);
-void printBoard(Game* gp, mode_e mode, valType_e valType, int markErrorsOn, int toFileModeOn, FILE* file_ptr);
+void printBoard(Game* gp, valType_e valType, int markErrorsOn, int toFileModeOn, FILE* file_ptr);
 
 
 

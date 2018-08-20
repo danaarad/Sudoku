@@ -2,6 +2,7 @@
 #include "mainAux.h"
 #include "Game.h"
 #include "Node.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
@@ -124,10 +125,11 @@ void printSeperator(FILE* file_ptr, int BLOCK_HEIGHT, int BLOCK_WIDTH){
 }
 
 
-void printBoard(Game* gp, mode_e mode, valType_e valType, int markErrorsOn, int toFileModeOn, FILE* file_ptr) {
+void printBoard(Game* gp, valType_e valType, int markErrorsOn, int toFileModeOn, FILE* file_ptr) {
 
 	int i = 0, j = 0, k = 0, l = 0, x = 0, y = 0;
 	int BLOCK_WIDTH = gp->blockWidth, BLOCK_HEIGHT = gp->blockHeight;
+	mose_e mode = gp->mode;
 
 	/* i is my block y this runs for every block n the col*/
 	for (i = 0; i < BLOCK_WIDTH; ++i) {
