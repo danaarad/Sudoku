@@ -8,11 +8,7 @@
 #ifndef GAME_H_
 #define GAME_H_
 
-#include "Node.h"
-#include "Action.h"
 #include "Game_structs.h"
-
-
 
 Game* initGame(int block_height, int block_width);
 int isErrornousBoard(Game* gp);
