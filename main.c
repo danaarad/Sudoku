@@ -31,17 +31,15 @@ int main(int argc, char *argv[]) {
 				if (strcmp(command,"exit") == 0) {
 					exit = 1;
 					break;
-				} else if (strcmp(command,"Solve") == 0) {
+				} else if (strcmp(command,"solve") == 0) {
 					mode = SOLVE;
-				} else if (strcmp(command,"Edit") == 0) {
+				} else if (strcmp(command,"edit") == 0) {
 					mode = EDIT;
 				} else {
 					if (isWin()) {
 						mode = INIT;
 					} else {
-						printf("executing!");
-						fflush(stdout);
-						//executeCommand(mode, command, x, y, z);
+						executeCommand(mode, command, x, y, z, fname);
 					}
 				}
 			}

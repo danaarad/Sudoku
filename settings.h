@@ -19,17 +19,16 @@ typedef enum mode {
 	EDIT
 } mode_e;
 
-char *commands_with_zero_params[] = {"print_board",
-		"validate", "undo", "redo", "num_solutions",
-		"autofill", "reset", "exit"};
-int len_commands_with_zero_params = 8;
+typedef enum command {
+	print_board, validate,
+	undo, redo,
+	num_solutions, autofill,
+	reset, exit,
+	mark_errors, save,
+	generate, hint,
+	set, solve, edit
+} command_e;
 
-char *commands_with_int_params[] = {"mark_errors",
-		"save", "generate", "hint", "set"};
-int len_commands_with_int_params = 6;
-
-char *commands_with_str_params[] = {"solve", "edit"};
-int len_commands_with_str_params = 2;
 
 void pprint(char *str){
 	printf(str);

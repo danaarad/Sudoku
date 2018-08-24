@@ -14,7 +14,7 @@
 
 int getCommand(mode_e mode, char *command, int *x, int *y, int *z, char *fname_p);
 int parse(char str[], char *command, int *x_pointer, int *y_pointer, int *z_pointer, char *fname_pointer);
-int executeCommand(mode_e mode, char *command, int *x, int *y, int *z);
+int executeCommand(mode_e mode, char *command, int *x, int *y, int *z, char *fname);
 void printBoard(Game* gp, valType_e valType);
 
 
