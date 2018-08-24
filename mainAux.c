@@ -114,21 +114,22 @@ int parse(char str[], char *command, int *x_pointer, int *y_pointer, int *z_poin
 int executeCommand(mode_e mode, char *command, int *x, int *y, int *z) {
 }
 
-void printSeperator(FILE* file_ptr, int BLOCK_HEIGHT, int BLOCK_WIDTH){
+void printSeperator(int BLOCK_HEIGHT, int BLOCK_WIDTH){
 	int  i = 0;
 	int numofchars = ( 4*BLOCK_HEIGHT*BLOCK_WIDTH + BLOCK_HEIGHT + 1 );
 
 	for (i = 0; i < numofchars; ++i) {
-		fprintf(file_ptr, "-");
+		printf("-");
 	}
 	printf("\n");
+	fflush(stdout);
 }
 
 
-void printBoard(Game* gp, valType_e valType, int markErrorsOn, int toFileModeOn, FILE* file_ptr) {
+void printBoard(Game* gp, valType_e valType) {
 
 	int i = 0, j = 0, k = 0, l = 0, x = 0, y = 0;
-	int BLOCK_WIDTH = gp->blockWidth, BLOCK_HEIGHT = gp->blockHeight;
+	int BLOCK_WIDTH = gp->blockWidth, BLOCK_HEIGHT = gp->blockHeight, markErrors = gp->markErrors;
 	mode_e mode = gp->mode;
 
 	/* i is my block y this runs for every block n the col*/
@@ -136,7 +137,7 @@ void printBoard(Game* gp, valType_e valType, int markErrorsOn, int toFileModeOn,
 		printSeperator(file_ptr, BLOCK_HEIGHT, BLOCK_WIDTH);
 		/* j is my local y  this runs for every block n the row*/
 		for (j = 0; j < BLOCK_HEIGHT; ++j) {
-			fprintf(file_ptr,"|");
+			printf("|");
 			/*is my block x*/
 			for (k=0; k<BLOCK_HEIGHT; ++k) {
 				/*is my local x*/
@@ -145,23 +146,23 @@ void printBoard(Game* gp, valType_e valType, int markErrorsOn, int toFileModeOn,
 					y = (i * BLOCK_HEIGHT) + j + 1;
 
 					if (getNodeValByType(gp, valType, x, y) != 0) {
-						fprintf(file_ptr," %2d",getNodeValByType(gp, valType, x, y));
-						if ((getNodeValByType(gp, ISGIVEN, x, y) == 1 && mode != EDIT) || (toFileModeOn == 1 && mode == EDIT)) {
-							fprintf(file_ptr,".");
-						}else if(getNodeValByType(gp, ISERROR, x, y) == 1 && markErrorsOn && !toFileModeOn){
-							fprintf(file_ptr,"*");
+						printf(" %2d",getNodeValByType(gp, valType, x, y));
+						if (getNodeValByType(gp, ISGIVEN, x, y) == 1 && mode != EDIT){
+							printf(".");
+						}else if(getNodeValByType(gp, ISERROR, x, y) == 1 && markErrors){
+							printf("*");
 						}else {
-							fprintf(file_ptr," ");
+							printf(" ");
 						}
 					} else {
-						fprintf(file_ptr,"    ");
+						printf("    ");
 					}
 				}
-				fprintf(file_ptr,"|");
+				printf("|");
 			}
-			fprintf(file_ptr,"\n");
+			printf("\n");
 		}
 	}
-	printSeperator(file_ptr, BLOCK_HEIGHT, BLOCK_WIDTH);
-	fflush(file_ptr);
+	printSeperator(BLOCK_HEIGHT, BLOCK_WIDTH);
+	fflush(stdout);
 }
