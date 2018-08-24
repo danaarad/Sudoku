@@ -1,82 +1,115 @@
 #include "Game_structs.h"
+#include "settings.h"
 #include "parser.h"
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
 
+const static struct {
+    command_e command;
+    const char *str;
+} conversion [] = {
+		{print_board, "print_board"},
+		{validate, "validate"},
+		{undo, "undo"},
+		{redo, "redo"},
+		{num_solutions, "num_solutions"},
+		{autofill, "autofill"},
+		{reset, "reset"},
+		{exit_game, "exit"},
+		{mark_errors, "mark_errors"},
+		{save, "save"},
+		{generate, "generate"},
+		{hint, "hint"},
+		{set, "set"},
+		{solve, "solve"},
+		{edit, "edit"}
+};
 
+command_e strToCommandEnum (char *str) {
+	int j;
+    for (j = 0;  j < sizeof (conversion) / sizeof (conversion[0]);  ++j)
+    	if (!strcmp (str, conversion[j].str)) {
+    		return conversion[j].command;
+    	}
+    return not_found;
+}
 
-/*
- * performs parsing of str <"command x y z"> to its tokens
- * placing tokens in pointer location, respectivly
- *
- * returns 1 if success, 0 else.
- */
-int parse(char str[], char *command, int *x_pointer, int *y_pointer, int *z_pointer, char *fname_pointer) {
+int parse(char str[], command_e *command_pointer, int *x_pointer, int *y_pointer, int *z_pointer, char *fname_pointer) {
 	const char delim[2] = " ";
 	char *token = {0};
-	int i = 0;
-	char *commands_with_zero_params[] = {"print_board",
-			"validate", "undo", "redo", "num_solutions",
-			"autofill", "reset", "exit"};
-	int len_commands_with_zero_params = 8;
+	command_e command_enum;
+	char command_str[MAX_COMMAND_SIZE];
 
-	char *commands_with_int_params[] = {"mark_errors",
-			"save", "generate", "hint", "set"};
-	int len_commands_with_int_params = 6;
-
-	char *commands_with_str_params[] = {"solve", "edit"};
-	int len_commands_with_str_params = 2;
-
+	if ((int) strlen(str) > MAX_COMMAND_SIZE) {
+			return 0;
+		}
 
 	token = strtok(str, delim);
-	if (sscanf(token, "%s", command) != 1) {
+	if (sscanf(token, "%s", command_str) != 1) {
 		return -1;
 	}
 
-	for(i = 0; i < len_commands_with_zero_params; i++){
-		if (strcmp(command, commands_with_zero_params[i]) == 0) {
-			return 1;
+	command_enum = strToCommandEnum(command_str);
+	switch(command_enum) {
+	case not_found:
+		*command_pointer = command_enum;
+		return 0;
+	case print_board:
+	case validate:
+	case undo:
+	case redo:
+	case num_solutions:
+	case autofill:
+	case reset:
+	case exit_game:
+		*command_pointer = command_enum;
+		return 1;
+	case solve:
+	case edit:
+		token = strtok(NULL, delim);
+		if ((token == NULL) ||(sscanf(token, "%s", fname_pointer) != 1)) {
+			if (command_enum == edit) {
+				command_enum = edit_default;
+				*command_pointer = command_enum;
+				return 1;
+			}
+			return 0;
 		}
-	}
-
-	for(i = 0; i < len_commands_with_str_params; i++){
-		if (strcmp(command, commands_with_str_params[i]) == 0) {
+		*command_pointer = command_enum;
+		return 1;
+	case mark_errors:
+	case save:
+	case generate:
+	case hint:
+	case set:
+		token = strtok(NULL, delim);
+		if ((token == NULL) ||(sscanf(token, "%d", x_pointer) != 1)) {
+			return 0;
+		}
+		if (command_enum == generate ||
+				command_enum == hint ||
+				command_enum == set) {
 			token = strtok(NULL, delim);
-			if ((token == NULL) ||(sscanf(token, "%s", fname_pointer) != 1)) {
-				if (strcmp(command, "edit") == 0) {
-					strcpy(command, "edit_default");
-					return 1;
-				}
+			if ((token == NULL) || (sscanf(token, "%d", y_pointer) != 1)) {
 				return 0;
 			}
-			return 1;
 		}
-	}
-
-	for(i = 0; i < len_commands_with_int_params; i++){
-		if (strcmp(command, commands_with_int_params[i]) == 0) {
+		if (command_enum == set) {
 			token = strtok(NULL, delim);
-			if ((token == NULL) ||(sscanf(token, "%d", x_pointer) != 1)) {
+			if ((token == NULL) || (sscanf(token, "%d", z_pointer) != 1)) {
 				return 0;
 			}
-			if ((strcmp(command, "generate") == 0) ||
-					(strcmp(command, "hint") == 0) ||
-					(strcmp(command, "set") == 0)) {
-				token = strtok(NULL, delim);
-				if ((token == NULL) || (sscanf(token, "%d", y_pointer) != 1)) {
-					return 0;
-				}
-			}
-			if (strcmp(command, "set") == 0) {
-				token = strtok(NULL, delim);
-				if ((token == NULL) || (sscanf(token, "%d", z_pointer) != 1)) {
-					return 0;
-				}
-			}
-			return 1;
-			}
 		}
-	return 0;
+		*command_pointer = command_enum;
+		return 1;
+	default:
+		command_enum = not_found;
+		*command_pointer = command_enum;
+		return 0;
 	}
+
+}
+
+

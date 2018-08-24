@@ -9,13 +9,14 @@
 #define GAME_STRUCTS_H_
 
 typedef enum command {
-	print_board, validate,
+	print_board = 0, validate,
 	undo, redo,
 	num_solutions, autofill,
 	reset, exit_game,
 	mark_errors, save,
 	generate, hint,
-	set, solve, edit
+	set, solve, edit, not_found,
+	edit_default
 } command_e;
 
 typedef enum Mode {

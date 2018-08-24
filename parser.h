@@ -8,6 +8,6 @@
 #ifndef PARSER_H_
 #define PARSER_H_
 
-int parse(char str[], char *command, int *x_pointer, int *y_pointer, int *z_pointer, char *fname_pointer);
+int parse(char str[], command_e *command, int *x_pointer, int *y_pointer, int *z_pointer, char *fname_pointer);
 
 #endif /* PARSER_H_ */

@@ -11,10 +11,11 @@ int isWin(){
 	return 0;
 }
 
-int getCommand(mode_e mode, char *command_p, int *x_p, int *y_p, int *z_p, char *fname_p){
+command_e getCommand(mode_e mode, int *x_p, int *y_p, int *z_p, char *fname_p){
 	char *str = (char*) calloc(MAX_SIZE, sizeof(char));
 	int valid = 0;
 	int parsed;
+	command_e command = 0;
 
 	if (str == NULL) {
 		printf("Error: calloc has failed\n ***edit error***");
@@ -29,8 +30,9 @@ int getCommand(mode_e mode, char *command_p, int *x_p, int *y_p, int *z_p, char 
 	while (valid == 0) {
 		if (fgets(str, MAX_SIZE, stdin) == NULL){
 			strcpy(str, "exit");
-			valid = 1;
+			break;
 		}
+
 		while ((strcmp(str,"\n") == 0)  || (strcmp(str,"\r\n") == 0)) {
 			if (fgets(str, MAX_SIZE, stdin) == NULL){
 				strcpy(str, "exit");
@@ -38,7 +40,7 @@ int getCommand(mode_e mode, char *command_p, int *x_p, int *y_p, int *z_p, char 
 			}
 		}
 
-		if ((parsed = parse(str, command_p, x_p, y_p, z_p, fname_p)) == 0) {
+		if ((parsed = parse(str, &command, x_p, y_p, z_p, fname_p)) == 0) {
 			printf("ERROR: invalid command\n");
 			printf("Enter your command:\n");
 			fflush(stdout);
@@ -47,11 +49,11 @@ int getCommand(mode_e mode, char *command_p, int *x_p, int *y_p, int *z_p, char 
 		}
 	}
 	free(str);
-	return 1;
+	return command;
 }
 
 
-int executeCommand(mode_e mode, char *command, int *x, int *y, int *z, char *fname) {
+int executeCommand(mode_e mode, command_e command, int *x, int *y, int *z, char *fname) {
 	return 0;
 }
 
