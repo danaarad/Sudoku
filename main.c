@@ -1,5 +1,6 @@
 
 #include "mainAux.h"
+#include "settings.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

@@ -7,8 +7,9 @@
 
 #ifndef FILE_HANDLER_H_
 #define FILE_HANDLER_H_
+#include "Game_structs.h"
 
-int writeToFile (FILE *file_ptr, mode_e mode);
+int writeToFile (Game *gp, FILE *file_ptr);
 int readFromFile (char* filename);
 
 #endif /* FILE_HANDLER_H_ */

@@ -5,14 +5,11 @@
  *      Author: yael sapir
  */
 
-#include "Game_structs.h"
-#include "Node.h"
-#include "settings.h"
-
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "file_handler.h"
 
 
 int writeToFile (Game* gp, FILE *file_ptr){
@@ -47,7 +44,7 @@ Game* ReadFromFile (FILE *file_ptr){
 	Game* gp;
 
 	fscanf(file_ptr, "%d %d", &blockHeight, &blockWidth);//get the size and set it
-	gp = initBoard(blockHeight, blockWidth);
+	gp = initGame(blockHeight, blockWidth);
 
 	rowlen = blockWidth*blockHeight;
 	for(y = 0; y < rowlen; y++){

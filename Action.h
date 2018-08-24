@@ -7,19 +7,7 @@
 
 #ifndef ACTION_H_
 #define ACTION_H_
-
 #include "Game_structs.h"
-
-typedef struct Action {
-	int x;
-	int y;
-	Node* node_before_cahnge;
-	Node* node_after_cahnge;
-	struct Action* prev_action;
-	struct Action* next_action;
-	int is_prev_connected;
-	int is_next_connected;
-}Action;
 
 Action *Latest_Action;
 

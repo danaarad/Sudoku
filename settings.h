@@ -11,22 +11,5 @@
 #define MAX_COMMAND_SIZE 256
 #define MAX_SIZE 1024
 
-#include <stdio.h>
-
-typedef enum command {
-	print_board, validate,
-	undo, redo,
-	num_solutions, autofill,
-	reset, exit,
-	mark_errors, save,
-	generate, hint,
-	set, solve, edit
-} command_e;
-
-
-void pprint(char *str){
-	printf(str);
-	fflush(stdout);
-}
 
 #endif /* SETTINGS_H_ */

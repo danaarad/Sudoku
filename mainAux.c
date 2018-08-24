@@ -1,5 +1,6 @@
 #include "mainAux.h"
-
+#include "parser.h"
+#include "settings.h"
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
@@ -50,7 +51,7 @@ int getCommand(mode_e mode, char *command_p, int *x_p, int *y_p, int *z_p, char 
 }
 
 
-int executeCommand(mode_e mode, char *command, int *x, int *y, int *z) {
+int executeCommand(mode_e mode, char *command, int *x, int *y, int *z, char *fname) {
 	return 0;
 }
 

@@ -9,8 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "Game.h"
+#include "Node.h"
 
 int varifyValue(Game* gp, valType_e valType, int x, int y, int val){
 	int i = 0, j = 0, x_corner = 0, y_corner = 0, otherVal = 0;
