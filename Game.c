@@ -28,7 +28,7 @@ Game* initGame(int block_height, int block_width) {
 	for (x = 0; x < rowlen; x++){
 		gp->gameBoard[x]=(Node*)calloc(rowlen,sizeof(Node));
 		for (y = 0; y < rowlen; y++){
-			newNode = initNode()
+			newNode = initNode();
 			gp->gameBoard[x][y] = *newNode;
 		}
 	}
