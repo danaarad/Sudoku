@@ -6,8 +6,7 @@
  */
 
 #include "MainAux.h"
-#include "Game.h"
-#include "Node.h"
+#include "Game_structs.h"
 #include "settings.h"
 
 #include <errno.h>
