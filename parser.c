@@ -68,6 +68,7 @@ int parse(char str[], command_e *command_pointer, int *x_pointer, int *y_pointer
 		return 1;
 	case solve:
 	case edit:
+	case save:
 		token = strtok(NULL, delim);
 		if ((token == NULL) ||(sscanf(token, "%s", fname_pointer) != 1)) {
 			if (command_enum == edit) {
@@ -80,7 +81,6 @@ int parse(char str[], command_e *command_pointer, int *x_pointer, int *y_pointer
 		*command_pointer = command_enum;
 		return 1;
 	case mark_errors:
-	case save:
 	case generate:
 	case hint:
 	case set:

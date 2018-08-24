@@ -33,3 +33,76 @@ int doSave(Game* gp, char *fileName){
 		}
 	return 0;
 	}
+
+int doExit() {
+	printf("doExit!");
+	fflush(stdout);
+	return 1;
+}
+int doReset() {
+	printf("doReset!");
+		fflush(stdout);
+		return 1;
+}
+int doAutofill() {
+	printf("doAutofill!");
+		fflush(stdout);
+		return 1;
+}
+int doGetNumofSols() {
+	printf("doGetNumofSols!");
+		fflush(stdout);
+		return 1;
+}
+int doHint(int x, int y) {
+	printf("doHint!");
+		fflush(stdout);
+		return 1;
+}
+int doEdit() {
+	printf("doEdit!");
+		fflush(stdout);
+		return 1;
+}
+int doEditFile(char *fileName)  {
+	printf("doEditFile!");
+		fflush(stdout);
+		return 1;
+}
+int doSolveFile(char *fileName) {
+	printf("doSolveFile!");
+		fflush(stdout);
+		return 1;
+}
+int doUndo() {
+	printf("doUndo!");
+		fflush(stdout);
+		return 1;
+}
+int doRedo() {
+	printf("doRedo!");
+		fflush(stdout);
+		return 1;
+}
+int doMarkErrors() {
+	printf("doMarkErrors!");
+		fflush(stdout);
+		return 1;
+}
+int doValidate() {
+	printf("doValidate!");
+		fflush(stdout);
+		return 1;
+}
+int doSet(int x, int y, int z) {
+	printf("doSet!");
+		fflush(stdout);
+		return 1;
+}
+int doGenerate(int x, int y) {
+	printf("doGenerate!");
+		fflush(stdout);
+		return 1;
+}
+
+

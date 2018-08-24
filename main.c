@@ -1,4 +1,4 @@
-
+#include "Game_structs.h"
 #include "mainAux.h"
 #include "settings.h"
 #include <stdio.h>
@@ -7,7 +7,7 @@
 
 int main(int argc, char *argv[]) {
 	int exit = 0;
-	mode_e mode = INIT;
+	Game *game;
 	command_e command;
 	char *fname;
 	int x = -1, y = -1, z = -1;
@@ -15,30 +15,38 @@ int main(int argc, char *argv[]) {
 
 	/*while the user does not exit, start new game*/
 	while(!exit) {
+		game = (Game*) calloc(1, sizeof(Game));
+		if (game == NULL){
+			printf(CALLOC_ERROR);
+			return -1;
+		}
 		while (1) {
 			fname = (char*) calloc(MAX_SIZE, sizeof(char));
 			if (fname == NULL){
-				printf("Error: calloc has failed\n ***edit error***");
-				fflush(stdout);
-				//return 0;
+				printf(CALLOC_ERROR);
+				return -1;
 			}
-			fflush(stdout);
 
-			command = getCommand(mode, &x, &y, &z, fname);
-			printf("%d, %d, %d, %s, %d, %d\n", x, y, z, fname, (int)command, (int)mode);
+			command = getCommand(game->mode, &x, &y, &z, fname);
+			printf("%d, %d, %d, %s, %d, ", x, y, z, fname, (int)command);
 			fflush(stdout);
 			if (command == exit_game) {
 				exit = 1;
 				break;
-			} else if (command == solve) {
-				mode = SOLVE;
-			} else if (command == edit) {
-				mode = EDIT;
 			} else {
+				if (command == solve) {
+					game->mode = SOLVE;
+				}
+				if (command == edit || command == edit_default) {
+					game->mode = EDIT;
+				}
 				if (isWin()) {
-					mode = INIT;
+					game->mode = INIT;
 				} else {
-					executeCommand(mode, command, x, y, z, fname);
+					printf("%d\n", game->mode);
+					if (executeCommand(game, command, x, y, z, fname) == -1){
+						return -1;
+					}
 				}
 			}
 
