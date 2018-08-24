@@ -134,7 +134,7 @@ void printBoard(Game* gp, valType_e valType) {
 
 	/* i is my block y this runs for every block n the col*/
 	for (i = 0; i < BLOCK_WIDTH; ++i) {
-		printSeperator(file_ptr, BLOCK_HEIGHT, BLOCK_WIDTH);
+		printSeperator(BLOCK_HEIGHT, BLOCK_WIDTH);
 		/* j is my local y  this runs for every block n the row*/
 		for (j = 0; j < BLOCK_HEIGHT; ++j) {
 			printf("|");
