@@ -1,4 +1,3 @@
-#include "settings.h"
 #include "mainAux.h"
 #include "Game.h"
 #include "Node.h"
@@ -9,6 +8,10 @@
 #include <stdlib.h>
 
 
+int isWin(){
+	return 0;
+}
+
 int getCommand(mode_e mode, char *command_p, int *x_p, int *y_p, int *z_p, char *fname_p){
 	char *str = (char*) calloc(MAX_SIZE, sizeof(char));
 	int valid = 0;
@@ -16,6 +19,7 @@ int getCommand(mode_e mode, char *command_p, int *x_p, int *y_p, int *z_p, char 
 
 	if (str == NULL) {
 		printf("Error: calloc has failed\n ***edit error***");
+		fflush(stdout);
 		return -1;
 	}
 	printf("Enter your command:\n");
@@ -35,9 +39,7 @@ int getCommand(mode_e mode, char *command_p, int *x_p, int *y_p, int *z_p, char 
 			}
 		}
 
-		parsed = parse(str, command_p, x_p, y_p, z_p, fname_p);
-		fflush(stdout);
-		if (parsed == 0) {
+		if ((parsed = parse(str, command_p, x_p, y_p, z_p, fname_p)) == 0) {
 			printf("ERROR: invalid command\n");
 			printf("Enter your command:\n");
 			fflush(stdout);
@@ -59,6 +61,18 @@ int parse(char str[], char *command, int *x_pointer, int *y_pointer, int *z_poin
 	const char delim[2] = " ";
 	char *token = {0};
 	int i = 0;
+	char *commands_with_zero_params[] = {"print_board",
+			"validate", "undo", "redo", "num_solutions",
+			"autofill", "reset", "exit"};
+	int len_commands_with_zero_params = 8;
+
+	char *commands_with_int_params[] = {"mark_errors",
+			"save", "generate", "hint", "set"};
+	int len_commands_with_int_params = 6;
+
+	char *commands_with_str_params[] = {"solve", "edit"};
+	int len_commands_with_str_params = 2;
+
 
 	token = strtok(str, delim);
 	if (sscanf(token, "%s", command) != 1) {
@@ -86,32 +100,32 @@ int parse(char str[], char *command, int *x_pointer, int *y_pointer, int *z_poin
 	}
 
 	for(i = 0; i < len_commands_with_int_params; i++){
-			if (strcmp(command, commands_with_int_params[i]) == 0) {
+		if (strcmp(command, commands_with_int_params[i]) == 0) {
+			token = strtok(NULL, delim);
+			if ((token == NULL) ||(sscanf(token, "%d", x_pointer) != 1)) {
+				return 0;
+			}
+			if ((strcmp(command, "generate") == 0) ||
+					(strcmp(command, "hint") == 0) ||
+					(strcmp(command, "set") == 0)) {
 				token = strtok(NULL, delim);
-				if ((token == NULL) ||(sscanf(token, "%d", x_pointer) != 1)) {
+				if ((token == NULL) || (sscanf(token, "%d", y_pointer) != 1)) {
 					return 0;
 				}
-				if ((strcmp(command, "generate") == 0) ||
-						(strcmp(command, "hint") == 0) ||
-						(strcmp(command, "set") == 0)) {
-					token = strtok(NULL, delim);
-					if ((token == NULL) || (sscanf(token, "%d", y_pointer) != 1)) {
-						return 0;
-					}
+			}
+			if (strcmp(command, "set") == 0) {
+				token = strtok(NULL, delim);
+				if ((token == NULL) || (sscanf(token, "%d", z_pointer) != 1)) {
+					return 0;
 				}
-				if (strcmp(command, "set") == 0) {
-					token = strtok(NULL, delim);
-					if ((token == NULL) || (sscanf(token, "%d", z_pointer) != 1)) {
-						return 0;
-					}
-				}
-				return 1;
+			}
+			return 1;
 			}
 		}
 	return 0;
 	}
-
 int executeCommand(mode_e mode, char *command, int *x, int *y, int *z) {
+	return 0;
 }
 
 void printSeperator(int BLOCK_HEIGHT, int BLOCK_WIDTH){
@@ -129,7 +143,9 @@ void printSeperator(int BLOCK_HEIGHT, int BLOCK_WIDTH){
 void printBoard(Game* gp, valType_e valType) {
 
 	int i = 0, j = 0, k = 0, l = 0, x = 0, y = 0;
-	int BLOCK_WIDTH = gp->blockWidth, BLOCK_HEIGHT = gp->blockHeight, markErrors = gp->markErrors;
+	int BLOCK_WIDTH = gp->blockWidth;
+	BLOCK_HEIGHT = gp->blockHeight;
+	markErrors = gp->markErrors;
 	mode_e mode = gp->mode;
 
 	/* i is my block y this runs for every block n the col*/
