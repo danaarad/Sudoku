@@ -52,7 +52,3 @@ Game* ReadFromFile (FILE *file_ptr){
 
 
 }
-
-
-	return gp;
-}
