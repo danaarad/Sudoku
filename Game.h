@@ -19,6 +19,7 @@ typedef struct Game {
 	mode_e mode;
 	int isErrornous;
 	int isSolvable;
+	int markErrors;
 	Action* LatestAction;
 }Game;
 

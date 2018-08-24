@@ -51,11 +51,18 @@ Game* ReadFromFile (FILE *file_ptr){
 					x = (k * BLOCK_WIDTH) + l + 1;
 					y = (i * BLOCK_HEIGHT) + j + 1;
 
-					num = getNum(file_ptr);
+					num = getNum(file_ptr,ftell(file_ptr));
 					type = fgetc(file_ptr);
 					if (num != 0) {
 						setNodeValByType(gp, VALUE, x, y, num);
-						//fprintf(file_ptr," %2d",getNodeValByType(gp, valType, x, y));
+
+						switch(type){
+						case '.':
+							setNodeValByType(gp, ISGIVEN, x, y, 1);
+							break;
+						case ' ':
+
+
 						if ((getNodeValByType(gp, ISGIVEN, x, y) == 1 && mode != EDIT) || (toFileModeOn == 1 && mode == EDIT)) {
 							fprintf(file_ptr,".");
 						}else if(getNodeValByType(gp, ISERROR, x, y) == 1 && markErrorsOn && !toFileModeOn){
