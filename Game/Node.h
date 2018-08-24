@@ -10,7 +10,7 @@
 
 #include "Game.h"
 #include "Node.h"
-#include "settings.h"
+#include "../settings.h"
 
 
 typedef struct Node {
