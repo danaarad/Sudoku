@@ -13,12 +13,6 @@
 
 #include <stdio.h>
 
-typedef enum mode {
-	INIT,
-	SOLVE,
-	EDIT
-} mode_e;
-
 typedef enum command {
 	print_board, validate,
 	undo, redo,

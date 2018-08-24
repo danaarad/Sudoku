@@ -5,8 +5,8 @@
  *      Author: yael sapir
  */
 
-#include "MainAux.h"
 #include "Game_structs.h"
+#include "Node.h"
 #include "settings.h"
 
 #include <errno.h>
@@ -41,13 +41,32 @@ int writeToFile (Game* gp, FILE *file_ptr){
 }
 
 Game* ReadFromFile (FILE *file_ptr){
-	char type;
-	int num;
-	int BLOCK_WIDTH=0, BLOCK_HEIGHT=0;
+	char chr;
+	int num, x = 0, y = 0, rowlen;
+	int blockHeight=0, blockWidth=0;
 	Game* gp;
 
-	fscanf(file_ptr, "%d %d", &BLOCK_HEIGHT, &BLOCK_WIDTH);//get the size and set it
-	gp = initBoard(BLOCK_HEIGHT, BLOCK_WIDTH);
+	fscanf(file_ptr, "%d %d", &blockHeight, &blockWidth);//get the size and set it
+	gp = initBoard(blockHeight, blockWidth);
 
+	rowlen = blockWidth*blockHeight;
+	for(y = 0; y < rowlen; y++){
+		for(x = 0; x < rowlen; x++){
+			num = 0;
+			chr = fgetc(file_ptr);
 
+			while(isdigit(chr)){
+				num *= 10;
+				num += atoi(chr);
+				chr = fgetc(file_ptr);
+			}
+			setNodeValByType(gp, VALUE, x, y, num);
+			if(chr == '.'){
+				setNodeValByType(gp, ISGIVEN, x, y, 1);
+			}
+		}
+		chr = fgetc(file_ptr);
+	}
+
+	return gp;
 }
