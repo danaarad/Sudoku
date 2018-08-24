@@ -6,7 +6,7 @@
  */
 
 #include "MainAux.h"
-#include "Game.h"
+#include "Game_structs.h"
 #include "settings.h"
 
 #include <errno.h>
@@ -15,15 +15,26 @@
 #include <string.h>
 
 
-void printBoard(Game* gp, valType_e valType, int markErrorsOn, int toFileModeOn, FILE* file_ptr);
-
 int writeToFile (Game* gp, FILE *file_ptr){
-	int BLOCK_HEIGHT = gp->blockHeight, BLOCK_WIDTH = gp->blockWidth;
-	int x = 0, y = 0;
+	int blockHeight = gp->blockHeight, blockWidth = gp->blockWidth;
+	int x = 0, y = 0, val = 0, rowlen = blockWidth*blockHeight;
 
-	fprintf(file_ptr, "%d %d\n", BLOCK_HEIGHT, BLOCK_WIDTH);
+	fprintf(file_ptr, "%d %d\n", blockHeight, blockWidth);
 
-	for
+	for(y = 0; y < rowlen; y++){
+		for(x = 0; x < rowlen; x++){
+			if(x > 0){
+				fprintf(file_ptr," ");
+			}
+			val = getNodeValByType(gp, VALUE, x, y);
+			fprintf(file_ptr,"%d",val);
+
+			if(getNodeValByType(gp, ISGIVEN, x, y)||((gp->mode == EDIT) && val != 0)){
+				fprintf(file_ptr,".");
+			}
+		}
+		fprintf(file_ptr,"\n");
+	}
 
 	fclose(&file_ptr);
 	return 1;
@@ -39,8 +50,4 @@ Game* ReadFromFile (FILE *file_ptr){
 	gp = initBoard(BLOCK_HEIGHT, BLOCK_WIDTH);
 
 
-}
-
-
-	return gp;
 }

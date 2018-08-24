@@ -31,7 +31,5 @@ int doSave(Game* gp, char *fileName){
 		}else{//there are bad values in the board
 			printf( "Error: board contains erroneous values\n");
 		}
-		return 0;
+	return 0;
 	}
-
-}

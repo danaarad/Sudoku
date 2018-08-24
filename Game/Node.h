@@ -8,10 +8,11 @@
 #ifndef NODE_H_
 #define NODE_H_
 
+
 #include "Game.h"
 #include "Node.h"
 #include "../settings.h"
-
+#include "Game_structs.h"
 
 typedef struct Node {
 	int value;
@@ -28,6 +29,7 @@ typedef enum valType {
 	TEMP,
 	ISERROR
 } valType_e;
+
 
 int varifyValue(Game* gp, valType_e valType, int x, int y, int z);
 
