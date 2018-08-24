@@ -11,7 +11,7 @@
 #include "Game_structs.h"
 
 int varifyValue(Game* gp, valType_e valType, int x, int y, int z);
-
+Node* initNode();
 int setNodeValByType(Game* gp, valType_e valType, int x, int y, int val);
 int getNodeValByType(Game* gp, valType_e valType, int x, int y);
 

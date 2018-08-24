@@ -10,7 +10,6 @@
 
 #include "Node.h"
 #include "Action.h"
-#include "../settings.h"
 #include "Game_structs.h"
 
 
