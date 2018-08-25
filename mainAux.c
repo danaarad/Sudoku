@@ -1,5 +1,6 @@
 #include "mainAux.h"
 #include "parser.h"
+#include "printer.h"
 #include "settings.h"
 #include "commands.h"
 #include <stdio.h>
@@ -46,15 +47,54 @@ command_e getCommand(mode_e mode, int *x_p, int *y_p, int *z_p, char *fname_p){
 			printf("Enter your command:\n");
 			fflush(stdout);
 		} else if (parsed == 1) {
-			valid = 1;
+			if (validateCommandMode(command, mode) == 1){
+				valid = 1;
+			}
 		}
 	}
 	free(str);
 	return command;
 }
 
+int validateCommandMode(command_e command, mode_e mode) {
+	command_e allowed_init[] = {solve, edit, edit_default, exit_game};
+	command_e allowed_edit[] = {solve, edit, edit_default, print_board, set,
+			validate, generate, undo, redo, save, num_solutions, reset, exit_game};
+	command_e allowed_solve[] = {solve, edit, edit_default, mark_errors, print_board,
+			set, validate, save, undo, redo, hint, num_solutions, autofill, reset, exit_game};
+	int i = 0;
+
+	switch(mode){
+	case INIT:
+		printf("INIT");
+		for(i = 0; i < sizeof (allowed_init) / sizeof (allowed_init[0]); ++i) {
+			if (command == allowed_init[i]) {
+				return 1;
+			}
+		}
+		return 0;
+	case EDIT:
+		printf("EDIT");
+		for(i = 0; i < sizeof (allowed_edit) / sizeof (allowed_edit[0]); ++i) {
+			if (command == allowed_edit[i]) {
+				return 1;
+			}
+		}
+		return 0;
+	case SOLVE:
+		printf("SOLVE");
+		for(i = 0; i < sizeof (allowed_solve) / sizeof (allowed_solve[0]); ++i) {
+			if (command == allowed_solve[i]) {
+				return 1;
+			}
+		}
+		return 0;
+	}
+}
 
 int executeCommand(Game *game, command_e command, int x, int y, int z, char *fname) {
+	mode_e mode = game->mode;
+
 	switch(command){
 	case print_board:
 		printBoard(game, VALUE);
@@ -84,12 +124,15 @@ int executeCommand(Game *game, command_e command, int x, int y, int z, char *fna
 	case set:
 		return doSet(x, y, z);
 	case solve:
-		return doSolveFile(fname);
+		return doSolveFile(game, fname);
 	case edit:
 		return doEditFile(fname);
 	case edit_default:
-		return doEdit();
-
+		printBoard(game, VALUE);
+		return 1;
+	case not_found:
+		return -1;
 	}
+	return -1;
 }
 

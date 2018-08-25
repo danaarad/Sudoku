@@ -11,6 +11,7 @@
 
 #include "settings.h"
 #include "Game.h"
+#include "printer.h"
 #include "file_handler.h"
 
 int doSave(Game* gp, char *fileName){
@@ -59,21 +60,27 @@ int doHint(int x, int y) {
 		fflush(stdout);
 		return 1;
 }
-int doEdit() {
-	printf("doEdit!");
-		fflush(stdout);
-		return 1;
-}
+
 int doEditFile(char *fileName)  {
 	printf("doEditFile!");
 		fflush(stdout);
 		return 1;
 }
-int doSolveFile(char *fileName) {
+
+int doSolveFile(Game *game, char *fileName) {
+	FILE *f_pointer = fopen(fileName, "r");
+
 	printf("doSolveFile!");
-		fflush(stdout);
-		return 1;
+
+	if (f_pointer == NULL) {
+		printf("Error: File doesn't exist or cannot be opened\n");
+		return -1;
+	}
+	*game = *readFromFile(f_pointer);
+	printBoard(game, VALUE);
+	return 1;
 }
+
 int doUndo() {
 	printf("doUndo!");
 		fflush(stdout);
@@ -104,5 +111,4 @@ int doGenerate(int x, int y) {
 		fflush(stdout);
 		return 1;
 }
-
 

@@ -1,6 +1,7 @@
 #include "Game_structs.h"
 #include "mainAux.h"
 #include "settings.h"
+#include "Game.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -13,11 +14,12 @@ int main(int argc, char *argv[]) {
 	int x = -1, y = -1, z = -1;
 	int mark_errors = 1;
 
+	printf("Sudoku\n------\n");
+
 	/*while the user does not exit, start new game*/
 	while(!exit) {
-		game = (Game*) calloc(1, sizeof(Game));
+		game = (Game*) initGame(DEFAULT_BLOCK_HEIGHT, DEFAULT_BLOCK_WIDTH);
 		if (game == NULL){
-			printf(CALLOC_ERROR);
 			return -1;
 		}
 		while (1) {
@@ -26,7 +28,6 @@ int main(int argc, char *argv[]) {
 				printf(CALLOC_ERROR);
 				return -1;
 			}
-
 			command = getCommand(game->mode, &x, &y, &z, fname);
 			printf("%d, %d, %d, %s, %d, ", x, y, z, fname, (int)command);
 			fflush(stdout);
