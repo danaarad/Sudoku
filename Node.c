@@ -12,7 +12,7 @@
 #include "Node.h"
 
 Node* initNode(){
-	return NULL;
+	return (Node*)calloc(1,sizeof(Node));
 }
 
 int varifyValue(Game* gp, valType_e valType, int x, int y, int val){

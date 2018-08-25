@@ -9,7 +9,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "file_handler.h"
+#include "Node.h"
+#include "Game.h"
 
 
 int writeToFile (Game* gp, FILE *file_ptr){
@@ -33,17 +36,17 @@ int writeToFile (Game* gp, FILE *file_ptr){
 		fprintf(file_ptr,"\n");
 	}
 
-	fclose(&file_ptr);
+	fclose(file_ptr);
 	return 1;
 }
 
-Game* ReadFromFile (FILE *file_ptr){
+Game* readFromFile (FILE *file_ptr){
 	char chr;
 	int num, x = 0, y = 0, rowlen;
 	int blockHeight=0, blockWidth=0;
 	Game* gp;
 
-	fscanf(file_ptr, "%d %d", &blockHeight, &blockWidth);//get the size and set it
+	fscanf(file_ptr, "%d %d\n", &blockHeight, &blockWidth);//get the size and set it
 	gp = initGame(blockHeight, blockWidth);
 
 	rowlen = blockWidth*blockHeight;
@@ -54,16 +57,17 @@ Game* ReadFromFile (FILE *file_ptr){
 
 			while(isdigit(chr)){
 				num *= 10;
-				num += atoi(chr);
+				num += atoi(&chr);
 				chr = fgetc(file_ptr);
 			}
 			setNodeValByType(gp, VALUE, x, y, num);
 			if(chr == '.'){
 				setNodeValByType(gp, ISGIVEN, x, y, 1);
+				setNodeValByType(gp, SOLUTION, x, y, num);
+				chr = fgetc(file_ptr);//get empty space after dot
 			}
 		}
-		chr = fgetc(file_ptr);
 	}
-
+	fclose(file_ptr);
 	return gp;
 }

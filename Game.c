@@ -13,13 +13,9 @@ Game* initGame(int block_height, int block_width) {
 	int rowlen = 0, x = 0, y = 0;
 	Node* newNode = NULL;
 
-	Game *gp = (Game*)malloc(sizeof(Game));
+	Game *gp = (Game*)calloc(1,sizeof(Game));
 	gp->blockHeight = block_height;
 	gp->blockWidth = block_width;
-	gp->isErrornous = 0;
-	gp->isSolvable = 0;
-	gp->markErrors = 0;
-	gp->LatestAction = NULL;
 	gp->mode = INIT;
 
 	rowlen = block_height*block_width;
