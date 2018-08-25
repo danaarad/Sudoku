@@ -13,6 +13,7 @@
 Game* initGame(int block_height, int block_width);
 int isErrornousBoard(Game* gp);
 int isSolvableBoard(Game* gp);
+void freeGame(Game* gp);
 
 
 

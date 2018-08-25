@@ -95,3 +95,13 @@ int setIsNextConnected(Action *action, int isit_connected){
 	return isprev & isnext;
 }
 
+void freeActionsBefore(Action *action){
+
+}
+void freeActionsAfter(Action *action){
+
+}
+void freeSingleAction(Action *action){
+
+}
+

@@ -36,5 +36,8 @@ int setIsPrevConnected(Action *action, int isit_connected);
 int getIsNextConnected(Action *action);
 int setIsNextConnected(Action *action, int isit_connected);
 
+void freeActionsBefore(Action *action);
+void freeActionsAfter(Action *action);
+void freeSingleAction(Action *action);
 
 #endif /* ACTION_H_ */
