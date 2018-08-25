@@ -37,7 +37,7 @@ int writeToFile (Game* gp, FILE *file_ptr){
 	return 1;
 }
 
-Game* ReadFromFile (FILE *file_ptr){
+Game* readFromFile (FILE *file_ptr){
 	char chr;
 	int num, x = 0, y = 0, rowlen;
 	int blockHeight=0, blockWidth=0;
