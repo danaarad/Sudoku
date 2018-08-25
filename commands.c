@@ -11,8 +11,10 @@
 
 #include "settings.h"
 #include "Game.h"
+#include "Node.h"
 #include "printer.h"
 #include "file_handler.h"
+#include "commandsAux.h"
 
 int doSave(Game* gp, char *fileName){
 	FILE* file_ptr = NULL;
@@ -55,7 +57,7 @@ int doGetNumofSols() {
 		fflush(stdout);
 		return 1;
 }
-int doHint(int x, int y) {
+int doHint(char *x, char *y) {
 	printf("doHint!");
 		fflush(stdout);
 		return 1;
@@ -103,10 +105,14 @@ int doRedo() {
 		return 1;
 }
 
-int doMarkErrors(Game *game, int x) {
+int doMarkErrors(Game *game, char *x) {
+	int mark_errors_value = -1;
+
 	printf("doMarkErrors!\n");
-	if (x == 0 || x == 1) {
-		game->markErrors = x;
+
+	mark_errors_value = atoi(x);
+	if (mark_errors_value == 0 || mark_errors_value == 1) {
+		game->markErrors = mark_errors_value;
 		return 1;
 	}
 	printf("Error: the value should be 0 or 1\n");
@@ -118,11 +124,48 @@ int doValidate() {
 		fflush(stdout);
 		return 1;
 }
-int doSet(Game *game, int x, int y, int z) {
-	printf("doSet!");
+int doSet(Game *game, char *x, char *y, char *z) {
+	int x_val = 0;
+	int y_val = 0;
+	int z_val = 0;
+	int N = game->blockHeight * game->blockWidth;
+
+	x_val = atoi(x);
+	y_val = atoi(y);
+	z_val = atoi(z);
+
+	if (validate_values_for_set(x_val, y_val, z_val, z, N) != 1) {
+		printf("Error: value not in range 0-%d\n", N);
+		printBoard(game, VALUE);
+		return 0;
+	}
+
+	x_val -= 1;
+	y_val -= 1;
+
+	if (getNodeValByType(game, ISGIVEN, x_val, y_val) == 1) {
+		printf("Error: cell is fixed\n");
+		printBoard(game, VALUE);
+		return 0;
+	}
+
+	if (getNodeValByType(game, VALUE, x_val, y_val) == 0){
+		game->filledNodes++;
+	}
+	if (z_val == 0){
+		game->filledNodes--;
+	}
+
+	setNodeValByType(game, VALUE, x_val , y_val, z_val);
+	//check_errors(game)
+	//new_action = init action()
+	//freeActionsAfter(game->LatestAction);
+	//setNextAction(game->LatestAction, new_action)
+	//setLatestAction(game, new_action)
+	printBoard(game, VALUE);
 	return 1;
 }
-int doGenerate(int x, int y) {
+int doGenerate(char *x, char *y) {
 	printf("doGenerate!");
 		fflush(stdout);
 		return 1;

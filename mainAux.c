@@ -3,13 +3,28 @@
 #include "printer.h"
 #include "settings.h"
 #include "commands.h"
+#include "Game.h"
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
 
 
-int isWin() {
+int isWin(Game *game) {
+	int N = game->blockHeight * game->blockWidth;
+
+	if (game->filledNodes == (N * N)){
+		if (game->mode == SOLVE) {
+			if (isSolvableBoard(game) == 1) {
+				printf("Puzzle solved successfully\n");
+				return 1;
+			} else {
+				printf("Puzzle solution erroneous\n");
+				return 1;
+			}
+		}
+	}
+
 	return 0;
 }
 
@@ -26,18 +41,21 @@ command_e getCommand(mode_e mode, char *x_p, char *y_p, char *z_p){
 		fflush(stdout);
 		return -1;
 	}
-	printf("Enter your command:\n");
-	fflush(stdout);
 	 /*
 	 * get command string, ignore \n
 	 */
 	while (valid == 0) {
+		printf("Enter your command:\n");
+		fflush(stdout);
+
 		if (fgets(str, MAX_SIZE, stdin) == NULL){
 			strcpy(str, "exit");
 			break;
 		}
 
 		while ((strcmp(str,"\n") == 0)  || (strcmp(str,"\r\n") == 0)) {
+			printf("Enter your command:\n");
+			fflush(stdout);
 			if (fgets(str, MAX_SIZE, stdin) == NULL){
 				strcpy(str, "exit");
 				valid = 1;
@@ -46,16 +64,12 @@ command_e getCommand(mode_e mode, char *x_p, char *y_p, char *z_p){
 
 		if ((parsed = parse(str, &command, x_p, y_p, z_p)) == 0) {
 			printf("ERROR: invalid command 111111\n");
-			printf("Enter your command:\n");
-			fflush(stdout);
 		} else if (parsed == 1) {
 			valid_command = validateCommandMode(command, mode);
 			if (valid_command == 1){
 				valid = 1;
 			} else {
 				printf("ERROR: invalid command 2222\n");
-				printf("Enter your command:\n");
-				fflush(stdout);
 			}
 		}
 	}

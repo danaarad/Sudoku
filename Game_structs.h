@@ -63,6 +63,7 @@ typedef struct Game {
 	int isSolvable;
 	int markErrors;
 	Action* LatestAction;
+	int filledNodes;
 }Game;
 
 

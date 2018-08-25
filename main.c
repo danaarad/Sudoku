@@ -37,12 +37,12 @@ int main(int argc, char *argv[]) {
 				exit = 1;
 				break;
 			} else {
+				if (executeCommand(game, command, x, y, z) == -1){
+					return -1;
+				}
 				if (isWin()) {
-					game->mode = INIT;
-				} else {
-					if (executeCommand(game, command, x, y, z) == -1){
-						return -1;
-					}
+					freeGame(game);
+					break;
 				}
 			}
 		free(x);
@@ -53,7 +53,7 @@ int main(int argc, char *argv[]) {
 			free(x);
 			free(y);
 			free(z);
-			//freeGame(game);
+			freeGame(game);
 			printf( "Exiting...");
 		}
 
