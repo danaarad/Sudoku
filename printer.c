@@ -25,37 +25,37 @@ void printBoard(Game* gp, valType_e valType) {
 	int markErrors = gp->markErrors;
 	mode_e mode = gp->mode;
 
-	/* i is my block y this runs for every block n the col*/
+	/* i is the block y this runs for every block n the col*/
 	for (i = 0; i < BLOCK_WIDTH; ++i) {
 		printSeperator(BLOCK_HEIGHT, BLOCK_WIDTH);
-		/* j is my local y  this runs for every block n the row*/
+		/* j is the local y  this runs for every block n the row*/
 		for (j = 0; j < BLOCK_HEIGHT; ++j) {
-			printf("|");
-			/*is my block x*/
-			for (k=0; k<BLOCK_HEIGHT; ++k) {
-				/*is my local x*/
-				for(l=0; l<BLOCK_WIDTH; ++l) {
-					x = (k * BLOCK_WIDTH) + l + 1;
-					y = (i * BLOCK_HEIGHT) + j + 1;
+			pprint("|");
+			/*is the block x*/
+			for (k=0; k < BLOCK_HEIGHT; ++k) {
+				/*is the local x*/
+				for(l=0; l < BLOCK_WIDTH; ++l) {
+					x = (k * BLOCK_WIDTH) + l;
+					y = (i * BLOCK_HEIGHT) + j;
 
 					if (getNodeValByType(gp, valType, x, y) != 0) {
 						printf(" %2d",getNodeValByType(gp, valType, x, y));
+						fflush(stdout);
 						if (getNodeValByType(gp, ISGIVEN, x, y) == 1 && mode != EDIT){
-							printf(".");
+							pprint(".");
 						}else if(getNodeValByType(gp, ISERROR, x, y) == 1 && markErrors){
-							printf("*");
+							pprint("*");
 						}else {
-							printf(" ");
+							pprint(" ");
 						}
-					} else {
-						printf("    ");
+					}else{
+						pprint("    ");
 					}
 				}
-				printf("|");
+				pprint("|");
 			}
-			printf("\n");
+			pprint("\n");
 		}
 	}
 	printSeperator(BLOCK_HEIGHT, BLOCK_WIDTH);
-	fflush(stdout);
 }
