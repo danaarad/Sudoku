@@ -96,12 +96,29 @@ int setIsNextConnected(Action *action, int isit_connected){
 }
 
 void freeActionsBefore(Action *action){
-
+	Action *prev = action->prev_action;
+	if (prev != NULL){
+		free(prev->node_before_change);
+		free(prev->node_after_change);
+		freeActionsBefore(prev);
+		free(prev);
+	}
+	action->is_prev_connected = 0;
 }
 void freeActionsAfter(Action *action){
-
+	Action *next = action->next_action;
+	if (next != NULL){
+		free(next->node_before_change);
+		free(next->node_after_change);
+		freeActionsAfter(next);
+		free(next);
+	}
+	action->is_next_connected = 0;
 }
+/* expects before and after actions to be free*/
 void freeSingleAction(Action *action){
+	free(action->node_before_change);
+	free(action->node_after_change);
+	free(action);
 
 }
-
