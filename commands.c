@@ -61,22 +61,32 @@ int doHint(int x, int y) {
 		return 1;
 }
 
-int doEditFile(char *fileName)  {
-	printf("doEditFile!");
-		fflush(stdout);
-		return 1;
+int doEditFile(Game *game, char *fileName)  {
+	FILE *f_pointer = fopen(fileName, "r");
+
+	printf("doEditFile!\n");
+
+	if (f_pointer == NULL) {
+		printf("Error: File cannot be opened\n");
+		return 0;
+	}
+	*game = *readFromFile(f_pointer);
+	game->mode = EDIT;
+	printBoard(game, VALUE);
+	return 1;
 }
 
 int doSolveFile(Game *game, char *fileName) {
 	FILE *f_pointer = fopen(fileName, "r");
 
-	printf("doSolveFile!");
+	printf("doSolveFile!\n");
 
 	if (f_pointer == NULL) {
 		printf("Error: File doesn't exist or cannot be opened\n");
-		return -1;
+		return 0;
 	}
 	*game = *readFromFile(f_pointer);
+	game->mode = SOLVE;
 	printBoard(game, VALUE);
 	return 1;
 }
@@ -86,16 +96,23 @@ int doUndo() {
 		fflush(stdout);
 		return 1;
 }
+
 int doRedo() {
 	printf("doRedo!");
 		fflush(stdout);
 		return 1;
 }
-int doMarkErrors() {
-	printf("doMarkErrors!");
-		fflush(stdout);
+
+int doMarkErrors(Game *game, int x) {
+	printf("doMarkErrors!\n");
+	if (x == 0 || x == 1) {
+		game->markErrors = x;
 		return 1;
+	}
+	printf("Error: the value should be 0 or 1\n");
+	return 0;
 }
+
 int doValidate() {
 	printf("doValidate!");
 		fflush(stdout);
