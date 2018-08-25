@@ -60,6 +60,7 @@ Game* ReadFromFile (FILE *file_ptr){
 			setNodeValByType(gp, VALUE, x, y, num);
 			if(chr == '.'){
 				setNodeValByType(gp, ISGIVEN, x, y, 1);
+				setNodeValByType(gp, SOLUTION, x, y, num);
 			}
 		}
 		chr = fgetc(file_ptr);
