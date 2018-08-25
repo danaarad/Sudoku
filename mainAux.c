@@ -17,8 +17,10 @@ command_e getCommand(mode_e mode, int *x_p, int *y_p, int *z_p, char *fname_p){
 	char *str = (char*) calloc(MAX_SIZE, sizeof(char));
 	int valid = 0;
 	int parsed;
+	int valid_command = 0;
 	command_e command = 0;
 
+	fflush(stdout);
 	if (str == NULL) {
 		printf(CALLOC_ERROR);
 		fflush(stdout);
@@ -47,12 +49,18 @@ command_e getCommand(mode_e mode, int *x_p, int *y_p, int *z_p, char *fname_p){
 			printf("Enter your command:\n");
 			fflush(stdout);
 		} else if (parsed == 1) {
-			if (validateCommandMode(command, mode) == 1){
+			valid_command = validateCommandMode(command, mode);
+			if (valid_command == 1){
 				valid = 1;
+			} else {
+				printf("ERROR: invalid command\n");
+				printf("Enter your command:\n");
+				fflush(stdout);
 			}
 		}
 	}
 	free(str);
+	fflush(stdout);
 	return command;
 }
 
@@ -63,33 +71,36 @@ int validateCommandMode(command_e command, mode_e mode) {
 	command_e allowed_solve[] = {solve, edit, edit_default, mark_errors, print_board,
 			set, validate, save, undo, redo, hint, num_solutions, autofill, reset, exit_game};
 	int i = 0;
+	int result = 0;
 
 	switch(mode){
 	case INIT:
-		printf("INIT");
-		for(i = 0; i < sizeof (allowed_init) / sizeof (allowed_init[0]); ++i) {
+		for(i = 0; i < (sizeof (allowed_init) / sizeof (allowed_init[0])); ++i) {
+			fflush(stdout);
 			if (command == allowed_init[i]) {
-				return 1;
+				result = 1;
+				break;
 			}
 		}
-		return 0;
+		break;
 	case EDIT:
-		printf("EDIT");
 		for(i = 0; i < sizeof (allowed_edit) / sizeof (allowed_edit[0]); ++i) {
 			if (command == allowed_edit[i]) {
-				return 1;
+				result = 1;
+				break;
 			}
 		}
-		return 0;
+		break;
 	case SOLVE:
-		printf("SOLVE");
 		for(i = 0; i < sizeof (allowed_solve) / sizeof (allowed_solve[0]); ++i) {
 			if (command == allowed_solve[i]) {
-				return 1;
+				result = 1;
+				break;
 			}
 		}
-		return 0;
+		break;
 	}
+	return result;
 }
 
 int executeCommand(Game *game, command_e command, int x, int y, int z, char *fname) {
@@ -116,7 +127,7 @@ int executeCommand(Game *game, command_e command, int x, int y, int z, char *fna
 	case mark_errors:
 		return doMarkErrors(x);
 	case save:
-		return doSave(fname, game->mode);
+		return doSave(fname, mode);
 	case generate:
 		return doGenerate(x, y);
 	case hint:
