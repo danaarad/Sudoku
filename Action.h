@@ -9,33 +9,32 @@
 #define ACTION_H_
 #include "Game_structs.h"
 
-Action *Latest_Action;
 
-int getX(Action action);
-int setX(Action action, int x);
+int getActionX(Action *action);
+int setActionX(Action *action, int x);
 
-int getY(Action action);
-int setY(Action action, int y);
+int getActionY(Action *action);
+int setActionY(Action *action, int y);
 
-Node* getNodeBeforeChange(Action action);
-int setNodeBeforeChange(Action action, Node* nodeBeforeChange);
+int setActionXY(Action *action, int x, int y);
 
-Node* getNodeAfterChange(Action action);
-int setNodeAfterChange(Action action, Node* nodeAfterChange);
+Node* getNodeBeforeChange(Action *action);
+int setNodeBeforeChange(Action *action, Node* nodeBeforeChange);
 
-Action* getPrevAction(Action action);
-int setPrevAction(Action action, Action prev_action);
+Node* getNodeAfterChange(Action *action);
+int setNodeAfterChange(Action *action, Node* nodeAfterChange);
 
-Action* getNextAction(Action action);
-int setNextAction(Action action, Action prev_action);
+Action* getPrevAction(Action *action);
+int setPrevAction(Action *action, Action *prev_action);
 
-int getIsPrevConnected(Action action);
-int setIsPrevConnected(Action action, int isit_connected);
+Action* getNextAction(Action *action);
+int setNextAction(Action *action, Action *next_action);
 
-int getIsNextConnected(Action action);
-int setIsNextConnected(Action action, int isit_connected);
+int getIsPrevConnected(Action *action);
+int setIsPrevConnected(Action *action, int isit_connected);
 
-Action* getLastAction();
-int setLastAction(Action latest_action);
+int getIsNextConnected(Action *action);
+int setIsNextConnected(Action *action, int isit_connected);
+
 
 #endif /* ACTION_H_ */

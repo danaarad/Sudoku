@@ -45,8 +45,8 @@ typedef struct Node {
 typedef struct Action {
 	int x;
 	int y;
-	Node* node_before_cahnge;
-	Node* node_after_cahnge;
+	Node* node_before_change;
+	Node* node_after_change;
 	struct Action* prev_action;
 	struct Action* next_action;
 	int is_prev_connected;
