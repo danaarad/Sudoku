@@ -13,15 +13,15 @@ int doExit();
 int doReset();
 int doAutofill();
 int doGetNumofSols();
-int doHint(int x, int y);
+int doHint(char *x, char *y);
 int doSave(char *fileName, mode_e mode);
-int doEditFile(char *fileName);
+int doEditFile(Game *game, char *fileName);
 int doSolveFile(Game *game, char *fileName);
 int doUndo();
 int doRedo();
-int doMarkErrors();
+int doMarkErrors(Game *game, char *x);
 int doValidate();
-int doSet(int x, int y, int z);
-int doGenerate(int x, int y);
+int doSet(Game *game, char *x, char *y, char *z);
+int doGenerate(char *x, char *y);
 
 #endif /* COMMANDS_H_ */

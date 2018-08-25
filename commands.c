@@ -118,10 +118,9 @@ int doValidate() {
 		fflush(stdout);
 		return 1;
 }
-int doSet(int x, int y, int z) {
+int doSet(Game *game, int x, int y, int z) {
 	printf("doSet!");
-		fflush(stdout);
-		return 1;
+	return 1;
 }
 int doGenerate(int x, int y) {
 	printf("doGenerate!");

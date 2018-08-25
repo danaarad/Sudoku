@@ -36,7 +36,7 @@ command_e strToCommandEnum (char *str) {
     return not_found;
 }
 
-int parse(char str[], command_e *command_pointer, int *x_pointer, int *y_pointer, int *z_pointer, char *fname_pointer) {
+int parse(char str[], command_e *command_pointer, char *x_pointer, char *y_pointer, char *z_pointer) {
 	const char delim[2] = " ";
 	char *token = {0};
 	command_e command_enum;
@@ -69,8 +69,12 @@ int parse(char str[], command_e *command_pointer, int *x_pointer, int *y_pointer
 	case solve:
 	case edit:
 	case save:
+	case mark_errors:
+	case generate:
+	case hint:
+	case set:
 		token = strtok(NULL, delim);
-		if ((token == NULL) ||(sscanf(token, "%s", fname_pointer) != 1)) {
+		if ((token == NULL) ||(sscanf(token, "%s", x_pointer) != 1)) {
 			if (command_enum == edit) {
 				command_enum = edit_default;
 				*command_pointer = command_enum;
@@ -78,27 +82,17 @@ int parse(char str[], command_e *command_pointer, int *x_pointer, int *y_pointer
 			}
 			return 0;
 		}
-		*command_pointer = command_enum;
-		return 1;
-	case mark_errors:
-	case generate:
-	case hint:
-	case set:
-		token = strtok(NULL, delim);
-		if ((token == NULL) ||(sscanf(token, "%d", x_pointer) != 1)) {
-			return 0;
-		}
 		if (command_enum == generate ||
 				command_enum == hint ||
 				command_enum == set) {
 			token = strtok(NULL, delim);
-			if ((token == NULL) || (sscanf(token, "%d", y_pointer) != 1)) {
+			if ((token == NULL) || (sscanf(token, "%s", y_pointer) != 1)) {
 				return 0;
 			}
 		}
 		if (command_enum == set) {
 			token = strtok(NULL, delim);
-			if ((token == NULL) || (sscanf(token, "%d", z_pointer) != 1)) {
+			if ((token == NULL) || (sscanf(token, "%s", z_pointer) != 1)) {
 				return 0;
 			}
 		}

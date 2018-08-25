@@ -10,9 +10,9 @@ int main(int argc, char *argv[]) {
 	int exit = 0;
 	Game *game;
 	command_e command;
-	char *fname;
-	int x = -1, y = -1, z = -1;
-	int mark_errors = 1;
+	char  *x;
+	char  *y;
+	char  *z;
 
 	printf("Sudoku\n------\n");
 
@@ -23,36 +23,37 @@ int main(int argc, char *argv[]) {
 			return -1;
 		}
 		while (1) {
-			fname = (char*) calloc(MAX_SIZE, sizeof(char));
-			if (fname == NULL){
+			x = (char*) calloc(MAX_SIZE, sizeof(char));
+			y = (char*) calloc(MAX_SIZE, sizeof(char));
+			z = (char*) calloc(MAX_SIZE, sizeof(char));
+			if (x == NULL || y == NULL || z == NULL){
 				printf(CALLOC_ERROR);
 				return -1;
 			}
-			command = getCommand(game->mode, &x, &y, &z, fname);
-			printf("%d, %d, %d, %s, %d, ", x, y, z, fname, (int)command);
+			command = getCommand(game->mode, x, y, z);
+			printf("%s, %s, %s, %d \n", x, y, z, (int)command);
 			fflush(stdout);
 			if (command == exit_game) {
 				exit = 1;
 				break;
 			} else {
-				if (command == solve) {
-					game->mode = SOLVE;
-				}
-				if (command == edit || command == edit_default) {
-					game->mode = EDIT;
-				}
 				if (isWin()) {
 					game->mode = INIT;
 				} else {
-					printf("%d\n", game->mode);
-					if (executeCommand(game, command, x, y, z, fname) == -1){
+					if (executeCommand(game, command, x, y, z) == -1){
 						return -1;
 					}
 				}
 			}
-
+		free(x);
+		free(y);
+		free(z);
 		}
 		if (exit == 1) {
+			free(x);
+			free(y);
+			free(z);
+			//freeGame(game);
 			printf( "Exiting...");
 		}
 
