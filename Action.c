@@ -9,6 +9,10 @@
 #include <stdlib.h>
 #include "Game_structs.h"
 
+Action* initAction(){
+	return (Action*)calloc(1,sizeof(Action));
+}
+
 int getActionX(Action *action){
 	return action->x;
 }
