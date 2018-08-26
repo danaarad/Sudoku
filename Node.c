@@ -11,8 +11,23 @@
 #include <string.h>
 #include "Node.h"
 
+
+
 Node* initNode(){
 	return (Node*)calloc(1,sizeof(Node));
+}
+
+Node* cloneNode(Game* gp, int x, int y){
+	int valtype = 0, val;
+	Node *clone = initNode();
+	if(clone != NULL){
+		/*this is problematic because value has to be first and error has to be last*/
+		for (valtype = VALUE; valtype <= ISERROR; valtype++){
+			val = getNodeValByType(gp,valtype,x,y);
+			setNodeValByType(gp,valtype,x,y,val);
+		}
+	}
+	return clone;
 }
 
 int varifyValue(Game* gp, valType_e valType, int x, int y, int val){
