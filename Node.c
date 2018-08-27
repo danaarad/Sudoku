@@ -11,21 +11,24 @@
 #include <string.h>
 #include "Node.h"
 
-
-
 Node* initNode(){
 	return (Node*)calloc(1,sizeof(Node));
 }
 
-Node* cloneNode(Game* gp, int x, int y){
-	int valtype = 0, val;
+int copyNodetoNode(Node* copyfrom, Node* copyto){
+	int valtype = 0, val = 0, worked = 1;
+	/*this is problematic because value has to be first and error has to be last*/
+	for (valtype = VALUE; valtype <= ISERROR; valtype++){
+		val = getNodeValByTypeDirectly(copyfrom, valtype);
+		worked *= setNodeValByTypeDirectly(copyto, valtype, val);
+	}
+	return worked;
+}
+
+Node* cloneNode(Node *orignode){
 	Node *clone = initNode();
 	if(clone != NULL){
-		/*this is problematic because value has to be first and error has to be last*/
-		for (valtype = VALUE; valtype <= ISERROR; valtype++){
-			val = getNodeValByType(gp,valtype,x,y);
-			setNodeValByType(gp,valtype,x,y,val);
-		}
+		copyNodetoNode(orignode, clone);
 	}
 	return clone;
 }
@@ -97,8 +100,39 @@ int setNodeValByType(Game* gp, valType_e valType, int x, int y, int val){
 		gp->gameBoard[x][y].isError = val;
 		break;
 	}
-	return getNodeValByType(gp, valType, x, y);
+	return getNodeValByType(gp, valType, x, y) == val;
 }
 
+int getNodeValByTypeDirectly(Node* node, valType_e valType){
+	switch(valType){
+	case VALUE: return node->value;
+	case ISGIVEN: return node->isGiven;
+	case SOLUTION: return node->solution;
+	case TEMP: return node->tempValue;
+	case ISERROR: return node->isError;
+	}
+	return -1;
+}
+
+int setNodeValByTypeDirectly(Node* node, valType_e valType, int val){
+	switch(valType){
+	case VALUE:
+		node->value = val;
+		break;
+	case ISGIVEN:
+		node->isGiven = val;
+		break;
+	case SOLUTION:
+		node->solution = val;
+		break;
+	case TEMP:
+		node->tempValue = val;
+		break;
+	case ISERROR:
+		node->isError = val;
+		break;
+	}
+	return getNodeValByTypeDirectly(node, valType) == val;
+}
 
 
