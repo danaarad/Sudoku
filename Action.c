@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Game_structs.h"
+#include "Node.h"
 
 Action* initAction(){
 	return (Action*)calloc(1,sizeof(Action));
@@ -80,6 +81,8 @@ int setNextAction(Action *action, Action *next_action){
 int getIsPrevConnected(Action *action){
 	return action->is_prev_connected;
 }
+
+/*expects a prev*/
 int setIsPrevConnected(Action *action, int isit_connected){
 	int isprev, isnext;
 	action->is_prev_connected = isit_connected;
@@ -92,6 +95,8 @@ int setIsPrevConnected(Action *action, int isit_connected){
 int getIsNextConnected(Action *action){
 	return action->is_next_connected;
 }
+
+/*expects a next*/
 int setIsNextConnected(Action *action, int isit_connected){
 	int isprev, isnext;
 	action->is_next_connected = isit_connected;
@@ -127,4 +132,28 @@ void freeSingleAction(Action *action){
 	free(action->node_after_change);
 	free(action);
 
+}
+
+/*returns the last action to be redone*/
+Action* redoAction(Game *gp, Action *action){
+	int x = getActionX(action);
+	int y = getActionY(action);
+	Node nodeInBoard = gp->gameBoard[x][y];
+	copyNodetoNode(getNodeAfterChange(action),&nodeInBoard);
+	if(getIsNextConnected(action)){
+		redoAction(gp, getNextAction(action));
+	}
+	return action;
+}
+
+/*returns the last action to be redone*/
+Action* undoAction(Game *gp, Action *action){
+	int x = getActionX(action);
+	int y = getActionY(action);
+	Node nodeInBoard = gp->gameBoard[x][y];
+	copyNodetoNode(getNodeBeforeChange(action),&nodeInBoard);
+	if(getIsPrevConnected(action)){
+		undoAction(gp, getPrevAction(action));
+	}
+	return action;
 }

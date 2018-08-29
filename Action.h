@@ -41,4 +41,7 @@ void freeActionsBefore(Action *action);
 void freeActionsAfter(Action *action);
 void freeSingleAction(Action *action);
 
+Action* redoAction(Game *gp, Action *action);
+Action* undoAction(Game *gp, Action *action);
+
 #endif /* ACTION_H_ */
