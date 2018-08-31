@@ -15,12 +15,12 @@ int isWin(Game *game) {
 
 	if (game->filledNodes == (N * N)){
 		if (game->mode == SOLVE) {
-			if (isSolvableBoard(game) == 1) {
+			if (game->isErrornous == 1) {
 				printf("Puzzle solved successfully\n");
 				return 1;
 			} else {
 				printf("Puzzle solution erroneous\n");
-				return 1;
+				return 0;
 			}
 		}
 	}
@@ -125,27 +125,25 @@ int executeCommand(Game *game, command_e command, char *x, char *y, char *z) {
 		printBoard(game, VALUE);
 		return 1;
 	case validate:
-		return doValidate();
+		return doValidate(game);
 	case undo:
 		return doUndo();
 	case redo:
 		return doRedo();
 	case num_solutions:
-		return doGetNumofSols();
+		return doGetNumofSols(game);
 	case autofill:
-		return doAutofill();
+		return doAutofill(game);
 	case reset:
 		return doReset();
-	case exit_game:
-		return doExit();
 	case mark_errors:
 		return doMarkErrors(game, x);
 	case save:
-		return doSave(x, mode);
+		return doSave(game, x);
 	case generate:
-		return doGenerate(x, y);
+		return doGenerate(game, x, y);
 	case hint:
-		return doHint(x, y);
+		return doHint(game, x, y);
 	case set:
 		return doSet(game, x, y, z);
 	case solve:
