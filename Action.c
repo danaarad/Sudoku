@@ -155,5 +155,5 @@ Action* undoAction(Game *gp, Action *action){
 	if(getIsPrevConnected(action)){
 		undoAction(gp, getPrevAction(action));
 	}
-	return action;
+	return getPrevAction(action);
 }
