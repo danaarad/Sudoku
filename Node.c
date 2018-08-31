@@ -20,6 +20,9 @@ Node* initNode(){
 	return newNode;
 }
 
+Node* getNode(Game* gp, int x, int y){
+	return &(gp->gameBoard[x][y]);
+}
 
 int copyNodetoNode(Node* copyfrom, Node* copyto){
 	int valtype = 0, val = 0, worked = 1;

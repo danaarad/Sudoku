@@ -12,6 +12,7 @@
 
 int varifyValue(Game* gp, valType_e valType, int x, int y, int z);
 Node* initNode();
+Node* getNode(Game* gp, int x, int y);
 Node* cloneNode(Node *orignode);
 int copyNodetoNode(Node* copyfrom, Node* copyto);
 int setNodeValByType(Game* gp, valType_e valType, int x, int y, int val);
