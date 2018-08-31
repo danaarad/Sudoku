@@ -11,6 +11,7 @@
 #include "Node.h"
 #include "Action.h"
 #include "settings.h"
+#include "GameAux.h"
 
 Game* initGame(int block_height, int block_width) {
 	int rowlen = 0, x = 0, y = 0, i = 0;
@@ -93,4 +94,65 @@ void freeGame(Game* gp){
 	freeAllActions(gp);
 	freeGameBoard(gp);
 	free(gp);
+}
+
+
+int UpdateErrorsByCell(Game *gp, int x, int y){
+	int i, j, val, idx, emptyPlace, x_corner, y_corner;
+	int blockWidth = gp->blockWidth;
+	int blockHeight = gp->blockHeight;
+	int rowSize = blockWidth*blockHeight;
+	int ***checkTable;
+	int newErrorNum = 0;
+
+	/*calloc checkTable*/
+	checkTable = callocCheckTable(rowSize);
+	if (!checkTable){
+		return -1;
+	}
+
+
+	memset(checkTable, -1, sizeof(checkTable[0][0][0])*rowSize*rowSize*2);
+	/*create checkTable for row*/
+	for (i = 0; i < rowSize; ++i){
+		val = getNodeValByType(gp, VALUE, i, y);
+		idx = val-1;
+		/*insert x and y into checkTable*/
+		emptyPlace = findFirstFreeCellIn2DArr(checkTable[idx], rowSize);
+		checkTable[idx][emptyPlace][0] = i;
+		checkTable[idx][emptyPlace][1] = y;
+		}
+
+	newErrorNum += updateErrorsFromCheckTable(gp, checkTable, rowSize);
+
+	memset(checkTable, -1, sizeof(checkTable[0][0][0])*rowSize*rowSize*2);
+	/*create checkTable for col*/
+	for (j = 0; j < rowSize; ++j){
+		val = getNodeValByType(gp, VALUE, x, j);
+		/*insert x and y into checkTable*/
+		emptyPlace = findFirstFreeCellIn2DArr(checkTable[idx], rowSize);
+		checkTable[idx][emptyPlace][0] = x;
+		checkTable[idx][emptyPlace][1] = j;
+	}
+
+	newErrorNum += updateErrorsFromCheckTable(gp, checkTable, rowSize);
+
+	memset(checkTable, -1, sizeof(checkTable[0][0][0])*rowSize*rowSize*2);
+	/*create checkTable for block*/
+	x_corner = (x/blockWidth)*blockWidth;
+	y_corner = (y/blockHeight)*blockHeight;
+	for (i = x_corner; i < x_corner + blockWidth; ++i){
+		for(j = y_corner; j < y_corner + blockHeight; ++j){
+			val = getNodeValByType(gp, VALUE, x, j);
+			/*insert x and y into checkTable*/
+			emptyPlace = findFirstFreeCellIn2DArr(checkTable[idx], rowSize);
+			checkTable[idx][emptyPlace][0] = i;
+			checkTable[idx][emptyPlace][1] = j;
+		}
+	}
+
+	newErrorNum += updateErrorsFromCheckTable(gp, checkTable, rowSize);
+
+	freeCheckTable(checkTable, rowSize);
+	return newErrorNum;
 }
