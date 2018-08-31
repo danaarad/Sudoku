@@ -10,8 +10,19 @@
 #include "Game_structs.h"
 #include "Node.h"
 
-Action* initAction(){
-	return (Action*)calloc(1,sizeof(Action));
+Action* initAction(int x, int y, Node* nodeBeforeChange, Node* nodeAfterChange, Action* prev_action, Action* next_action, int is_prev_connected, int is_next_connected){
+	Action *newAction = (Action*)calloc(1,sizeof(Action));
+	if(newAction){
+		newAction->x = x;
+		newAction->y = y;
+		newAction->node_before_change = nodeBeforeChange;
+		newAction->node_after_change = nodeAfterChange;
+		newAction->is_prev_connected = is_prev_connected;
+		newAction->is_next_connected = is_next_connected;
+	}else{
+		printf(CALLOC_ERROR);
+	}
+	return newAction;
 }
 
 int getActionX(Action *action){
