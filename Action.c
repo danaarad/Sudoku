@@ -10,21 +10,7 @@
 #include "Game_structs.h"
 #include "Node.h"
 #include "settings.h"
-
-Action* initAction(int x, int y, Node* nodeBeforeChange, Node* nodeAfterChange, Action* prev_action, Action* next_action, int is_prev_connected, int is_next_connected){
-	Action *newAction = (Action*)calloc(1,sizeof(Action));
-	if(newAction){
-		newAction->x = x;
-		newAction->y = y;
-		newAction->node_before_change = nodeBeforeChange;
-		newAction->node_after_change = nodeAfterChange;
-		newAction->is_prev_connected = is_prev_connected;
-		newAction->is_next_connected = is_next_connected;
-	}else{
-		printf(CALLOC_ERROR);
-	}
-	return newAction;
-}
+#include "Action.h"
 
 int getActionX(Action *action){
 	return action->x;
@@ -81,6 +67,18 @@ int setPrevAction(Action *action, Action *prev_action, int isPrevConnected){
 
 Action* getNextAction(Action *action){
 	return action->next_action;
+}
+
+int setNextAction(Action *action, Action *next_action, int isNextConnected){
+	int isprev, isnext;
+	freeActionsAfter(action);
+	action->next_action = next_action;
+	next_action->prev_action = action;
+	action->is_next_connected = isNextConnected;
+	next_action->is_prev_connected = isNextConnected;
+	isnext = (action->next_action == next_action);
+	isprev = (next_action->prev_action == action);
+	return isprev & isnext;
 }
 
 int getIsPrevConnected(Action *action){
@@ -163,14 +161,22 @@ Action* undoAction(Game *gp, Action *action){
 	return getPrevAction(action);
 }
 
-int setNextAction(Action *action, Action *next_action, int isNextConnected){
-	int isprev, isnext;
-	freeActionsAfter(action);
-	action->next_action = next_action;
-	next_action->prev_action = action;
-	action->is_next_connected = isNextConnected;
-	next_action->is_prev_connected = isNextConnected;
-	isnext = (action->next_action == next_action);
-	isprev = (next_action->prev_action == action);
-	return isprev & isnext;
+Action* initAction(int x, int y, Node* nodeBeforeChange, Node* nodeAfterChange, Action* prev_action, int is_prev_connected){
+	Action *newAction = (Action*)calloc(1,sizeof(Action));
+	int xok, yok, nbok, naok, paok;
+	if(newAction){
+		xok = setActionX(newAction, x);
+		yok = setActionY(newAction, y);
+		nbok = setNodeBeforeChange(newAction,nodeBeforeChange);
+		naok = setNodeAfterChange(newAction,nodeAfterChange);
+		paok = setNextAction(prev_action, newAction, is_prev_connected);
+		if(!(xok && yok && nbok && naok && paok)){
+			printf(INIT_ERROR);
+			return NULL;
+		}
+	}else{
+		printf(CALLOC_ERROR);
+	}
+	return newAction;
 }
+
