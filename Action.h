@@ -26,10 +26,10 @@ Node* getNodeAfterChange(Action *action);
 int setNodeAfterChange(Action *action, Node* nodeAfterChange);
 
 Action* getPrevAction(Action *action);
-int setPrevAction(Action *action, Action *prev_action);
+int setPrevAction(Action *action, Action *prev_action, int isPrevConnected);
 
 Action* getNextAction(Action *action);
-int setNextAction(Action *action, Action *next_action);
+int setNextAction(Action *action, Action *next_action, int isNextConnected);
 
 int getIsPrevConnected(Action *action);
 int setIsPrevConnected(Action *action, int isit_connected);

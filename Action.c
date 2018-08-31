@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include "Game_structs.h"
 #include "Node.h"
+#include "settings.h"
 
 Action* initAction(int x, int y, Node* nodeBeforeChange, Node* nodeAfterChange, Action* prev_action, Action* next_action, int is_prev_connected, int is_next_connected){
 	Action *newAction = (Action*)calloc(1,sizeof(Action));
@@ -66,10 +67,12 @@ int setNodeAfterChange(Action *action, Node* nodeAfterChange){
 Action* getPrevAction(Action *action){
 	return action->prev_action;
 }
-int setPrevAction(Action *action, Action *prev_action){
+int setPrevAction(Action *action, Action *prev_action, int isPrevConnected){
 	int isprev, isnext;
 	action->prev_action = prev_action;
 	prev_action->next_action = action;
+	action->is_prev_connected = isPrevConnected;
+	prev_action->is_next_connected = isPrevConnected;
 	isprev = (action->prev_action == prev_action);
 	isnext = (prev_action->next_action == action);
 	return isprev & isnext;
@@ -78,15 +81,6 @@ int setPrevAction(Action *action, Action *prev_action){
 
 Action* getNextAction(Action *action){
 	return action->next_action;
-}
-
-int setNextAction(Action *action, Action *next_action){
-	int isprev, isnext;
-	action->next_action = next_action;
-	next_action->prev_action = action;
-	isnext = (action->next_action == next_action);
-	isprev = (next_action->prev_action == action);
-	return isprev & isnext;
 }
 
 int getIsPrevConnected(Action *action){
@@ -167,4 +161,16 @@ Action* undoAction(Game *gp, Action *action){
 		undoAction(gp, getPrevAction(action));
 	}
 	return getPrevAction(action);
+}
+
+int setNextAction(Action *action, Action *next_action, int isNextConnected){
+	int isprev, isnext;
+	freeActionsAfter(action);
+	action->next_action = next_action;
+	next_action->prev_action = action;
+	action->is_next_connected = isNextConnected;
+	next_action->is_prev_connected = isNextConnected;
+	isnext = (action->next_action == next_action);
+	isprev = (next_action->prev_action == action);
+	return isprev & isnext;
 }
