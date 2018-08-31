@@ -10,10 +10,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include "Node.h"
+#include "settings.h"
 
 Node* initNode(){
-	return (Node*)calloc(1,sizeof(Node));
+	Node* newNode = (Node*)calloc(1,sizeof(Node));
+	if(!newNode){
+		printf(CALLOC_ERROR);
+	}
+	return newNode;
 }
+
 
 int copyNodetoNode(Node* copyfrom, Node* copyto){
 	int valtype = 0, val = 0, worked = 1;
