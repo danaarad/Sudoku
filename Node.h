@@ -10,7 +10,6 @@
 
 #include "Game_structs.h"
 
-int varifyValue(Game* gp, valType_e valType, int x, int y, int z);
 Node* initNode();
 Node* getNode(Game* gp, int x, int y);
 Node* cloneNode(Node *orignode);
