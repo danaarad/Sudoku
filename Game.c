@@ -7,6 +7,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "Game.h"
 #include "Node.h"
 #include "Action.h"
