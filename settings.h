@@ -13,6 +13,7 @@
 #define CALLOC_ERROR "Error: calloc has failed\n"
 #define MALLOC_ERROR "Error: malloc has failed\n"
 #define SCANF_ERROR "Error: scanf has failed\n"
+#define INIT_ERROR "Error: scanf has failed\n"
 #define DEFAULT_BLOCK_HEIGHT 3
 #define DEFAULT_BLOCK_WIDTH 3
 

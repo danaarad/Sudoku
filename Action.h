@@ -9,7 +9,7 @@
 #define ACTION_H_
 #include "Game_structs.h"
 
-Action* initAction(int x, int y, Node* nodeBeforeChange, Node* nodeAfterChange, Action* prev_action, int is_prev_connected){
+Action* initAction(int x, int y, Node* nodeBeforeChange, Node* nodeAfterChange, Action* prev_action, int is_prev_connected);
 
 int getActionX(Action *action);
 int setActionX(Action *action, int x);
