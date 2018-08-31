@@ -11,6 +11,7 @@
 #include "Game_structs.h"
 
 Game* initGame(int block_height, int block_width);
+int setLatestAction(Game* gp, Action *action, int isConnected);
 int isErrornousBoard(Game* gp);
 int isSolvableBoard(Game* gp);
 void freeGame(Game* gp);
