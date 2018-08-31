@@ -15,5 +15,6 @@ int fill_nodes_ILP(Game *game);
 int clear_nodes(Game *game, int y);
 int exhaustive_backtracking(Game *game);
 int get_possible_values_for_node(Game *game, int x, int y, int *possible_values);
+int isPossibleValue(Game* gp, valType_e valType, int x, int y, int valToCheck);
 
 #endif /* SOLVER_H_ */

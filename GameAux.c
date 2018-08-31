@@ -5,6 +5,10 @@
  *      Author: yael sapir
  */
 
+#include <stdlib.h>
+#include <stdio.h>
+#include "settings.h"
+#include "Game_structs.h"
 
 int updateErrorsFromCheckTable(Game *gp, int ***checkTable, int lenOfArr){
 	int i, j, x, y, firstEmpty, newErrorNum = 0;

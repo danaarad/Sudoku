@@ -12,6 +12,8 @@
 #include "Action.h"
 #include "settings.h"
 #include "GameAux.h"
+#include "arrayAux.h"
+
 
 Game* initGame(int block_height, int block_width) {
 	int rowlen = 0, x = 0, y = 0, i = 0;

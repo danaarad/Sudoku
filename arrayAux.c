@@ -35,3 +35,13 @@ int get_first_value(int *arr){
 	return -1;
 
 }
+
+int findFirstFreeCellIn2DArr(int **Arr2D, int lenOfArr){
+	int i;
+	for (i = 0; i < lenOfArr; i++){
+		if (Arr2D[i][0] == -1){
+			return i;
+		}
+	}
+	return lenOfArr;
+}
