@@ -33,6 +33,12 @@ typedef enum valType {
 	ISERROR
 } valType_e;
 
+typedef enum actionType {
+	SET,
+	GENERATE,
+	RESET
+} actionType_e;
+
 typedef struct Node {
 	int value;
 	int isGiven;
@@ -43,10 +49,11 @@ typedef struct Node {
 
 
 typedef struct Action {
+	actionType_e type;
 	int x;
 	int y;
-	Node* node_before_change;
-	Node* node_after_change;
+	int val_before_change;
+	int val_after_change;
 	struct Action* prev_action;
 	struct Action* next_action;
 	int is_prev_connected;
