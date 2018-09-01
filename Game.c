@@ -24,6 +24,7 @@ Game* initGame(int block_height, int block_width) {
 	if(gp){
 		gp->blockHeight = block_height;
 		gp->blockWidth = block_width;
+		gp->N = block_height*block_width;
 		gp->mode = INIT;
 	}else{
 		printf(CALLOC_ERROR);

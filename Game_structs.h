@@ -64,6 +64,7 @@ typedef struct Action {
 typedef struct Game {
 	int blockHeight;
 	int blockWidth;
+	int N;
 	Node** gameBoard;
 	mode_e mode;
 	int isErrornous;
