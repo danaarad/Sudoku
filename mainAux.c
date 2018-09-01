@@ -9,13 +9,11 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-
 int isWin(Game *game) {
 	int N = game->blockHeight * game->blockWidth;
-
 	if (game->filledNodes == (N * N)){
 		if (game->mode == SOLVE) {
-			if (game->isErrornous == 1) {
+			if (game->isErrornous == 0) {
 				printf("Puzzle solved successfully\n");
 				return 1;
 			} else {
@@ -49,7 +47,7 @@ command_e getCommand(mode_e mode, char *x_p, char *y_p, char *z_p){
 		fflush(stdout);
 
 		if (fgets(str, MAX_SIZE, stdin) == NULL){
-			strcpy(str, "exit");
+			strcpy(str, "exit\n");
 			break;
 		}
 
@@ -57,7 +55,7 @@ command_e getCommand(mode_e mode, char *x_p, char *y_p, char *z_p){
 			printf("Enter your command:\n");
 			fflush(stdout);
 			if (fgets(str, MAX_SIZE, stdin) == NULL){
-				strcpy(str, "exit");
+				strcpy(str, "exit\n");
 				valid = 1;
 			}
 		}
@@ -118,42 +116,105 @@ int validateCommandMode(command_e command, mode_e mode) {
 }
 
 int executeCommand(Game *game, command_e command, char *x, char *y, char *z) {
-	mode_e mode = game->mode;
+	int res = 0;
 
 	switch(command){
 	case print_board:
+		printf("starting print_board\n");
 		printBoard(game, VALUE);
+		printf("finished print_board\n");
+		fflush(stdout);
 		return 1;
 	case validate:
-		return doValidate(game);
+		printf("starting validate\n");
+		res = doValidate(game);
+		printf("finished validate\n");
+		fflush(stdout);
+		return res;
 	case undo:
-		return doUndo();
+		printf("starting undo\n");
+		res = doUndo();
+		printf("finished undo\n");
+		fflush(stdout);
+		return res;
 	case redo:
-		return doRedo();
+		printf("starting redo\n");
+		res = doRedo();
+		fflush(stdout);
+		printf("finished redo\n");
+		return res;
 	case num_solutions:
-		return doGetNumofSols(game);
+		printf("starting num_solutions\n");
+		res = doGetNumofSols(game);
+		fflush(stdout);
+		printf("finished num_solutions\n");
+		return res;
 	case autofill:
-		return doAutofill(game);
+		printf("starting autofill\n");
+		res = doAutofill(game);
+		printf("finished autofill\n");
+		fflush(stdout);
+		return res;
 	case reset:
-		return doReset();
+		printf("starting reset\n");
+		res = doReset();
+		printf("finished reset\n");
+		fflush(stdout);
+		return res;
 	case mark_errors:
-		return doMarkErrors(game, x);
+		printf("starting mark_errors\n");
+		res = doMarkErrors(game, x);
+		printf("finished mark_errors\n");
+		fflush(stdout);
+		return res;
 	case save:
-		return doSave(game, x);
+		printf("starting save\n");
+		res = doSave(game, x);
+		printf("finished save\n");
+		fflush(stdout);
+		return res;
 	case generate:
-		return doGenerate(game, x, y);
+		printf("starting generate\n");
+		res = doGenerate(game, x, y);
+		printf("finished generate\n");
+		fflush(stdout);
+		return res;
 	case hint:
-		return doHint(game, x, y);
+		printf("starting hint\n");
+		res = doHint(game, x, y);
+		printf("finished hint\n");
+		fflush(stdout);
+		return res;
 	case set:
-		return doSet(game, x, y, z);
+		printf("starting set\n");
+		fflush(stdout);
+		res = doSet(game, x, y, z);
+		printf("finished set\n");
+		fflush(stdout);
+		return res;
 	case solve:
-		return doSolveFile(game, x);
+		printf("starting solve\n");
+		res = doSolveFile(game, x);
+		printf("finished solve\n");
+		fflush(stdout);
+		return res;
 	case edit:
-		return doEditFile(game, x);
+		printf("starting edit\n");
+		res = doEditFile(game, x);
+		fflush(stdout);
+		printf("finished edit\n");
+		return res;
 	case edit_default:
+		printf("starting edit_default\n");
+		game->mode = EDIT;
 		printBoard(game, VALUE);
+		fflush(stdout);
+		printf("finished edit_default\n");
 		return 1;
+	case exit_game:
 	case not_found:
+		printf("starting not_found\n");
+		printf("finished not_found\n");
 		return -1;
 	}
 	return -1;

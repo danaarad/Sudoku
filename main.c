@@ -7,7 +7,7 @@
 #include <stdlib.h>
 
 int main(int argc, char *argv[]) {
-	int exit = 0;
+	int exit = 0, execute = 0, iswin = 0;
 	Game *game;
 	command_e command;
 	char  *x;
@@ -37,10 +37,18 @@ int main(int argc, char *argv[]) {
 				exit = 1;
 				break;
 			} else {
-				if (executeCommand(game, command, x, y, z) == -1){
+				printf("executing in mode = %d\n", game->mode);
+				fflush(stdout);
+				execute = executeCommand(game, command, x, y, z);
+				printf("execute result is = %d\n",execute);
+				fflush(stdout);
+				iswin = isWin(game);
+				printf("is win = %d\n",iswin);
+				fflush(stdout);
+				if (execute == -1){
 					return -1;
 				}
-				if (isWin()) {
+				if (iswin) {
 					freeGame(game);
 					break;
 				}

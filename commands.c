@@ -173,13 +173,11 @@ int doEditFile(Game *game, char *fileName)  {
 
 int doSolveFile(Game *game, char *fileName) {
 	FILE *f_pointer = fopen(fileName, "r");
-
-	printf("doSolveFile!\n");
-
 	if (f_pointer == NULL) {
 		printf("Error: File doesn't exist or cannot be opened\n");
 		return 0;
 	}
+
 	*game = *readFromFile(f_pointer);
 	game->mode = SOLVE;
 	printBoard(game, VALUE);
@@ -242,31 +240,25 @@ int doSet(Game *game, char *x, char *y, char *z) {
 	x_val = atoi(x);
 	y_val = atoi(y);
 	z_val = atoi(z);
-
 	if (validate_values_for_set(x_val, y_val, z_val, z, N) != 1) {
 		printf("Error: value not in range 0-%d\n", N);
 		printBoard(game, VALUE);
 		return 0;
 	}
-
 	x_val -= 1;
 	y_val -= 1;
-
 	if (getNodeValByType(game, ISGIVEN, x_val, y_val) == 1) {
 		printf("Error: cell is fixed\n");
 		printBoard(game, VALUE);
 		return 0;
 	}
-
 	if (getNodeValByType(game, VALUE, x_val, y_val) == 0){
 		game->filledNodes++; }
 	if (z_val == 0){
 		game->filledNodes--; }
-
-	val_before = getNodeValByType(game, VALUE, x, y);
+	val_before = getNodeValByType(game, VALUE, x_val, y_val);
 	setNodeValByType(game, VALUE, x_val , y_val, z_val);
-
-	new_action = (Action *) initAction(x_val, y_val, val_before, z_val, game->LatestAction, 0);
+	new_action = (Action *) initAction(SET_A, x_val, y_val, val_before, z_val, game->LatestAction, 0);
 	if (new_action == NULL) {
 		printBoard(game, VALUE);
 		return 0;
