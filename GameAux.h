@@ -14,4 +14,7 @@ void freeCheckTable(int ***checkTable, int rowSize);
 
 int ***callocCheckTable(int rowSize);
 
+int resetCheckTable(int ***checkTable, int rowSize);
+
+
 #endif /* GAMEAUX_H_ */

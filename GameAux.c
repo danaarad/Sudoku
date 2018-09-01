@@ -72,3 +72,15 @@ int ***callocCheckTable(int rowSize){
 		}
 	return checkTable;
 }
+
+int resetCheckTable(int ***checkTable, int rowSize){
+	int i,j;
+	for (i = 0; i < rowSize; i++){
+		for (j = 0; j < rowSize; j++){
+			checkTable[i][j][0] = -1;
+			checkTable[i][j][1] = -1;
+		}
+	}
+	return 1;
+}
+

@@ -113,7 +113,6 @@ void freeGame(Game* gp){
 	free(gp);
 }
 
-
 int UpdateErrorsByCell(Game *gp, int x, int y){
 	int i, j, val, idx, emptyPlace, x_corner, y_corner;
 	int blockWidth = gp->blockWidth;
@@ -128,8 +127,7 @@ int UpdateErrorsByCell(Game *gp, int x, int y){
 		return -1;
 	}
 
-
-	memset(checkTable, -1, sizeof(checkTable[0][0][0])*rowSize*rowSize*2);
+	resetCheckTable(checkTable, rowSize);
 	/*create checkTable for row*/
 	for (i = 0; i < rowSize; ++i){
 		val = getNodeValByType(gp, VALUE, i, y);
@@ -142,7 +140,7 @@ int UpdateErrorsByCell(Game *gp, int x, int y){
 
 	newErrorNum += updateErrorsFromCheckTable(gp, checkTable, rowSize);
 
-	memset(checkTable, -1, sizeof(checkTable[0][0][0])*rowSize*rowSize*2);
+	resetCheckTable(checkTable, rowSize);
 	/*create checkTable for col*/
 	for (j = 0; j < rowSize; ++j){
 		val = getNodeValByType(gp, VALUE, x, j);
@@ -154,7 +152,7 @@ int UpdateErrorsByCell(Game *gp, int x, int y){
 
 	newErrorNum += updateErrorsFromCheckTable(gp, checkTable, rowSize);
 
-	memset(checkTable, -1, sizeof(checkTable[0][0][0])*rowSize*rowSize*2);
+	resetCheckTable(checkTable, rowSize);
 	/*create checkTable for block*/
 	x_corner = (x/blockWidth)*blockWidth;
 	y_corner = (y/blockHeight)*blockHeight;
