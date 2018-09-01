@@ -67,7 +67,7 @@ int isPossibleValue(Game* gp, valType_e valType, int x, int y, int valToCheck){
 	for (i = x_corner; i < x_corner + blockWidth; ++i){
 		for(j = y_corner; j < y_corner + blockHeight; ++j){
 			otherVal = getNodeValByType(gp, valType, i, j);
-			if (otherVal == valToCheck && i != x && j != y){
+			if (otherVal == valToCheck && (i != x || j != y)){
 				return 0;
 			}
 		}
