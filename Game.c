@@ -31,7 +31,7 @@ Game* initGame(int block_height, int block_width) {
 		return NULL;
 	}
 
-	rowlen = block_height*block_width;
+	rowlen = gp->N;
 	gp->gameBoard = (Node**)calloc(rowlen,sizeof(Node*));
 
 	if(gp->gameBoard){
@@ -62,9 +62,7 @@ Game* initGame(int block_height, int block_width) {
 }
 
 int initTempBoard(Game* gp){
-	int bh = gp->blockHeight;
-	int bw = gp->blockWidth;
-	int rowlen = bw*bh;
+	int rowlen = gp->N;
 	int i, j;
 
 	for (i = 0; i < rowlen; i++){
@@ -120,7 +118,7 @@ int UpdateErrorsByCell(Game *gp, int x, int y){
 	int i, j, val, idx, emptyPlace, x_corner, y_corner;
 	int blockWidth = gp->blockWidth;
 	int blockHeight = gp->blockHeight;
-	int rowSize = blockWidth*blockHeight;
+	int rowSize = gp->N;
 	int ***checkTable;
 	int newErrorNum = 0;
 
