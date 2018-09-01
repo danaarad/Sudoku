@@ -164,7 +164,7 @@ int UpdateErrorsByCell(Game *gp, int x, int y){
 	y_corner = (y/blockHeight)*blockHeight;
 	for (i = x_corner; i < x_corner + blockWidth; ++i){
 		for(j = y_corner; j < y_corner + blockHeight; ++j){
-			val = getNodeValByType(gp, VALUE, x, j);
+			val = getNodeValByType(gp, VALUE, i, j);
 			if(val > 0){
 				idx = val-1;
 				/*insert x and y into checkTable*/
