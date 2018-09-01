@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include "settings.h"
 #include "Game_structs.h"
+#include "arrayAux.h"
 
 int updateErrorsFromCheckTable(Game *gp, int ***checkTable, int lenOfArr){
 	int i, j, x, y, firstEmpty, newErrorNum = 0;
