@@ -69,7 +69,7 @@ int doAutofill(Game *game) {
 				return 0;
 			}
 
-			get_possible_values_for_node(game, x, y, possible_vals_arr);
+			get_possible_values_for_node(game, VALUE, x, y, possible_vals_arr);
 			num_of_possible_vals = filled_cells(possible_vals_arr);
 			if (num_of_possible_vals == 1) {
 				auto_value = get_first_value(possible_vals_arr);
