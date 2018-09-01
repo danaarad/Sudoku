@@ -276,7 +276,7 @@ int doSet(Game *game, char *x, char *y, char *z) {
 		printBoard(game, VALUE);
 		return 0;
 	}
-	varifyValue(game, VALUE, x_val, y_val);
+	UpdateErrorsByCell(game, x_val, y_val);
 	printBoard(game, VALUE);
 	return 1;
 }
