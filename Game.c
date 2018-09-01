@@ -131,12 +131,14 @@ int UpdateErrorsByCell(Game *gp, int x, int y){
 	/*create checkTable for row*/
 	for (i = 0; i < rowSize; ++i){
 		val = getNodeValByType(gp, VALUE, i, y);
-		idx = val-1;
-		/*insert x and y into checkTable*/
-		emptyPlace = findFirstFreeCellIn2DArr(checkTable[idx], rowSize);
-		checkTable[idx][emptyPlace][0] = i;
-		checkTable[idx][emptyPlace][1] = y;
+		if(val > 0){
+			idx = val-1;
+			/*insert x and y into checkTable*/
+			emptyPlace = findFirstFreeCellIn2DArr(checkTable[idx], rowSize);
+			checkTable[idx][emptyPlace][0] = i;
+			checkTable[idx][emptyPlace][1] = y;
 		}
+	}
 
 	newErrorNum += updateErrorsFromCheckTable(gp, checkTable, rowSize);
 
@@ -144,10 +146,13 @@ int UpdateErrorsByCell(Game *gp, int x, int y){
 	/*create checkTable for col*/
 	for (j = 0; j < rowSize; ++j){
 		val = getNodeValByType(gp, VALUE, x, j);
-		/*insert x and y into checkTable*/
-		emptyPlace = findFirstFreeCellIn2DArr(checkTable[idx], rowSize);
-		checkTable[idx][emptyPlace][0] = x;
-		checkTable[idx][emptyPlace][1] = j;
+		if(val > 0){
+			idx = val-1;
+			/*insert x and y into checkTable*/
+			emptyPlace = findFirstFreeCellIn2DArr(checkTable[idx], rowSize);
+			checkTable[idx][emptyPlace][0] = x;
+			checkTable[idx][emptyPlace][1] = j;
+		}
 	}
 
 	newErrorNum += updateErrorsFromCheckTable(gp, checkTable, rowSize);
@@ -159,10 +164,13 @@ int UpdateErrorsByCell(Game *gp, int x, int y){
 	for (i = x_corner; i < x_corner + blockWidth; ++i){
 		for(j = y_corner; j < y_corner + blockHeight; ++j){
 			val = getNodeValByType(gp, VALUE, x, j);
-			/*insert x and y into checkTable*/
-			emptyPlace = findFirstFreeCellIn2DArr(checkTable[idx], rowSize);
-			checkTable[idx][emptyPlace][0] = i;
-			checkTable[idx][emptyPlace][1] = j;
+			if(val > 0){
+				idx = val-1;
+				/*insert x and y into checkTable*/
+				emptyPlace = findFirstFreeCellIn2DArr(checkTable[idx], rowSize);
+				checkTable[idx][emptyPlace][0] = i;
+				checkTable[idx][emptyPlace][1] = j;
+			}
 		}
 	}
 
