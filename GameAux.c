@@ -26,7 +26,7 @@ int updateErrorsFromCheckTable(Game *gp, int ***checkTable, int lenOfArr){
 				x = checkTable[i][j][0];
 				y = checkTable[i][j][1];
 				/*if this was not an error before*/
-				if (getNodeValByType(gp, ISERROR, x, y)==0){
+				if (getNodeValByType(gp, ISERROR, x, y)==0 || getNodeValByType(gp, ISGIVEN, x, y)==0){
 					newErrorNum++;
 					setNodeValByType(gp, ISERROR, x, y, 1);
 				}
