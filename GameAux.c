@@ -10,6 +10,7 @@
 #include "settings.h"
 #include "Game_structs.h"
 #include "arrayAux.h"
+#include "Node.h"
 
 int updateErrorsFromCheckTable(Game *gp, int ***checkTable, int lenOfArr){
 	int i, j, x, y, firstEmpty, newErrorNum = 0;
