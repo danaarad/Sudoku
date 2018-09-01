@@ -60,6 +60,21 @@ Game* initGame(int block_height, int block_width) {
 	return gp;
 }
 
+int initTempBoard(Game* gp){
+	int bh = gp->blockHeight;
+	int bw = gp->blockWidth;
+	int rowlen = bw*bh;
+	int i, j;
+
+	for (i = 0; i < rowlen; i++){
+		for (j = 0; j < rowlen; j++){
+			getNode(gp, i, j)->tempValue = 0;
+		}
+	}
+
+	return 1;
+}
+
 int isErrornousBoard(Game* gp) {
 	return 0;
 }
