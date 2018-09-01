@@ -5,6 +5,7 @@
  *      Author: Dana Arad
  */
 #include "solver.h"
+#include "Node.h"
 
 int isSolvable(Game* gp) {
 	return 1;
