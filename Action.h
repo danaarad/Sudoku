@@ -9,39 +9,44 @@
 #define ACTION_H_
 #include "Game_structs.h"
 
-Action* initAction(int x, int y, Node* nodeBeforeChange, Node* nodeAfterChange, Action* prev_action, int is_prev_connected);
+
+int getActionType(Action *action);
+
+int setActionType(Action *action, actionType_e aType);
 
 int getActionX(Action *action);
-int setActionX(Action *action, int x);
+int setActionX(Action* action, int x);
 
 int getActionY(Action *action);
 int setActionY(Action *action, int y);
 
 int setActionXY(Action *action, int x, int y);
 
-Node* getNodeBeforeChange(Action *action);
-int setNodeBeforeChange(Action *action, Node* nodeBeforeChange);
+int getValBeforeChange(Action *action);
+int setValBeforeChange(Action *action, int valBeforeChange);
 
-Node* getNodeAfterChange(Action *action);
-int setNodeAfterChange(Action *action, Node* nodeAfterChange);
+int getValAfterChange(Action *action);
+int setValAfterChange(Action *action, int valAfterChange);
 
 Action* getPrevAction(Action *action);
-int setPrevAction(Action *action, Action *prev_action, int isPrevConnected);
 
 Action* getNextAction(Action *action);
+
 int setNextAction(Action *action, Action *next_action, int isNextConnected);
 
 int getIsPrevConnected(Action *action);
+
 int setIsPrevConnected(Action *action, int isit_connected);
 
 int getIsNextConnected(Action *action);
+
 int setIsNextConnected(Action *action, int isit_connected);
 
 void freeActionsBefore(Action *action);
 void freeActionsAfter(Action *action);
 void freeSingleAction(Action *action);
 
-Action* redoAction(Game *gp, Action *action);
-Action* undoAction(Game *gp, Action *action);
+Action* initAction(actionType_e actionType, int x, int y, int valBeforeChange, int valAfterChange, Action* prev_action, int is_prev_connected);
+
 
 #endif /* ACTION_H_ */

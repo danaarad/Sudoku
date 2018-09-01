@@ -12,6 +12,15 @@
 #include "settings.h"
 #include "Action.h"
 
+int getActionType(Action *action){
+	return action->type;
+}
+
+int setActionType(Action *action, actionType_e aType){
+	action->type = aType;
+	return action->type == aType;
+}
+
 int getActionX(Action *action){
 	return action->x;
 }
@@ -31,23 +40,23 @@ int setActionY(Action *action, int y){
 int setActionXY(Action *action, int x, int y){
 	int xok = setActionX(action,x);
 	int yok = setActionY(action,y);
-	return xok & yok;
+	return xok && yok;
 }
 
-Node* getNodeBeforeChange(Action *action){
-	return action->node_before_change;
+int getValBeforeChange(Action *action){
+	return action->val_before_change;
 }
-int setNodeBeforeChange(Action *action, Node* nodeBeforeChange){
-	action->node_before_change = nodeBeforeChange;
-	return action->node_before_change == nodeBeforeChange;
+int setValBeforeChange(Action *action, int valBeforeChange){
+	action->val_before_change = valBeforeChange;
+	return action->val_before_change == valBeforeChange;
 }
 
-Node* getNodeAfterChange(Action *action){
-	return action->node_after_change;
+int getValAfterChange(Action *action){
+	return action->val_after_change;
 }
-int setNodeAfterChange(Action *action, Node* nodeAfterChange){
-	action->node_after_change = nodeAfterChange;
-	return action->node_after_change == nodeAfterChange;
+int setValAfterChange(Action *action, int valAfterChange){
+	action->val_after_change = valAfterChange;
+	return action->val_after_change == valAfterChange;
 }
 
 Action* getPrevAction(Action *action){
@@ -78,7 +87,7 @@ int setNextAction(Action *action, Action *next_action, int isNextConnected){
 	next_action->is_prev_connected = isNextConnected;
 	isnext = (action->next_action == next_action);
 	isprev = (next_action->prev_action == action);
-	return isprev & isnext;
+	return isprev && isnext;
 }
 
 int getIsPrevConnected(Action *action){
@@ -92,7 +101,7 @@ int setIsPrevConnected(Action *action, int isit_connected){
 	action->prev_action->is_next_connected = isit_connected;
 	isprev = (action->is_prev_connected == isit_connected);
 	isnext = (action->prev_action->is_next_connected == isit_connected);
-	return isprev & isnext;
+	return isprev && isnext;
 }
 
 int getIsNextConnected(Action *action){
@@ -106,14 +115,12 @@ int setIsNextConnected(Action *action, int isit_connected){
 	action->next_action->is_prev_connected = isit_connected;
 	isnext = (action->is_next_connected == isit_connected);
 	isprev = (action->next_action->is_prev_connected == isit_connected);
-	return isprev & isnext;
+	return isprev && isnext;
 }
 
 void freeActionsBefore(Action *action){
 	Action *prev = action->prev_action;
 	if (prev != NULL){
-		free(prev->node_before_change);
-		free(prev->node_after_change);
 		freeActionsBefore(prev);
 		free(prev);
 	}
@@ -122,8 +129,6 @@ void freeActionsBefore(Action *action){
 void freeActionsAfter(Action *action){
 	Action *next = action->next_action;
 	if (next != NULL){
-		free(next->node_before_change);
-		free(next->node_after_change);
 		freeActionsAfter(next);
 		free(next);
 	}
@@ -131,46 +136,20 @@ void freeActionsAfter(Action *action){
 }
 /* expects before and after actions to be free*/
 void freeSingleAction(Action *action){
-	free(action->node_before_change);
-	free(action->node_after_change);
 	free(action);
-
 }
 
-/*returns the last action to be redone*/
-Action* redoAction(Game *gp, Action *action){
-	int x = getActionX(action);
-	int y = getActionY(action);
-	Node nodeInBoard = gp->gameBoard[x][y];
-	copyNodetoNode(getNodeAfterChange(action),&nodeInBoard);
-	if(getIsNextConnected(action)){
-		redoAction(gp, getNextAction(action));
-	}
-	return action;
-}
-
-/*returns the last action to be redone*/
-Action* undoAction(Game *gp, Action *action){
-	int x = getActionX(action);
-	int y = getActionY(action);
-	Node nodeInBoard = gp->gameBoard[x][y];
-	copyNodetoNode(getNodeBeforeChange(action),&nodeInBoard);
-	if(getIsPrevConnected(action)){
-		undoAction(gp, getPrevAction(action));
-	}
-	return getPrevAction(action);
-}
-
-Action* initAction(int x, int y, Node* nodeBeforeChange, Node* nodeAfterChange, Action* prev_action, int is_prev_connected){
+Action* initAction(actionType_e actionType, int x, int y, int valBeforeChange, int valAfterChange, Action* prev_action, int is_prev_connected){
 	Action *newAction = (Action*)calloc(1,sizeof(Action));
-	int xok, yok, nbok, naok, paok;
+	int atok, xok, yok, nbok, naok, paok;
 	if(newAction){
+		atok = setActionType(newAction, actionType);
 		xok = setActionX(newAction, x);
 		yok = setActionY(newAction, y);
-		nbok = setNodeBeforeChange(newAction,nodeBeforeChange);
-		naok = setNodeAfterChange(newAction,nodeAfterChange);
+		nbok = setValBeforeChange(newAction,valBeforeChange);
+		naok = setValAfterChange(newAction,valAfterChange);
 		paok = setNextAction(prev_action, newAction, is_prev_connected);
-		if(!(xok && yok && nbok && naok && paok)){
+		if(!(atok && xok && yok && nbok && naok && paok)){
 			printf(INIT_ERROR);
 			return NULL;
 		}
