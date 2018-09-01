@@ -21,6 +21,6 @@ int doRedo();
 int doMarkErrors(Game *game, char *x);
 int doValidate(Game *game);
 int doSet(Game *game, char *x, char *y, char *z);
-int doGenerate(char *x, char *y);
+int doGenerate(Game *game, char *x, char *y);
 
 #endif /* COMMANDS_H_ */
