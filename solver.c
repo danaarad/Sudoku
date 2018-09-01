@@ -26,8 +26,15 @@ int exhaustive_backtracking(Game *game){
 	return 0;
 }
 
-int get_possible_values_for_node(Game *game, int x, int y, int *possible_values) {
-	return 1;
+int get_possible_values_for_node(Game *game, valType_e valType, int x, int y, int *possible_values) {
+	int val, count = 0;
+	for(val = 1; val <= game->N; val++){
+		possible_values[val-1] = isPossibleValue(game, valType, x, y, val);
+		if (possible_values[val-1]){
+			count++;
+		}
+	}
+	return count;
 }
 
 int isPossibleValue(Game* gp, valType_e valType, int x, int y, int valToCheck){
