@@ -53,22 +53,17 @@ int moveAutoFillToValue(Game *game) {
 	int N = game->blockHeight * game->blockWidth;
 	int autofill_value = 0;
 	int is_prev_connected = 0;
-	Node *node_before, *node_after;
+	int val_before;
 	Action *new_action;
 
 	for (x = 0; x < N; ++x) {
 		for (y = 0; y < N; ++y) {
 			autofill_value = getNodeValByType(game, TEMP, x, y);
 			if (autofill_value != 0) {
-				node_before = (Node *) cloneNode((Node *) getNode(game, x, y));
+				val_before = getNodeValByType(game, VALUE, x, y);
 				setNodeValByType(game, VALUE, x , y, autofill_value);
-				node_after = (Node *) cloneNode((Node *) getNode(game, x, y));
 
-				if (node_before == NULL || node_after == NULL) {
-					printBoard(game, VALUE);
-					return 0;
-				}
-				new_action = (Action *) initAction(x, y, node_before, node_after, game->LatestAction, is_prev_connected);
+				new_action = (Action *) initAction(x, y, val_before, autofill_value, game->LatestAction, is_prev_connected);
 				if (new_action == NULL) {
 					printBoard(game, VALUE);
 					return 0;

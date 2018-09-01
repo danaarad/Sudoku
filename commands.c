@@ -60,7 +60,7 @@ int doAutofill(Game *game) {
 		return 0;
 	}
 
-	initTempBoard(game);
+	//initTempBoard(game);
 	for (x = 0; x < N; ++x) {
 		for (y = 0; y < N; ++y) {
 			possible_vals_arr = calloc(N, sizeof(int));
@@ -237,7 +237,7 @@ int doSet(Game *game, char *x, char *y, char *z) {
 	int x_val = 0, y_val = 0, z_val = 0;
 	int N = game->blockHeight * game->blockWidth;
 	Action *new_action;
-	Node *node_befor, *node_after;
+	int val_before;
 
 	x_val = atoi(x);
 	y_val = atoi(y);
@@ -263,15 +263,10 @@ int doSet(Game *game, char *x, char *y, char *z) {
 	if (z_val == 0){
 		game->filledNodes--; }
 
-	node_befor = (Node *) cloneNode((Node *) getNode(game, x_val, y_val));
+	val_before = getNodeValByType(game, VALUE, x, y);
 	setNodeValByType(game, VALUE, x_val , y_val, z_val);
-	node_after = (Node *) cloneNode((Node *) getNode(game, x_val, y_val));
 
-	if (node_befor == NULL || node_after == NULL) {
-		printBoard(game, VALUE);
-		return 0;
-	}
-	new_action = (Action *) initAction(x_val, y_val, node_befor, node_after, game->LatestAction, 0);
+	new_action = (Action *) initAction(x_val, y_val, val_before, z_val, game->LatestAction, 0);
 	if (new_action == NULL) {
 		printBoard(game, VALUE);
 		return 0;
