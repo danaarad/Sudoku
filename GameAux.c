@@ -12,30 +12,55 @@
 #include "arrayAux.h"
 #include "Node.h"
 
-int updateErrorsFromCheckTable(Game *gp, int ***checkTable, int lenOfArr){
-	int i, j, x, y, firstEmpty, newErrorNum = 0;
 
-	for(i = 0; i < lenOfArr; i++){
-		firstEmpty = findFirstFreeCellIn2DArr(checkTable[i], lenOfArr);
-		/*if this is a value that only one node has*/
-		if (firstEmpty == 1){
-			x = checkTable[i][0][0];
-			y = checkTable[i][0][1];
-			setNodeValByType(gp, ISERROR, x, y, 0);
-		}/*if this is a value that multiple nodes have*/
-		else if(firstEmpty > 1){
-			for (j = 0; j < firstEmpty; j++){
-				x = checkTable[i][j][0];
-				y = checkTable[i][j][1];
-				/*if this was not an error before*/
-				if (getNodeValByType(gp, ISERROR, x, y)==0 || getNodeValByType(gp, ISGIVEN, x, y)==0){
-					newErrorNum++;
-					setNodeValByType(gp, ISERROR, x, y, 1);
-				}
+void printCeckTable(int ***checkTable, int lenOfArr){
+	int val, num;
+	for (val = 1; val <= lenOfArr; val++){
+		printf(" ~%d~ ",val);
+	}printf("\n");
+	fflush(stdout);
+	for (num = 0; num < lenOfArr; num++){
+		for (val = 0; val < lenOfArr; val++){
+			if (checkTable[val][num][0]!=-1){
+				printf("(%d,%d)",checkTable[val][num][0],checkTable[val][num][1]);
+			}else{
+				printf("     ");
+			}
+		}printf("\n");
+	}printf("\n");
+	fflush(stdout);
+}
+
+int updateErrorsFromCheckTable(Game *gp, int ***checkTable, int lenOfArr){
+	int val, i, x, y, firstEmpty;
+
+	for(val = 0; val < lenOfArr; val++){
+		firstEmpty = findFirstFreeCellIn2DArr(checkTable[val], lenOfArr);
+		/*if there are multiple nodes of this val in the same check table, they are errors*/
+		if(firstEmpty > 1){
+			for (i = 0; i < firstEmpty; i++){
+				/*get x y from checkTable*/
+				x = checkTable[val][i][0];
+				y = checkTable[val][i][1];
+
+				setNodeValByType(gp, ISERROR, x, y, 1);
+				setNodeValByType(gp, TEMP, x, y, 1);
+			}
+		}
+
+
+		/*in this case, there is one node of this val in the checked segment.
+		 * This does not mean it isn't an error.*/
+		else if (firstEmpty == 1){
+			x = checkTable[val][0][0];
+			y = checkTable[val][0][1];
+
+			if(getNodeValByType(gp, TEMP, x, y) == 0){//This node was not an error in previous segments;
+				setNodeValByType(gp, ISERROR, x, y, 0);
 			}
 		}
 	}
-	return newErrorNum;
+	return 1;//is there something smarter to return?
 }
 
 void freeCheckTable(int ***checkTable, int rowSize){

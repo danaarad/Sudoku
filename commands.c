@@ -263,7 +263,7 @@ int doSet(Game *game, char *x, char *y, char *z) {
 		printBoard(game, VALUE);
 		return 0;
 	}
-	UpdateErrorsByCell(game, x_val, y_val);
+	UpdateErrors(game, x_val, y_val);
 	printBoard(game, VALUE);
 	return 1;
 }

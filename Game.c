@@ -68,7 +68,7 @@ int initTempBoard(Game* gp){
 
 	for (i = 0; i < rowlen; i++){
 		for (j = 0; j < rowlen; j++){
-			getNode(gp, i, j)->tempValue = 0;
+			setNodeValByType(gp, TEMP, i, j, 0);
 		}
 	}
 
@@ -76,7 +76,27 @@ int initTempBoard(Game* gp){
 }
 
 int isErrornousBoard(Game* gp) {
+	int N = gp->N, i, j;
+	for (i = 0; i < N; i++){
+		for (j = 0; j < N; j++){
+			if (getNodeValByType(gp,ISERROR, i, j) == 1){
+				return 1;
+			}
+		}
+	}
 	return 0;
+}
+
+int CountErrorsInBoard(Game* gp) {
+	int N = gp->N, i, j, numOfErrors = 0;
+	for (i = 0; i < N; i++){
+		for (j = 0; j < N; j++){
+			if (getNodeValByType(gp,ISERROR, i, j) == 1){
+				numOfErrors++;
+			}
+		}
+	}
+	return numOfErrors;
 }
 
 int isSolvableBoard(Game* gp){
@@ -114,13 +134,13 @@ void freeGame(Game* gp){
 	free(gp);
 }
 
-int UpdateErrorsByCell(Game *gp, int x, int y){
-	int i, j, val, idx, emptyPlace, x_corner, y_corner;
+int UpdateErrors(Game *gp){
+	int x, y, val, idx, emptyPlace, x_corner, y_corner;
 	int blockWidth = gp->blockWidth;
 	int blockHeight = gp->blockHeight;
 	int rowSize = gp->N;
 	int ***checkTable;
-	int newErrorNum = 0;
+	int ErrorNum = 0;
 
 	/*calloc checkTable*/
 	checkTable = callocCheckTable(rowSize);
@@ -128,55 +148,64 @@ int UpdateErrorsByCell(Game *gp, int x, int y){
 		return -1;
 	}
 
-	resetCheckTable(checkTable, rowSize);
-	/*create checkTable for row*/
-	for (i = 0; i < rowSize; ++i){
-		val = getNodeValByType(gp, VALUE, i, y);
-		if(val > 0){
-			idx = val-1;
-			/*insert x and y into checkTable*/
-			emptyPlace = findFirstFreeCellIn2DArr(checkTable[idx], rowSize);
-			checkTable[idx][emptyPlace][0] = i;
-			checkTable[idx][emptyPlace][1] = y;
-		}
-	}
+	resetCheckTable(checkTable, rowSize);//all is set to -1
+	initTempBoard(gp);//updateErrorsFromCheckTable uses temp
 
-	newErrorNum += updateErrorsFromCheckTable(gp, checkTable, rowSize);
-
-	resetCheckTable(checkTable, rowSize);
-	/*create checkTable for col*/
-	for (j = 0; j < rowSize; ++j){
-		val = getNodeValByType(gp, VALUE, x, j);
-		if(val > 0){
-			idx = val-1;
-			/*insert x and y into checkTable*/
-			emptyPlace = findFirstFreeCellIn2DArr(checkTable[idx], rowSize);
-			checkTable[idx][emptyPlace][0] = x;
-			checkTable[idx][emptyPlace][1] = j;
-		}
-	}
-
-	newErrorNum += updateErrorsFromCheckTable(gp, checkTable, rowSize);
-
-	resetCheckTable(checkTable, rowSize);
-	/*create checkTable for block*/
-	x_corner = (x/blockWidth)*blockWidth;
-	y_corner = (y/blockHeight)*blockHeight;
-	for (i = x_corner; i < x_corner + blockWidth; ++i){
-		for(j = y_corner; j < y_corner + blockHeight; ++j){
-			val = getNodeValByType(gp, VALUE, i, j);
+	/*check the rows*/
+	for (y = 0; y < rowSize; y++){
+		for (x = 0; x < rowSize; x++){
+			val = getNodeValByType(gp, VALUE, x, y);
 			if(val > 0){
 				idx = val-1;
 				/*insert x and y into checkTable*/
 				emptyPlace = findFirstFreeCellIn2DArr(checkTable[idx], rowSize);
-				checkTable[idx][emptyPlace][0] = i;
-				checkTable[idx][emptyPlace][1] = j;
+				checkTable[idx][emptyPlace][0] = x;
+				checkTable[idx][emptyPlace][1] = y;
 			}
+		}
+		updateErrorsFromCheckTable(gp, checkTable, rowSize);
+		resetCheckTable(checkTable, rowSize);
+	}
+
+	/*check the cols*/
+	for (x = 0; x < rowSize; x++){
+		for (y = 0; y < rowSize; y++){
+			val = getNodeValByType(gp, VALUE, x, y);
+			if(val > 0){
+				idx = val-1;
+				/*insert x and y into checkTable*/
+				emptyPlace = findFirstFreeCellIn2DArr(checkTable[idx], rowSize);
+				checkTable[idx][emptyPlace][0] = x;
+				checkTable[idx][emptyPlace][1] = y;
+			}
+		}
+		updateErrorsFromCheckTable(gp, checkTable, rowSize);
+		resetCheckTable(checkTable, rowSize);
+	}
+
+	/*check the blocks*/
+	for (x_corner = 0; x_corner < rowSize; x_corner+=blockWidth){
+		for (y_corner = 0; y_corner < rowSize; y_corner+=blockHeight){
+			for (x = x_corner; x < x_corner + blockWidth; ++x){
+				for(y = y_corner; y < y_corner + blockHeight; ++y){
+					val = getNodeValByType(gp, VALUE, x, y);
+					if(val > 0){
+						idx = val-1;
+						/*insert x and y into checkTable*/
+						emptyPlace = findFirstFreeCellIn2DArr(checkTable[idx], rowSize);
+						checkTable[idx][emptyPlace][0] = x;
+						checkTable[idx][emptyPlace][1] = y;
+					}
+				}
+			}
+			updateErrorsFromCheckTable(gp, checkTable, rowSize);
+			resetCheckTable(checkTable, rowSize);
 		}
 	}
 
-	newErrorNum += updateErrorsFromCheckTable(gp, checkTable, rowSize);
-
 	freeCheckTable(checkTable, rowSize);
-	return newErrorNum;
+	ErrorNum = CountErrorsInBoard(gp);
+	initTempBoard(gp);
+	return (ErrorNum);
+
 }
