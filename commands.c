@@ -167,6 +167,7 @@ int doEditFile(Game *game, char *fileName)  {
 	}
 	*game = *readFromFile(f_pointer);
 	game->mode = EDIT;
+	UpdateErrors(game);
 	printBoard(game, VALUE);
 	return 1;
 }
@@ -180,6 +181,7 @@ int doSolveFile(Game *game, char *fileName) {
 
 	*game = *readFromFile(f_pointer);
 	game->mode = SOLVE;
+	UpdateErrors(game);
 	printBoard(game, VALUE);
 	return 1;
 }
