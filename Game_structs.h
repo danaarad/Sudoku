@@ -35,8 +35,7 @@ typedef enum valType {
 
 typedef enum actionType {
 	SET_A,
-	GENERATE_A,
-	RESET_A
+	GENERATE_A
 } actionType_e;
 
 typedef struct Node {
@@ -47,17 +46,19 @@ typedef struct Node {
 	int isError;
 }Node;
 
+typedef struct Change {
+	int x;
+	int y;
+	int val_before;
+	int val_after;
+	change *next;
+}Change;
 
 typedef struct Action {
 	actionType_e type;
-	int x;
-	int y;
-	int val_before_change;
-	int val_after_change;
+	Change *changes;
 	struct Action* prev_action;
 	struct Action* next_action;
-	int is_prev_connected;
-	int is_next_connected;
 }Action;
 
 
