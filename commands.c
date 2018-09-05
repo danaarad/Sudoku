@@ -18,6 +18,7 @@
 #include "arrayAux.h"
 #include "file_handler.h"
 #include "commandsAux.h"
+#include "change.h"
 
 int doSave(Game* gp, char *fileName){
 	FILE* file_ptr = NULL;
@@ -242,9 +243,10 @@ int doValidate(Game *game) {
 int doSet(Game *game, char *x, char *y, char *z) {
 	int x_val = 0, y_val = 0, z_val = 0;
 	int N = game->blockHeight * game->blockWidth;
-	Action *new_action;
+	Action *new_action; Change *new_change;
 	int val_before;
 
+	//cast to int and validate values
 	x_val = atoi(x);
 	y_val = atoi(y);
 	z_val = atoi(z);
@@ -255,22 +257,35 @@ int doSet(Game *game, char *x, char *y, char *z) {
 	}
 	x_val -= 1;
 	y_val -= 1;
+
+	//if cell is fixed
 	if (getNodeValByType(game, ISGIVEN, x_val, y_val) == 1) {
 		printf("Error: cell is fixed\n");
 		printBoard(game, VALUE);
 		return 0;
 	}
+
+	//update game->filledNodes
 	if (getNodeValByType(game, VALUE, x_val, y_val) == 0){
 		game->filledNodes++; }
 	if (z_val == 0){
 		game->filledNodes--; }
+
+	//set new value and save to redo/undo list
 	val_before = getNodeValByType(game, VALUE, x_val, y_val);
 	setNodeValByType(game, VALUE, x_val , y_val, z_val);
-	new_action = (Action *) initAction(SET_A, x_val, y_val, val_before, z_val, game->LatestAction, 0);
+
+	new_change = (Change *) initChange(x_val, y_val, val_before, z_val, NULL);
+	if (new_change == NULL) {
+		printBoard(game, VALUE);
+		return 0;
+	}
+	new_action = (Action *) initAction(SET_A, new_change, game->LatestAction);
 	if (new_action == NULL) {
 		printBoard(game, VALUE);
 		return 0;
 	}
+
 	UpdateErrors(game);
 	printBoard(game, VALUE);
 	return 1;

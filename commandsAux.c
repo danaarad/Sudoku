@@ -11,6 +11,7 @@
 #include "Action.h"
 #include "Node.h"
 #include "Game.h"
+#include "change.h"
 
 int validate_values_for_set(int x, int y, int z, char *z_str, int N) {
 	if (x < 1 || x > N) {
@@ -56,26 +57,33 @@ int validate_values_for_hint(int x, int y, int N) {
 int moveTempToValue(Game *game, actionType_e action_type) {
 	int x = 0, y = 0;
 	int N = game->blockHeight * game->blockWidth;
-	int autofill_value = 0;
-	int is_prev_connected = 0;
+	int temp_value = 0;
 	int val_before;
-	Action *new_action;
+	Action *new_action = NULL;
+	Change *changes = NULL;
+	Change *new_change = NULL;
 
 	for (y = 0; y < N; ++y) {
 		for (x = 0; x < N; ++x) {
-			autofill_value = getNodeValByType(game, TEMP, x, y);
-			if (autofill_value != 0) {
+			temp_value = getNodeValByType(game, TEMP, x, y);
+			if (temp_value != 0) {
 				val_before = getNodeValByType(game, VALUE, x, y);
-				setNodeValByType(game, VALUE, x , y, autofill_value);
+				setNodeValByType(game, VALUE, x , y, temp_value);
 
-				new_action = (Action *) initAction(action_type, x, y, val_before, autofill_value, game->LatestAction, is_prev_connected);
-				if (new_action == NULL) {
+				new_change = initChange(x, y, val_before, temp_value, new_change);
+				if (new_change == NULL) {
 					printBoard(game, VALUE);
-					return 0;
+					return -1;
 				}
-				is_prev_connected = 1;
+				if (changes == NULL) {
+					changes = new_change;
+				}
 			}
 		}
+	}
+	new_action = (Action *) initAction(action_type, changes, game->LatestAction);
+	if (new_action == NULL) {
+		return -1;
 	}
 	return 1;
 

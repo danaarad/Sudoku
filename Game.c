@@ -103,8 +103,8 @@ int isSolvableBoard(Game* gp){
 	return 0;
 }
 
-int setLatestAction(Game* gp, Action *action, int isConnected){
-	return setNextAction(gp->LatestAction, action, isConnected);
+int setLatestAction(Game* gp, Action *action){
+	return setNextAction(gp->LatestAction, action);
 }
 
 void freeAllActions(Game* gp){
