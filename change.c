@@ -27,3 +27,13 @@ Change *initChange(int x, int y, int val_before, int val_after, Change *prev) {
 
 	return newChange;
 }
+
+void freeChanges(Change *change) {
+	Change *next;
+	if (change != NULL) {
+		next = change->next;
+		freeChanges(next);
+		free(change);
+	}
+}
+
