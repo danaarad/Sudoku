@@ -4,11 +4,10 @@
  *  Created on: Aug 31, 2018
  *      Author: Dana Arad
  */
+#include <stdio.h>
 
 
-
-int filled_cells(int *arr){
-	int len = sizeof(arr) / sizeof(arr[0]);
+int filled_cells(int *arr, int len){
 	int i = 0;
 	int filled_cells = 0;
 
@@ -22,16 +21,14 @@ int filled_cells(int *arr){
 
 }
 
-int get_first_value(int *arr){
-	int len = sizeof(arr) / sizeof(arr[0]);
+int get_first_value(int *arr, int len){
 	int i = 0;
 
 	for(i = 0; i < len; ++i) {
-		if (arr[i] != 0) {
-			return arr[i];
+		if (arr[i] == 1) {
+			return i + 1;
 		}
 	}
-
 	return -1;
 
 }

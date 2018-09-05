@@ -15,8 +15,9 @@ int setLatestAction(Game* gp, Action *action, int isConnected);
 int isErrornousBoard(Game* gp);
 int isSolvableBoard(Game* gp);
 void freeGame(Game* gp);
-int UpdateErrors(Game *gp, int x, int y);
+int UpdateErrors(Game *gp);
 int initTempBoard(Game* gp);
+int moveValueToTemp(Game *game);
 
 
 

@@ -53,6 +53,7 @@ int doAutofill(Game *game) {
 	int *possible_vals_arr;
 	int num_of_possible_vals = 0;
 	int auto_value = 0;
+	int value;
 
 	if (game->isErrornous == 1) {
 		printf("Error: board contains erroneous values\n");
@@ -69,10 +70,11 @@ int doAutofill(Game *game) {
 				return 0;
 			}
 
+			value = getNodeValByType(game, VALUE, x, y);
 			get_possible_values_for_node(game, VALUE, x, y, possible_vals_arr);
-			num_of_possible_vals = filled_cells(possible_vals_arr);
-			if (num_of_possible_vals == 1) {
-				auto_value = get_first_value(possible_vals_arr);
+			num_of_possible_vals = filled_cells(possible_vals_arr, game->N);
+			if (num_of_possible_vals == 1 && value == 0) {
+				auto_value = get_first_value(possible_vals_arr, game->N);
 				setNodeValByType(game, TEMP, x, y, auto_value);
 				printf("Cell <%d,%d> set to %d\n", (x+1), (y+1), auto_value);
 			}
@@ -265,7 +267,7 @@ int doSet(Game *game, char *x, char *y, char *z) {
 		printBoard(game, VALUE);
 		return 0;
 	}
-	UpdateErrors(game, x_val, y_val);
+	UpdateErrors(game);
 	printBoard(game, VALUE);
 	return 1;
 }
