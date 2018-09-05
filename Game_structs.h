@@ -51,7 +51,7 @@ typedef struct Change {
 	int y;
 	int val_before;
 	int val_after;
-	change *next;
+	struct Change *next;
 }Change;
 
 typedef struct Action {
