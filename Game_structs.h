@@ -9,11 +9,11 @@
 #define GAME_STRUCTS_H_
 
 typedef enum command {
-	print_board = 0, validate,
+	exit_game = 0,
+	print_board, validate,
 	undo, redo,
 	num_solutions, autofill,
-	reset, exit_game,
-	mark_errors, save,
+	reset, mark_errors, save,
 	generate, hint,
 	set, solve, edit, not_found,
 	edit_default

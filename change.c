@@ -64,14 +64,14 @@ int printChange(command_e command, actionType_e actionType, Change *change){
 	}
 	printf("%d,%d: ", x, y);
 
-	prinf("from ");
+	printf("from ");
 	if(z1 == 0){
 		printf("_ ");
 	}else{
 		printf("%d ",z1);
 	}
 
-	prinf("to ");
+	printf("to ");
 	if(z2 == 0){
 		printf("_ ");
 	}else{
