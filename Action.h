@@ -25,4 +25,7 @@ void freeSingleAction(Action *action);
 
 Action* initAction(actionType_e actionType,Change* changes, Action* prev_action);
 
+int undoAction(Game *gp);
+int redoAction(Game *gp);
+
 #endif /* ACTION_H_ */
