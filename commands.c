@@ -43,28 +43,54 @@ int doSave(Game* gp, char *fileName){
 
 int doUndo(Game *game) {
 	Action *action_to_undo = game->LatestAction;
-	if (action_to_undo != NULL) {
-		undoAction(game);
+	if (action_to_undo->type != INIT_A) {
+		undoAction(game, 1);
 		game->LatestAction = action_to_undo->prev_action;
 		if (action_to_undo->type == GENERATE_A) {
 			printf("Undo Generate");
 		}
-		return 1;
+		UpdateErrors(game);
+	} else {
+		printf("Error: no moves to undo\n");
 	}
-	printf("Error: no moves to undo\n");
+	printBoard(game, VALUE);
 	return 1;
 }
 
 int doRedo(Game *game) {
-	printf("doRedo!");
-		fflush(stdout);
-		return 1;
+	Action *action_to_redo;
+	if (game->LatestAction != NULL) {
+		action_to_redo = game->LatestAction->next_action;
+		if (action_to_redo != NULL) {
+			game->LatestAction = action_to_redo;
+			redoAction(game, 1);
+			if (action_to_redo->type == GENERATE_A) {
+				printf("Redo Generate");
+			}
+			UpdateErrors(game);
+			printBoard(game, VALUE);
+			return 1;
+		}
+	}
+	printf("Error: no moves to redo\n");
+	printBoard(game, VALUE);
+	return 1;
 }
 
-int doReset() {
-	printf("doReset!");
-		fflush(stdout);
-		return 1;
+int doReset(Game *game) {
+	Action *prev_action;
+
+	while (game->LatestAction->type != INIT_A) {
+		undoAction(game, 0);
+		prev_action = game->LatestAction;
+		game->LatestAction = game->LatestAction->next_action;
+	}
+	freeActionsAfter(prev_action);
+	freeSingleAction(prev_action);
+	printf("Board reset\n");
+	printBoard(game, VALUE);
+	return 1;
+
 }
 
 int doAutofill(Game *game) {
@@ -81,9 +107,9 @@ int doAutofill(Game *game) {
 		return 0;
 	}
 
-	//initTempBoard(game);
-	for (x = 0; x < N; ++x) {
-		for (y = 0; y < N; ++y) {
+	initTempBoard(game);
+	for (y = 0; y < N; ++y) {
+		for (x = 0; x < N; ++x) {
 			possible_vals_arr = calloc(N, sizeof(int));
 			if (possible_vals_arr == NULL) {
 				printf(CALLOC_ERROR);
@@ -292,7 +318,7 @@ int doSet(Game *game, char *x, char *y, char *z) {
 		printBoard(game, VALUE);
 		return 0;
 	}
-
+	game->LatestAction = new_action;
 	UpdateErrors(game);
 	printBoard(game, VALUE);
 	return 1;

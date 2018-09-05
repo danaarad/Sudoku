@@ -35,7 +35,8 @@ typedef enum valType {
 
 typedef enum actionType {
 	SET_A,
-	GENERATE_A
+	GENERATE_A,
+	INIT_A
 } actionType_e;
 
 typedef struct Node {

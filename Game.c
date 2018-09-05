@@ -27,6 +27,7 @@ Game* initGame(int block_height, int block_width) {
 		gp->N = block_height*block_width;
 		gp->mode = INIT;
 		gp->markErrors = 1;
+		gp->LatestAction = initAction(INIT_A, 0, 0);
 	}else{
 		printf(CALLOC_ERROR);
 		return NULL;
