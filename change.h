@@ -10,5 +10,6 @@
 #include "Game_structs.h"
 
 Change *initChange(int x, int y, int val_before, int val_after, Change *prev);
+void freeChanges(Change *change);
 
 #endif /* CHANGE_H_ */
