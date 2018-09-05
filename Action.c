@@ -60,7 +60,7 @@ void freeActionsBefore(Action *action){
 	Action *prev = action->prev_action;
 	if (prev != NULL){
 		freeActionsBefore(prev);
-		freeChanges(prev);
+		freeChanges(prev->changes);
 		free(prev);
 	}
 }
@@ -68,14 +68,14 @@ void freeActionsAfter(Action *action){
 	Action *next = action->next_action;
 	if (next != NULL){
 		freeActionsAfter(next);
-		freeChanges(next);
+		freeChanges(next->changes);
 		free(next);
 	}
 }
 
 /*assumes before and after are free*/
 void freeSingleAction(Action *action){
-	freeChanges(action);
+	freeChanges(action->changes);
 	free(action);
 }
 
