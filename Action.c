@@ -108,7 +108,7 @@ int undoAction(Game *gp, int print){
 		val_before = curchange->val_before;
 		numOfUndone += setNodeValByType(gp, VALUE, x, y, val_before);
 		if (print == 1) {
-			printChange(undo, actionType ,curchange);
+			printChange(undo, actionType, curchange);
 		}
 		curchange = curchange->next;
 	}
@@ -126,7 +126,7 @@ int redoAction(Game *gp, int print){
 		val_after = curchange->val_after;
 		numOfUndone += setNodeValByType(gp, VALUE, x, y, val_after);
 		if (print == 1) {
-			printChange(redo, actionType ,curchange);
+			printChange(redo, actionType, curchange);
 		}
 		curchange = curchange->next;
 	}
