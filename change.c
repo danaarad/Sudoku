@@ -45,8 +45,8 @@ int printChange(command_e command, actionType_e actionType, Change *change){
 		return 0;
 	}
 
-	x = change->x;
-	y = change->y;
+	x = change->x + 1;
+	y = change->y + 1;
 
 	switch(command){
 		case undo:
