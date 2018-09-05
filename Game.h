@@ -17,6 +17,7 @@ int isSolvableBoard(Game* gp);
 void freeGame(Game* gp);
 int UpdateErrors(Game *gp);
 int initTempBoard(Game* gp);
+int moveValueToTemp(Game *game);
 
 
 

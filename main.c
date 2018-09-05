@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 
 int main(int argc, char *argv[]) {
 	int exit = 0, execute = 0, iswin = 0;
@@ -13,6 +14,7 @@ int main(int argc, char *argv[]) {
 	char  *x;
 	char  *y;
 	char  *z;
+	srand(time(NULL));
 
 	printf("Sudoku\n------\n");
 

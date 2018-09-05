@@ -209,3 +209,19 @@ int UpdateErrors(Game *gp){
 	return (ErrorNum);
 
 }
+
+
+int moveValueToTemp(Game *game) {
+	int x = 0, y = 0;
+	int N = game->blockHeight * game->blockWidth;
+	int value = 0;
+
+	for (y = 0; y < N; ++y) {
+		for (x = 0; x < N; ++x) {
+			value = getNodeValByType(game, VALUE, x, y);
+			setNodeValByType(game, TEMP, x , y, value);
+		}
+	}
+	return 1;
+
+}

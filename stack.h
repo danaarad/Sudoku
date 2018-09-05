@@ -10,14 +10,15 @@
 
 typedef struct node
 {
-    int data;
+    int x;
+    int y;
+    int value;
     struct node *next;
 } stack_node;
 
 
-void display();
-void push(int, stack_node *top);
-int pop(stack_node *top, int *value);
+stack_node *push(stack_node *top, int x, int y, int value);
+stack_node *pop(stack_node *top, int *x, int *y, int *value);
 
 
 #endif /* STACK_H_ */
