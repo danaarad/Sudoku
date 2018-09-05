@@ -120,10 +120,7 @@ int executeCommand(Game *game, command_e command, char *x, char *y, char *z) {
 
 	switch(command){
 	case print_board:
-		printf("starting print_board\n");
 		printBoard(game, VALUE);
-		printf("finished print_board\n");
-		fflush(stdout);
 		return 1;
 	case validate:
 		printf("starting validate\n");
@@ -133,39 +130,30 @@ int executeCommand(Game *game, command_e command, char *x, char *y, char *z) {
 		return res;
 	case undo:
 		printf("starting undo\n");
-		res = doUndo();
+		res = doUndo(game);
 		printf("finished undo\n");
 		fflush(stdout);
 		return res;
 	case redo:
 		printf("starting redo\n");
-		res = doRedo();
+		res = doRedo(game);
 		fflush(stdout);
 		printf("finished redo\n");
 		return res;
 	case num_solutions:
-		printf("starting num_solutions\n");
 		res = doGetNumofSols(game);
-		fflush(stdout);
-		printf("finished num_solutions\n");
 		return res;
 	case autofill:
-		printf("starting autofill\n");
 		res = doAutofill(game);
-		printf("finished autofill\n");
-		fflush(stdout);
 		return res;
 	case reset:
 		printf("starting reset\n");
-		res = doReset();
+		res = doReset(game);
 		printf("finished reset\n");
 		fflush(stdout);
 		return res;
 	case mark_errors:
-		printf("starting mark_errors\n");
 		res = doMarkErrors(game, x);
-		printf("finished mark_errors\n");
-		fflush(stdout);
 		return res;
 	case save:
 		printf("starting save\n");
@@ -186,35 +174,20 @@ int executeCommand(Game *game, command_e command, char *x, char *y, char *z) {
 		fflush(stdout);
 		return res;
 	case set:
-		printf("starting set\n");
-		fflush(stdout);
 		res = doSet(game, x, y, z);
-		printf("finished set\n");
-		fflush(stdout);
 		return res;
 	case solve:
-		printf("starting solve\n");
 		res = doSolveFile(game, x);
-		printf("finished solve\n");
-		fflush(stdout);
 		return res;
 	case edit:
-		printf("starting edit\n");
 		res = doEditFile(game, x);
-		fflush(stdout);
-		printf("finished edit\n");
 		return res;
 	case edit_default:
-		printf("starting edit_default\n");
 		game->mode = EDIT;
 		printBoard(game, VALUE);
-		fflush(stdout);
-		printf("finished edit_default\n");
 		return 1;
 	case exit_game:
 	case not_found:
-		printf("starting not_found\n");
-		printf("finished not_found\n");
 		return -1;
 	}
 	return -1;

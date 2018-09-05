@@ -41,12 +41,31 @@ int doSave(Game* gp, char *fileName){
 	return 0;
 	}
 
+int doUndo(Game *game) {
+	Action *action_to_undo = game->LatestAction;
+	if (action_to_undo != NULL) {
+		undoAction(game);
+		game->LatestAction = action_to_undo->prev_action;
+		if (action_to_undo->type == GENERATE_A) {
+			printf("Undo Generate");
+		}
+		return 1;
+	}
+	printf("Error: no moves to undo\n");
+	return 1;
+}
+
+int doRedo(Game *game) {
+	printf("doRedo!");
+		fflush(stdout);
+		return 1;
+}
+
 int doReset() {
 	printf("doReset!");
 		fflush(stdout);
 		return 1;
 }
-
 
 int doAutofill(Game *game) {
 	int x = 0, y = 0;
@@ -191,18 +210,6 @@ int doSolveFile(Game *game, char *fileName) {
 	UpdateErrors(game);
 	printBoard(game, VALUE);
 	return 1;
-}
-
-int doUndo() {
-	printf("doUndo!");
-		fflush(stdout);
-		return 1;
-}
-
-int doRedo() {
-	printf("doRedo!");
-		fflush(stdout);
-		return 1;
 }
 
 int doMarkErrors(Game *game, char *x) {
