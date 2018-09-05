@@ -77,6 +77,7 @@ int setPrevAction(Action *action, Action *prev_action, int isPrevConnected){
 		isnext = (prev_action->next_action == action);
 	}
 	else{
+		action->is_prev_connected = 0;//there is no prev
 		isnext = 1;
 	}
 	return isprev && isnext;
@@ -101,6 +102,7 @@ int setNextAction(Action *action, Action *next_action, int isNextConnected){
 		next_action->is_prev_connected = isNextConnected;
 		isprev = (next_action->prev_action == action);
 	}else{
+		action->is_next_connected = 0;//there is no next
 		isprev = 1;
 	}
 
@@ -111,9 +113,12 @@ int getIsPrevConnected(Action *action){
 	return action->is_prev_connected;
 }
 
-/*expects a prev*/
 int setIsPrevConnected(Action *action, int isit_connected){
 	int isprev, isnext;
+
+	if(!action->prev_action){
+		return 0;//there is no prev;
+	}
 	action->is_prev_connected = isit_connected;
 	action->prev_action->is_next_connected = isit_connected;
 	isprev = (action->is_prev_connected == isit_connected);
@@ -125,9 +130,12 @@ int getIsNextConnected(Action *action){
 	return action->is_next_connected;
 }
 
-/*expects a next*/
 int setIsNextConnected(Action *action, int isit_connected){
 	int isprev, isnext;
+
+	if(!action->next_action){
+		return 0;//there is no next;
+	}
 	action->is_next_connected = isit_connected;
 	action->next_action->is_prev_connected = isit_connected;
 	isnext = (action->is_next_connected == isit_connected);
@@ -151,7 +159,7 @@ void freeActionsAfter(Action *action){
 	}
 	action->is_next_connected = 0;
 }
-/* expects before and after actions to be free*/
+
 void freeSingleAction(Action *action){
 	free(action);
 }
