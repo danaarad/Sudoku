@@ -19,13 +19,13 @@
 #include "file_handler.h"
 #include "commandsAux.h"
 
-int doSave(Game* gp, char *fileName){
+int doSave(Game* game, char *fileName){
 	FILE* file_ptr = NULL;
-		if (!isErrornousBoard(gp)){
-			if (isSolvable(gp)){
+		if (!isErrornousBoard(game)){
+			if (isSolvable(game)){
 				file_ptr = fopen(fileName,"w");
 				if (file_ptr != NULL){//success
-					writeToFile(gp, file_ptr);
+					writeToFile(game, file_ptr);
 					printf("Saved to: %s\n",fileName);
 					return 0;
 				}else{//couldn't open file
@@ -39,13 +39,6 @@ int doSave(Game* gp, char *fileName){
 		}
 	return 0;
 	}
-
-int doReset() {
-	printf("doReset!");
-		fflush(stdout);
-		return 1;
-}
-
 
 int doAutofill(Game *game) {
 	int x = 0, y = 0;
@@ -107,6 +100,7 @@ int doGetNumofSols(Game *game) {
 	printBoard(game, VALUE);
 	return 1;
 }
+
 int doHint(Game *game, char *x, char *y) {
 	int N = game->blockHeight * game->blockWidth;
 	int x_val = 0, y_val = 0, hint_val = 0;
@@ -186,16 +180,49 @@ int doSolveFile(Game *game, char *fileName) {
 	return 1;
 }
 
-int doUndo() {
-	printf("doUndo!");
+int doUndo(Game *game) {
+	int x, y, valb, vala, ipc, ok = 1;
+	Action* la = game->LatestAction;
+
+	if(!la){
+		printf( "Error: no moves to undo\n");
 		fflush(stdout);
-		return 1;
+		return 0;
+
+	}else{
+		do{
+			x = getActionX(la);
+			y = getActionY(la);
+			valb = getValBeforeChange(la);
+			vala = getValAfterChange(la);
+			ipc = getIsPrevConnected(la);
+
+			ok*=setNodeValByType(game,VALUE,x,y,valb);
+			printf("Undo %d,%d: from %d to %d\n",x+1,y+1,vala,valb);
+			la = game->LatestAction = game->LatestAction->prev_action;
+		}while(ipc);//if the prev is connected it can't be null (we should check this)
+		UpdateErrors(game);
+	}
+	return ok;
 }
 
 int doRedo() {
 	printf("doRedo!");
 		fflush(stdout);
 		return 1;
+}
+
+int doReset(Game* game) {
+	int numOfUndone = 0;
+
+	while(game->LatestAction){
+		doUndo(game);
+		numOfUndone++;
+	}
+
+	printf("Board reset\n");
+	fflush(stdout);
+	return numOfUndone;
 }
 
 int doMarkErrors(Game *game, char *x) {
@@ -265,7 +292,7 @@ int doSet(Game *game, char *x, char *y, char *z) {
 		printBoard(game, VALUE);
 		return 0;
 	}
-	UpdateErrors(game, x_val, y_val);
+	UpdateErrors(game);
 	printBoard(game, VALUE);
 	return 1;
 }
