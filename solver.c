@@ -80,60 +80,51 @@ int exhaustive_backtracking(Game *game){
 	int num_of_solutions = 0;
 	stack_node *top = NULL;
 	int counter = 0;
+	int backwards = 0;
 
 	moveValueToTemp(game);
 	do {
-		++counter;
-		printf("counter = %d\n", counter);
-		printf("x = %d y = %d value = %d\n", x, y, value);
-		printBoard(game, TEMP);
-		fflush(stdout);
-
+		//get real value from board
 		game_value = getNodeValByType(game, VALUE, x, y);
-		if (value > game->N) {
-			if (game_value == 0) {
-				setNodeValByType(game,TEMP, x, y, 0);
-			}
-			top = (stack_node *) pop(top, &x, &y, &value);
-			++value;
-			continue;
-		}
 
+		//if no legal value found, fold
+		if (value > game->N) {
+			//if no real value, set cell to zero
+			if (game_value == 0) {
+				setNodeValByType(game,TEMP, x, y, 0); }
+			//fold
+			top = (stack_node *) pop(top, &x, &y, &value);
+			backwards = 1; ++value; continue; }
 
 		if (game_value == 0) {
-			//get possible value
+			//get possible value for empty cell
 			if (isPossibleValue(game, TEMP, x, y, value) != 1) {
-				++value;
-				continue;
-			}
+				++value; continue; }
 		} else {
-			value = game_value;
-		}
+			//fold or continue if cell has real value
+			if (backwards == 1) {
+				top = (stack_node *) pop(top, &x, &y, &value);
+				++value; continue; }
+			value = game_value; }
 
 		//fill node with chosen value
 		setNodeValByType(game, TEMP, x, y, value);
+
 		//continue backtracking
 		if (x == (game->N - 1) && y == (game->N - 1)) {
-			printf("end of board!\n");
-			++num_of_solutions;
-			if(game_value != 0) {
+			if(game_value == 0) {
 				setNodeValByType(game, TEMP, x, y, 0);
 			}
 			top = (stack_node *) pop(top, &x, &y, &value);
-			++value;
+			++num_of_solutions; backwards = 1; ++value;
 		} else if (x == (game->N - 1)) {
-			printf("end of line!\n");
 			top = (stack_node *) push(top, x, y, value);
-			x = 0;
-			y += 1;
-			value = 1;
+			backwards = 0; x = 0; y += 1; value = 1;
 		} else {
 			top = (stack_node *) push(top, x, y, value);
-			x += 1;
-			value = 1;
-			printf("moving to %d %d!\n", x, y);
+			backwards = 0; x += 1; value = 1;
 		}
-	} while (top != NULL && counter < 100);
+	} while (!(top == NULL && value > game->N));
 	return num_of_solutions;
 }
 
