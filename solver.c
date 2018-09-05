@@ -17,7 +17,7 @@ int isSolvable(Game* gp) {
 	return 1;
 }
 
-int fill_nodes_random(Game *game, int num_of_cells) {
+int fill_nodes_random(Game *game, valType_e val_type, int num_of_cells) {
 	int x = 0;
 	int y = 0;
 	int filled = 0;
@@ -29,14 +29,14 @@ int fill_nodes_random(Game *game, int num_of_cells) {
 	while (filled < num_of_cells) {
 		x = rand()%(game->N);
 		y = rand()%(game->N);
-		if (getNodeValByType(game, VALUE, x, y) == 0) {
+		if (getNodeValByType(game, val_type, x, y) == 0) {
 			possible_vals_arr = calloc(game->N, sizeof(int));
 			if (possible_vals_arr == 0) {
 				printf(CALLOC_ERROR);
 				return 0;
 			}
 
-			num_of_possible_vals = get_possible_values_for_node(game, VALUE, x, y, possible_vals_arr);
+			num_of_possible_vals = get_possible_values_for_node(game, val_type, x, y, possible_vals_arr);
 			if (num_of_possible_vals == 0) {
 				return 0;
 			}
@@ -45,7 +45,7 @@ int fill_nodes_random(Game *game, int num_of_cells) {
 				random_val = rand() % (game->N);
 				is_good_random_val = possible_vals_arr[random_val];
 			}
-			setNodeValByType(game, VALUE, x, y, random_val);
+			setNodeValByType(game, val_type, x, y, random_val);
 			free(possible_vals_arr);
 			++filled;
 		}
@@ -53,11 +53,11 @@ int fill_nodes_random(Game *game, int num_of_cells) {
 	return 1;
 }
 
-int fill_nodes_ILP(Game *game) {
+int fill_nodes_ILP(Game *game, valType_e val_type) {
 	return 1;
 }
 
-int clear_nodes(Game *game, int num_to_clear) {
+int clear_nodes(Game *game, valType_e val_type, int num_to_clear) {
 	int x = 0;
 	int y = 0;
 	int cleared = 0;
@@ -65,8 +65,8 @@ int clear_nodes(Game *game, int num_to_clear) {
 	while (cleared < num_to_clear) {
 		x = rand()%(game->N);
 		y = rand()%(game->N);
-		if (getNodeValByType(game, VALUE, x, y) != 0) {
-			setNodeValByType(game, VALUE, x, y, 0);
+		if (getNodeValByType(game, val_type, x, y) != 0) {
+			setNodeValByType(game, val_type, x, y, 0);
 			++cleared;
 		}
 	}

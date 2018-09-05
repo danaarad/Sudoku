@@ -10,6 +10,7 @@
 #include "printer.h"
 #include "Action.h"
 #include "Node.h"
+#include "Game.h"
 
 int validate_values_for_set(int x, int y, int z, char *z_str, int N) {
 	if (x < 1 || x > N) {
@@ -52,7 +53,7 @@ int validate_values_for_hint(int x, int y, int N) {
 	}
 	return 1;
 }
-int moveAutoFillToValue(Game *game) {
+int moveTempToValue(Game *game, actionType_e action_type) {
 	int x = 0, y = 0;
 	int N = game->blockHeight * game->blockWidth;
 	int autofill_value = 0;
@@ -60,14 +61,14 @@ int moveAutoFillToValue(Game *game) {
 	int val_before;
 	Action *new_action;
 
-	for (x = 0; x < N; ++x) {
-		for (y = 0; y < N; ++y) {
+	for (y = 0; y < N; ++y) {
+		for (x = 0; x < N; ++x) {
 			autofill_value = getNodeValByType(game, TEMP, x, y);
 			if (autofill_value != 0) {
 				val_before = getNodeValByType(game, VALUE, x, y);
 				setNodeValByType(game, VALUE, x , y, autofill_value);
 
-				new_action = (Action *) initAction(SET_A, x, y, val_before, autofill_value, game->LatestAction, is_prev_connected);
+				new_action = (Action *) initAction(action_type, x, y, val_before, autofill_value, game->LatestAction, is_prev_connected);
 				if (new_action == NULL) {
 					printBoard(game, VALUE);
 					return 0;

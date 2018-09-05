@@ -19,13 +19,13 @@
 #include "file_handler.h"
 #include "commandsAux.h"
 
-int doSave(Game* game, char *fileName){
+int doSave(Game* gp, char *fileName){
 	FILE* file_ptr = NULL;
-		if (!isErrornousBoard(game)){
-			if (isSolvable(game)){
+		if (!isErrornousBoard(gp)){
+			if (isSolvable(gp)){
 				file_ptr = fopen(fileName,"w");
 				if (file_ptr != NULL){//success
-					writeToFile(game, file_ptr);
+					writeToFile(gp, file_ptr);
 					printf("Saved to: %s\n",fileName);
 					return 0;
 				}else{//couldn't open file
@@ -39,6 +39,13 @@ int doSave(Game* game, char *fileName){
 		}
 	return 0;
 	}
+
+int doReset() {
+	printf("doReset!");
+		fflush(stdout);
+		return 1;
+}
+
 
 int doAutofill(Game *game) {
 	int x = 0, y = 0;
@@ -69,13 +76,17 @@ int doAutofill(Game *game) {
 			if (num_of_possible_vals == 1 && value == 0) {
 				auto_value = get_first_value(possible_vals_arr, game->N);
 				setNodeValByType(game, TEMP, x, y, auto_value);
+				++game->filledNodes;
 				printf("Cell <%d,%d> set to %d\n", (x+1), (y+1), auto_value);
 			}
 
 			free(possible_vals_arr);
 		}
 	}
-	moveAutoFillToValue(game);
+	if (moveTempToValue(game, SET_A) != 1) {
+		printBoard(game, VALUE);
+		return 0;
+	}
 	printBoard(game, VALUE);
 	return 1;
 }
@@ -102,7 +113,6 @@ int doGetNumofSols(Game *game) {
 	printBoard(game, VALUE);
 	return 1;
 }
-
 int doHint(Game *game, char *x, char *y) {
 	int N = game->blockHeight * game->blockWidth;
 	int x_val = 0, y_val = 0, hint_val = 0;
@@ -135,9 +145,9 @@ int doHint(Game *game, char *x, char *y) {
 		return 0;
 	}
 
-	ILP_result = fill_nodes_ILP(game);
+	ILP_result = fill_nodes_ILP(game, TEMP);
 	if (ILP_result == 1) {
-		hint_val = getNodeValByType(game, SOLUTION, x_val, y_val);
+		hint_val = getNodeValByType(game, TEMP, x_val, y_val);
 		printf("Hint: set cell to %d\n", hint_val);
 		printBoard(game, VALUE);
 		return 1;
@@ -182,49 +192,16 @@ int doSolveFile(Game *game, char *fileName) {
 	return 1;
 }
 
-int doUndo(Game *game) {
-	int x, y, valb, vala, ipc, ok = 1;
-	Action* la = game->LatestAction;
-
-	if(!la){
-		printf( "Error: no moves to undo\n");
+int doUndo() {
+	printf("doUndo!");
 		fflush(stdout);
-		return 0;
-
-	}else{
-		do{
-			x = getActionX(la);
-			y = getActionY(la);
-			valb = getValBeforeChange(la);
-			vala = getValAfterChange(la);
-			ipc = getIsPrevConnected(la);
-
-			ok*=setNodeValByType(game,VALUE,x,y,valb);
-			printf("Undo %d,%d: from %d to %d\n",x+1,y+1,vala,valb);
-			la = game->LatestAction = game->LatestAction->prev_action;
-		}while(ipc);//if the prev is connected it can't be null (we should check this)
-		UpdateErrors(game);
-	}
-	return ok;
+		return 1;
 }
 
 int doRedo() {
 	printf("doRedo!");
 		fflush(stdout);
 		return 1;
-}
-
-int doReset(Game* game) {
-	int numOfUndone = 0;
-
-	while(game->LatestAction){
-		doUndo(game);
-		numOfUndone++;
-	}
-
-	printf("Board reset\n");
-	fflush(stdout);
-	return numOfUndone;
 }
 
 int doMarkErrors(Game *game, char *x) {
@@ -319,13 +296,17 @@ int doGenerate(Game *game, char *x, char *y) {
 		return 0;
 	}
 	for (attempt = 0; attempt < RETRY_ATTEMPTS_FOR_GENERATE; ++attempt) {
-		if (fill_nodes_random(game, x_val) != 1) {
+		initTempBoard(game);
+		if (fill_nodes_random(game, TEMP, x_val) != 1) {
 			continue;
 		}
-		if (fill_nodes_ILP(game) != 1) {
+		if (fill_nodes_ILP(game, TEMP) != 1) {
 			continue;
 		}
-		if (clear_nodes(game, y_val) != 1) {
+		if (clear_nodes(game, TEMP, y_val) != 1) {
+			continue;
+		}
+		if (moveTempToValue(game, GENERATE_A) != 1){
 			continue;
 		}
 		printBoard(game, VALUE);
