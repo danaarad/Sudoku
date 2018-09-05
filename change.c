@@ -38,7 +38,7 @@ void freeChanges(Change *change) {
 }
 
 
-int printChange(command_e command, actionType_e actionType, Change change){
+int printChange(command_e command, actionType_e actionType, Change *change){
 	int x, y, z1, z2;
 
 	if(actionType != SET_A){
