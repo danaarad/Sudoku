@@ -9,44 +9,20 @@
 #define ACTION_H_
 #include "Game_structs.h"
 
+Change *getChangeHead(Action *action);
+int setChangeHead(Action *action, Change *head);
 
 int getActionType(Action *action);
-
 int setActionType(Action *action, actionType_e aType);
 
-int getActionX(Action *action);
-int setActionX(Action* action, int x);
-
-int getActionY(Action *action);
-int setActionY(Action *action, int y);
-
-int setActionXY(Action *action, int x, int y);
-
-int getValBeforeChange(Action *action);
-int setValBeforeChange(Action *action, int valBeforeChange);
-
-int getValAfterChange(Action *action);
-int setValAfterChange(Action *action, int valAfterChange);
-
 Action* getPrevAction(Action *action);
-
 Action* getNextAction(Action *action);
-
-int setNextAction(Action *action, Action *next_action, int isNextConnected);
-
-int getIsPrevConnected(Action *action);
-
-int setIsPrevConnected(Action *action, int isit_connected);
-
-int getIsNextConnected(Action *action);
-
-int setIsNextConnected(Action *action, int isit_connected);
+int setNextAction(Action *action, Action *next_action);
 
 void freeActionsBefore(Action *action);
 void freeActionsAfter(Action *action);
 void freeSingleAction(Action *action);
 
-Action* initAction(actionType_e actionType, int x, int y, int valBeforeChange, int valAfterChange, Action* prev_action, int is_prev_connected);
-
+Action* initAction(actionType_e actionType,Change* changes, Action* prev_action);
 
 #endif /* ACTION_H_ */
