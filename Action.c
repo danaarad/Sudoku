@@ -98,7 +98,7 @@ Action* initAction(actionType_e actionType,Change* changes, Action* prev_action)
 }
 
 int undoAction(Game *gp){
-	int print, x, y, val_before, numOfUndone;
+	int x, y, val_before, numOfUndone;
 	Action *action = gp->LatestAction;
 	Change *curchange = action->changes;
 	actionType_e actionType = action->type ;
@@ -114,7 +114,7 @@ int undoAction(Game *gp){
 }
 
 int redoAction(Game *gp){
-	int print, x, y, val_after, numOfUndone;
+	int x, y, val_after, numOfUndone;
 	Action *action = gp->LatestAction;
 	Change *curchange = action->changes;
 	actionType_e actionType = action->type ;
