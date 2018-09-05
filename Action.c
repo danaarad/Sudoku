@@ -97,3 +97,35 @@ Action* initAction(actionType_e actionType,Change* changes, Action* prev_action)
 	return newAction;
 }
 
+int undoAction(Game *gp){
+	int print, x, y, val_before, numOfUndone;
+	Action *action = gp->LatestAction;
+	Change *curchange = action->changes;
+	actionType_e actionType = action->type ;
+
+	while(curchange){
+		x = curchange->x; y = curchange->y;
+		val_before = curchange->val_before;
+		numOfUndone += setNodeValByType(gp, VALUE, x, y, val_before);
+		printChange(undo, actionType ,curchange);
+		curchange = curchange->next;
+	}
+	return numOfUndone;
+}
+
+int redoAction(Game *gp){
+	int print, x, y, val_after, numOfUndone;
+	Action *action = gp->LatestAction;
+	Change *curchange = action->changes;
+	actionType_e actionType = action->type ;
+
+	while(curchange){
+		x = curchange->x; y = curchange->y;
+		val_after = curchange->val_after;
+		numOfUndone += setNodeValByType(gp, VALUE, x, y, val_after);
+		printChange(redo, actionType ,curchange);
+		curchange = curchange->next;
+	}
+	return numOfUndone;
+}
+
