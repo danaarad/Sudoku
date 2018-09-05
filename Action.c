@@ -60,7 +60,7 @@ void freeActionsBefore(Action *action){
 	Action *prev = action->prev_action;
 	if (prev != NULL){
 		freeActionsBefore(prev);
-		freeChanges(prev);
+		freeChanges(prev->changes);
 		free(prev);
 	}
 }
@@ -68,14 +68,14 @@ void freeActionsAfter(Action *action){
 	Action *next = action->next_action;
 	if (next != NULL){
 		freeActionsAfter(next);
-		freeChanges(next);
+		freeChanges(next->changes);
 		free(next);
 	}
 }
 
 /*assumes before and after are free*/
 void freeSingleAction(Action *action){
-	freeChanges(action);
+	freeChanges(action->changes);
 	free(action);
 }
 
@@ -98,7 +98,7 @@ Action* initAction(actionType_e actionType,Change* changes, Action* prev_action)
 }
 
 int undoAction(Game *gp){
-	int print, x, y, val_before, numOfUndone;
+	int x, y, val_before, numOfUndone;
 	Action *action = gp->LatestAction;
 	Change *curchange = action->changes;
 	actionType_e actionType = action->type ;
@@ -114,7 +114,7 @@ int undoAction(Game *gp){
 }
 
 int redoAction(Game *gp){
-	int print, x, y, val_after, numOfUndone;
+	int x, y, val_after, numOfUndone;
 	Action *action = gp->LatestAction;
 	Change *curchange = action->changes;
 	actionType_e actionType = action->type ;
