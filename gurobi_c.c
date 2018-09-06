@@ -23,16 +23,14 @@ int vcrToidx(int v, int c, int r, int dim){
 int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int block_w){
   GRBenv   *env   = NULL;
   GRBmodel *model = NULL;
-  int N = block_h*block_w;
-  int  i;
+  int idx = 0, N = block_h*block_w, i = 0;
   double num_vars = N*N*N;
-  int buff_size = 256;
-  int error = 0;
+  int buff_size = 256, error = 0;
   int *ind = (int *) calloc(N, sizeof(int));
   double *val = (double *) calloc(N, sizeof(double));
   char *vtype = (char *) calloc((int)num_vars, sizeof(char));
   int optimstatus;
-  int v, c, r, q, p;
+  int v = 0, c = 0, r = 0, q = 0, p = 0;
   char *const_name = (char *) calloc(buff_size, sizeof(char));
 
   /* Create environment - log file is mip1.log */
@@ -170,7 +168,7 @@ int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int
 				  ind[0] = idx;
 				  val[0] = 1;
 
-				  snprintf(const_name, buff_size, "ConstFromBoard(c_%d,r_%d,v_%d)", c, r, v);
+				  sprintf(const_name, "ConstFromBoard(c_%d,r_%d,v_%d)", c, r, v);
 				  error = GRBaddconstr(model, 1, ind, val, GRB_EQUAL, 1.0, const_name);
 				  if (error) {
 					  printf("ERROR %d %s GRBaddconstr(): %s\n", error, const_name, GRBgeterrormsg(env));

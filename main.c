@@ -60,11 +60,11 @@ int main() {
 		free(z);
 		}
 		if (exit == 1) {
+			printf( "Exiting...\n");
 			free(x);
 			free(y);
 			free(z);
 			freeGame(game);
-			printf( "Exiting...");
 		}
 
 	}
