@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int isSolvable(Game* gp) {
+int isSolvable(Game* gp){
 	return 1;
 }
 
@@ -33,7 +33,6 @@ int* BoardToGurobi(Game *gp){
 			v = getNodeValByType(gp, VALUE, c, r);
 			idx = vcrToidx(v, c, r, N);
 			forGurobi[idx] = 1;
-
 		}
 	}
 	return forGurobi;
