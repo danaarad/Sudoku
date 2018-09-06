@@ -232,5 +232,5 @@ int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int
   free(val);
   free(vtype);
   free(const_name);
-  return 0;
+  return optimstatus;
 }

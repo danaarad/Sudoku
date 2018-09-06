@@ -163,8 +163,9 @@ int doGetNumofSols(Game *game) {
 	printBoard(game, VALUE);
 	return 1;
 }
+
 int doHint(Game *game, char *x, char *y) {
-	int N = game->blockHeight * game->blockWidth;
+	int N = game->N;
 	int x_val = 0, y_val = 0, hint_val = 0;
 	int ILP_result = 0;
 

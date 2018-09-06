@@ -15,7 +15,7 @@
 #include <stdio.h>
 
 int isSolvable(Game* gp){
-	return 1;
+	return getSolsFromGurobi(Game *gp);
 }
 
 int* BoardToGurobi(Game *gp){
@@ -60,7 +60,7 @@ int GurobiToSolution(Game *gp, double* solFromGurobi){
 int getSolsFromGurobi(Game *gp){
 	int N = gp->N;
 	int num_values = N*N*N;
-	int error = 0, count;
+	int solfound, count;
 	double *solsFromGurobi = (double *)calloc(num_values, sizeof(double));
 
 	int *ConstrainsForGurobi = BoardToGurobi(gp);
@@ -69,21 +69,19 @@ int getSolsFromGurobi(Game *gp){
 	}
 
 
-	error = get_gurobi_solution(solsFromGurobi, ConstrainsForGurobi, gp->blockHeight, gp->blockWidth);
-	if(error){
-		printf("Error in Gurobi!");
-		return 0;
-	}
+	solfound = get_gurobi_solution(solsFromGurobi, ConstrainsForGurobi, gp->blockHeight, gp->blockWidth);
 
-	count = GurobiToSolution(gp, solsFromGurobi);
-	if (count != N*N){
-		printf("Number of values from gurobi does not match board! %d", count);
-		return 0;
+	if (solfound){
+		count = GurobiToSolution(gp, solsFromGurobi);
+		if (count != N*N){
+			printf("Number of values from gurobi does not match board! %d", count);
+			return 0;
+		}
 	}
 
 	free(solsFromGurobi);
 	free(ConstrainsForGurobi);
-	return 1;
+	return solfound;
 }
 
 int fill_nodes_random(Game *game, valType_e val_type, int num_of_cells) {
