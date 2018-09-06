@@ -6,7 +6,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-const static struct {
+static const struct {
     command_e command;
     const char *str;
 } conversion [] = {
@@ -29,7 +29,7 @@ const static struct {
 
 command_e strToCommandEnum (char *str) {
 	int j;
-    for (j = 0;  j < sizeof (conversion) / sizeof (conversion[0]);  ++j)
+    for (j = 0;  j < (int)(sizeof (conversion) / sizeof (conversion[0]));  ++j)
     	if (!strcmp (str, conversion[j].str)) {
     		return conversion[j].command;
     	}

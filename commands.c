@@ -82,7 +82,7 @@ int doRedo(Game *game) {
 }
 
 int doReset(Game *game) {
-	Action *prev_action;
+	Action *prev_action = NULL;
 
 	while (game->LatestAction->type != INIT_A) {
 		undoAction(game, 0);

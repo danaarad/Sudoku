@@ -87,7 +87,7 @@ int validateCommandMode(command_e command, mode_e mode) {
 
 	switch(mode){
 	case INIT:
-		for(i = 0; i < (sizeof (allowed_init) / sizeof (allowed_init[0])); ++i) {
+		for(i = 0; i < (int)(sizeof (allowed_init) / sizeof (allowed_init[0])); ++i) {
 			fflush(stdout);
 			if (command == allowed_init[i]) {
 				result = 1;
@@ -96,7 +96,7 @@ int validateCommandMode(command_e command, mode_e mode) {
 		}
 		break;
 	case EDIT:
-		for(i = 0; i < sizeof (allowed_edit) / sizeof (allowed_edit[0]); ++i) {
+		for(i = 0; i < (int)(sizeof (allowed_edit) / sizeof (allowed_edit[0])); ++i) {
 			if (command == allowed_edit[i]) {
 				result = 1;
 				break;
@@ -104,7 +104,7 @@ int validateCommandMode(command_e command, mode_e mode) {
 		}
 		break;
 	case SOLVE:
-		for(i = 0; i < sizeof (allowed_solve) / sizeof (allowed_solve[0]); ++i) {
+		for(i = 0; i < (int)(sizeof (allowed_solve) / sizeof (allowed_solve[0])); ++i) {
 			if (command == allowed_solve[i]) {
 				result = 1;
 				break;
