@@ -20,7 +20,7 @@ int vcrToidx(int v, int c, int r, int dim){
 	return idx;
 }
 
-int get_gurobi_solution(double *sol, int block_h, int block_w)
+int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int block_w)
 {
   GRBenv   *env   = NULL;
   GRBmodel *model = NULL;
@@ -162,6 +162,25 @@ int get_gurobi_solution(double *sol, int block_h, int block_w)
 		}
 	}
 
+ /* Constraints from board: if node(c,r) = v, Xvcr = 1*/
+	for(c = 0; c < N; ++c) {
+	  for (r = 0; r < N; ++r) {
+		  for (v = 1; v <= N; ++v) {
+			  idx = vcrToidx(v, c, r, N);
+			  if (ConstraintsFromBoard[idx]==1){
+				  ind[0] = idx;
+				  val[0] = 1;
+
+				  snprintf(const_name, buff_size, "ConstFromBoard(c_%d,r_%d,v_%d)", c, r, v);
+				  error = GRBaddconstr(model, 1, ind, val, GRB_EQUAL, 1.0, const_name);
+				  if (error) {
+					  printf("ERROR %d %s GRBaddconstr(): %s\n", error, const_name, GRBgeterrormsg(env));
+					  return -1;
+				  }
+			  }
+		  }
+	  }
+	}
 
   /* Optimize model - need to call this before calculation */
   error = GRBoptimize(model);
