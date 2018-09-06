@@ -16,8 +16,18 @@ int vcrToidx(int v, int c, int r, int dim){
 	int idx = 0;
 	idx += (v-1)*dim*dim;
 	idx += c*dim;
-	idx += r*dim;
+	idx += r;
 	return idx;
+}
+
+int idxTovcr(int idx, int *v, int *c, int *r, int dim){
+	&r = idx%dim;
+	idx/=dim;
+	&c = idx%dim;
+	idx/=dim;
+	&v = (idx%dim) + 1;
+	idx/=dim;
+	return !idx;
 }
 
 int get_gurobi_solution(int *sol, int block_h, int block_w)
