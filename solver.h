@@ -11,7 +11,7 @@
 
 int isSolvable(Game* gp);
 int* BoardToGurobi(Game *gp);
-int GurobiToSolution(Game *gp, int* solFromGurobi);
+int GurobiToSolution(Game *gp, double* solFromGurobi);
 int fill_nodes_random(Game *game, valType_e val_type, int x);
 int fill_nodes_ILP(Game *game, valType_e val_type);
 int clear_nodes(Game *game, valType_e val_type, int y);
