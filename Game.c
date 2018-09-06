@@ -101,6 +101,7 @@ int CountErrorsInBoard(Game* gp) {
 }
 
 int isSolvableBoard(Game* gp){
+	printf("%d", gp->N);
 	return 0;
 }
 

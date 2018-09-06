@@ -29,12 +29,12 @@ int get_gurobi_solution(double *sol, int block_h, int block_w)
   double num_vars = N*N*N;
   int buff_size = 256;
   int       error = 0;
-  int       ind[N];
-  double    val[N];
-  char      vtype[(int)num_vars];
+  int       ind = calloc(N, sizeof(int));
+  double    val = calloc(N, sizeof(double));
+  char      vtype = calloc((int)num_vars, sizeof(char));
   int       optimstatus;
   int v, c, r, q, p;
-  char const_name[buff_size];
+  char const_name = calloc(buff_size, sizeof(char));
 
   /* Create environment - log file is mip1.log */
   error = GRBloadenv(&env, "mip1.log");
@@ -210,6 +210,9 @@ int get_gurobi_solution(double *sol, int block_h, int block_w)
   /* IMPORTANT !!! - Free model and environment */
   GRBfreemodel(model);
   GRBfreeenv(env);
-
+  free(ind);
+  free(val);
+  free(vtype);
+  free(const_name);
   return 0;
 }

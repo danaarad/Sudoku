@@ -55,12 +55,13 @@ int updateErrorsFromCheckTable(Game *gp, int ***checkTable, int lenOfArr){
 			x = checkTable[val][0][0];
 			y = checkTable[val][0][1];
 
-			if(getNodeValByType(gp, TEMP, x, y) == 0){//This node was not an error in previous segments;
+			/*This node was not an error in previous segments*/
+			if(getNodeValByType(gp, TEMP, x, y) == 0){
 				setNodeValByType(gp, ISERROR, x, y, 0);
 			}
 		}
 	}
-	return 1;//is there something smarter to return?
+	return 1;
 }
 
 void freeCheckTable(int ***checkTable, int rowSize){
