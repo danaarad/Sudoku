@@ -119,17 +119,22 @@ void freeGameBoard(Game* gp){
 	int x, y, rowlen;
 	Node* node;
 
-	rowlen = (gp->blockHeight)*(gp->blockWidth);
+	rowlen = gp->N;
 	for (x = 0; x < rowlen; x++){
 		for (y = 0; y < rowlen; y++){
 			node = &(gp->gameBoard[x][y]);
 			free(node);
+			printf("freed node (%d,%d)",x,y);
+			fflush(stdout);
 		}
 		free(gp->gameBoard[x]);
+		printf("freed col(%d)",x);
+		fflush(stdout);
 	}
 	free(gp->gameBoard);
+	printf("freed board");
+	fflush(stdout);
 }
-
 void freeGame(Game* gp){
 	freeAllActions(gp);
 	freeGameBoard(gp);
