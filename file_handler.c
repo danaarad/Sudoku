@@ -11,6 +11,7 @@
 #include <string.h>
 #include <ctype.h>
 #include "file_handler.h"
+#include "settings.h"
 #include "Node.h"
 #include "Game.h"
 
@@ -47,7 +48,11 @@ Game* readFromFile (FILE *file_ptr){
 	Game* gp;
 
 	/*get the size and set it*/
-	fscanf(file_ptr, "%d %d\n", &blockHeight, &blockWidth);
+	num = fscanf(file_ptr, "%d %d\n", &blockHeight, &blockWidth);
+	if (num!=2){
+		printf(SCANF_ERROR);
+		return NULL;
+	}
 	gp = initGame(blockHeight, blockWidth);
 
 	rowlen = blockWidth*blockHeight;
