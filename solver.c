@@ -15,7 +15,7 @@
 #include <stdio.h>
 
 int isSolvable(Game* gp){
-	return fill_nodes_ILP(Game *gp);
+	return fill_nodes_ILP(gp);
 }
 
 int* BoardToGurobi(Game *gp){
@@ -147,33 +147,33 @@ int exhaustive_backtracking(Game *game){
 
 	moveValueToTemp(game);
 	do {
-		//get real value from board
+		/*get real value from board*/
 		game_value = getNodeValByType(game, VALUE, x, y);
 
-		//if no legal value found, fold
+		/*if no legal value found, fold*/
 		if (value > game->N) {
-			//if no real value, set cell to zero
+			/*if no real value, set cell to zero*/
 			if (game_value == 0) {
 				setNodeValByType(game,TEMP, x, y, 0); }
-			//fold
+			/*fold*/
 			top = (stack_node *) pop(top, &x, &y, &value);
 			backwards = 1; ++value; continue; }
 
 		if (game_value == 0) {
-			//get possible value for empty cell
+			/*get possible value for empty cell*/
 			if (isPossibleValue(game, TEMP, x, y, value) != 1) {
 				++value; continue; }
 		} else {
-			//fold or continue if cell has real value
+			/*fold or continue if cell has real value*/
 			if (backwards == 1) {
 				top = (stack_node *) pop(top, &x, &y, &value);
 				++value; continue; }
 			value = game_value; }
 
-		//fill node with chosen value
+		/*fill node with chosen value*/
 		setNodeValByType(game, TEMP, x, y, value);
 
-		//continue backtracking
+		/*continue backtracking*/
 		if (x == (game->N - 1) && y == (game->N - 1)) {
 			if(game_value == 0) {
 				setNodeValByType(game, TEMP, x, y, 0);
