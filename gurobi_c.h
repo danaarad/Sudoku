@@ -8,7 +8,7 @@
 typedef struct _GRBmodel GRBmodel;
 typedef struct _GRBenv GRBenv;
 
-int get_gurobi_solution(double *sol, int block_h, int block_w)
+int get_gurobi_solution(double *sol, int block_h, int block_w);
 int vcrToidx(int v, int c, int r, int dim);
 
 #if defined(_WIN64) && !defined(WIN64)
