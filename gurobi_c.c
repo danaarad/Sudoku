@@ -28,13 +28,13 @@ int get_gurobi_solution(double *sol, int block_h, int block_w)
   int  i;
   double num_vars = N*N*N;
   int buff_size = 256;
-  int       error = 0;
-  int       ind = calloc(N, sizeof(int));
-  double    val = calloc(N, sizeof(double));
-  char      vtype = calloc((int)num_vars, sizeof(char));
-  int       optimstatus;
+  int error = 0;
+  int *ind = (int *) calloc(N, sizeof(int));
+  double *val = (double *) calloc(N, sizeof(double));
+  char *vtype = (char *) calloc((int)num_vars, sizeof(char));
+  int optimstatus;
   int v, c, r, q, p;
-  char const_name = calloc(buff_size, sizeof(char));
+  char *const_name = (char *) calloc(buff_size, sizeof(char));
 
   /* Create environment - log file is mip1.log */
   error = GRBloadenv(&env, "mip1.log");
