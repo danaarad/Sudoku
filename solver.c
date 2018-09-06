@@ -15,7 +15,7 @@
 #include <stdio.h>
 
 int isSolvable(Game* gp){
-	return getSolsFromGurobi(Game *gp);
+	return fill_nodes_ILP(Game *gp);
 }
 
 int* BoardToGurobi(Game *gp){
@@ -57,7 +57,7 @@ int GurobiToSolution(Game *gp, double* solFromGurobi){
 	return count;
 }
 
-int getSolsFromGurobi(Game *gp){
+int fill_nodes_ILP(Game *gp){
 	int N = gp->N;
 	int num_values = N*N*N;
 	int solfound, count;
@@ -120,9 +120,6 @@ int fill_nodes_random(Game *game, valType_e val_type, int num_of_cells) {
 	return 1;
 }
 
-int fill_nodes_ILP(Game *game, valType_e val_type) {
-	return 1;
-}
 
 int clear_nodes(Game *game, valType_e val_type, int num_to_clear) {
 	int x = 0;
