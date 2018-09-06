@@ -10,6 +10,7 @@
 #include "printer.h"
 #include "stack.h"
 #include "settings.h"
+#include "gurobi_c.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -38,7 +39,7 @@ int* BoardToGurobi(Game *gp){
 	return forGurobi;
 }
 
-int GurobiToSolution(Game *gp, int* solFromGurobi){
+int GurobiToSolution(Game *gp, double* solFromGurobi){
 	int v, c, r, idx, count = 0;
 	int N = gp->N;
 
@@ -47,7 +48,7 @@ int GurobiToSolution(Game *gp, int* solFromGurobi){
 		for (r = 0; r < N; r++){
 			for (v = 1; v <= N; v++){
 				idx = vcrToidx(v, c, r, N);
-				if (solFromGurobi[idx] == 1){
+				if (solFromGurobi[idx] != 0){
 					setNodeValByType(gp, TEMP, c, r, v);
 					count++;
 				}
@@ -120,7 +121,6 @@ int exhaustive_backtracking(Game *game){
 	int game_value = 0;
 	int num_of_solutions = 0;
 	stack_node *top = NULL;
-	int counter = 0;
 	int backwards = 0;
 
 	moveValueToTemp(game);

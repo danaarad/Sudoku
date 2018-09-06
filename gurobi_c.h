@@ -9,8 +9,6 @@ typedef struct _GRBmodel GRBmodel;
 typedef struct _GRBenv GRBenv;
 
 int vcrToidx(int v, int c, int r, int dim);
-int idxTovcr(int idx, int *v, int *c, int *r, int dim);
-
 
 #if defined(_WIN64) && !defined(WIN64)
 #define WIN64
