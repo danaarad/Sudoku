@@ -20,8 +20,7 @@ int vcrToidx(int v, int c, int r, int dim){
 	return idx;
 }
 
-int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int block_w)
-{
+int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int block_w){
   GRBenv   *env   = NULL;
   GRBmodel *model = NULL;
   int N = block_h*block_w;

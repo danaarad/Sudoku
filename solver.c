@@ -57,6 +57,34 @@ int GurobiToSolution(Game *gp, double* solFromGurobi){
 	return count;
 }
 
+int getSolsFromGurobi(Game *gp){
+	int N = gp->N;
+	int num_values = N*N*N;
+	int error = 0, count;
+	double *solsFromGurobi = (double *)calloc(num_values, sizeof(double));
+
+	int *ConstrainsForGurobi = BoardToGurobi(gp);
+	if (!ConstrainsForGurobi){
+		return -1;
+	}
+
+
+	error = get_gurobi_solution(solsFromGurobi, ConstrainsForGurobi, gp->blockHeight, gp->blockWidth);
+	if(error){
+		printf("Error in Gurobi!");
+		return 0;
+	}
+
+	count = GurobiToSolution(gp, solsFromGurobi);
+	if (count != N*N){
+		printf("Number of values from gurobi does not match board! %d", count);
+		return 0;
+	}
+
+	free(solsFromGurobi);
+	free(ConstrainsForGurobi);
+	return 1;
+}
 
 int fill_nodes_random(Game *game, valType_e val_type, int num_of_cells) {
 	int x = 0;
