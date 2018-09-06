@@ -17,6 +17,47 @@ int isSolvable(Game* gp) {
 	return 1;
 }
 
+int* BoardToGurobi(Game *gp){
+	int N = gp->N;
+	int num_vars = N*N*N;
+	int r, c, v, idx;
+
+	int *forGurobi = (int *)calloc(num_vars, sizeof(int));
+	if(!forGurobi){
+		return NULL;
+	}
+
+	for (c = 0; c < N; c++){
+		for (r = 0; r < N; r++){
+			v = getNodeValByType(gp, VALUE, c, r);
+			idx = vcrToidx(v, c, r, N);
+			forGurobi[idx] = 1;
+
+		}
+	}
+	return forGurobi;
+}
+
+int GurobiToSolution(Game *gp, int* solFromGurobi){
+	int v, c, r, idx, count = 0;
+	int N = gp->N;
+
+	initTempBoard(gp);
+	for (c = 0; c < N; c++){
+		for (r = 0; r < N; r++){
+			for (v = 1; v <= N; v++){
+				idx = vcrToidx(v, c, r, N);
+				if (solFromGurobi[idx] == 1){
+					setNodeValByType(gp, TEMP, c, r, v);
+					count++;
+				}
+			}
+		}
+	}
+	return count;
+}
+
+
 int fill_nodes_random(Game *game, valType_e val_type, int num_of_cells) {
 	int x = 0;
 	int y = 0;
