@@ -91,7 +91,7 @@ int get_gurobi_solution(double *sol, int block_h, int block_w)
 			  val[v-1] = 1;
 		  }
 		  /* add constraint to model*/
-		  snprintf(const_name, buff_size, "oneValPerCell%d%d", r, c);
+		  sprintf(const_name, "oneValPerCell[%d,%d]", c, r);
 		  error = GRBaddconstr(model, N, ind, val, GRB_EQUAL, 1.0, const_name);
 		  if (error) {
 			  printf("ERROR %d %s GRBaddconstr(): %s\n", error, const_name, GRBgeterrormsg(env));
@@ -111,7 +111,7 @@ int get_gurobi_solution(double *sol, int block_h, int block_w)
 			  val[r] = 1;
 		  }
 		  /* add constraint to model */
-		  snprintf(const_name, buff_size, "oneOfValPerCol%d%d", v, c);
+		  sprintf(const_name, "oneOfValPerCol_v=%d_c=%d", v, c);
 		  error = GRBaddconstr(model, N, ind, val, GRB_EQUAL, 1.0, const_name);
 		  if (error) {
 			  printf("ERROR %d %s GRBaddconstr(): %s\n", error, const_name, GRBgeterrormsg(env));
@@ -130,7 +130,7 @@ int get_gurobi_solution(double *sol, int block_h, int block_w)
 			  val[c] = 1;
 		  }
 		  /* add constraint to model */
-		  snprintf(const_name, buff_size, "oneOfValPerRow%d%d", v, r);
+		  sprintf(const_name, "oneOfValPerRow_v=%d_r=%d", v, r);
 		  error = GRBaddconstr(model, N, ind, val, GRB_EQUAL, 1.0, const_name);
 		  if (error) {
 			  printf("ERROR %d %s GRBaddconstr(): %s\n", error, const_name, GRBgeterrormsg(env));
@@ -151,7 +151,7 @@ int get_gurobi_solution(double *sol, int block_h, int block_w)
 						val[v-1] = 1;
 					}
 					/* add constraint to model */
-					snprintf(const_name, buff_size, "oneOfValPerBlock%d%d", q, p);
+					sprintf(const_name, "oneOfValPerBlock[%d,%d]", q, p);
 					error = GRBaddconstr(model, N, ind, val, GRB_EQUAL, 1.0, const_name);
 					if (error) {
 						printf("ERROR %d %s GRBaddconstr(): %s\n", error, const_name, GRBgeterrormsg(env));

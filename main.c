@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-int main(int argc, char *argv[]) {
+int main() {
 	int exit = 0, execute = 0, iswin = 0;
 	Game *game;
 	command_e command;
