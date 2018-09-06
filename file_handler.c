@@ -46,7 +46,8 @@ Game* readFromFile (FILE *file_ptr){
 	int blockHeight=0, blockWidth=0;
 	Game* gp;
 
-	fscanf(file_ptr, "%d %d\n", &blockHeight, &blockWidth);//get the size and set it
+	/*get the size and set it*/
+	fscanf(file_ptr, "%d %d\n", &blockHeight, &blockWidth);
 	gp = initGame(blockHeight, blockWidth);
 
 	rowlen = blockWidth*blockHeight;
@@ -64,7 +65,8 @@ Game* readFromFile (FILE *file_ptr){
 			if(chr == '.'){
 				setNodeValByType(gp, ISGIVEN, x, y, 1);
 				setNodeValByType(gp, SOLUTION, x, y, num);
-				chr = fgetc(file_ptr);//get empty space after dot
+				/*get empty space after dot*/
+				chr = fgetc(file_ptr);
 			}
 		}
 	}

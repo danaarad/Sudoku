@@ -149,8 +149,9 @@ int UpdateErrors(Game *gp){
 		return -1;
 	}
 
-	resetCheckTable(checkTable, rowSize);//all is set to -1
-	initTempBoard(gp);//updateErrorsFromCheckTable uses temp
+	/*all is set to -1*/
+	resetCheckTable(checkTable, rowSize);
+	initTempBoard(gp);
 
 	/*check the rows*/
 	for (y = 0; y < rowSize; y++){

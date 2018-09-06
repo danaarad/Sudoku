@@ -25,17 +25,21 @@ int doSave(Game* gp, char *fileName){
 		if (!isErrornousBoard(gp)){
 			if (isSolvable(gp)){
 				file_ptr = fopen(fileName,"w");
-				if (file_ptr != NULL){//success
+				if (file_ptr != NULL){
+					/*success*/
 					writeToFile(gp, file_ptr);
 					printf("Saved to: %s\n",fileName);
 					return 0;
-				}else{//couldn't open file
+				}else{
+					/*couldn't open file*/
 					printf("Error: File cannot be created or modified\n");
 				}
-			}else{ //board is not solvable
+			}else{
+				/*board is not solvable*/
 				printf("Error: board validation failed\n");
 			}
-		}else{//there are bad values in the board
+		}else {
+			/*there are bad values in the board*/
 			printf( "Error: board contains erroneous values\n");
 		}
 	return 0;
@@ -279,7 +283,7 @@ int doSet(Game *game, char *x, char *y, char *z) {
 	Action *new_action; Change *new_change;
 	int val_before;
 
-	//cast to int and validate values
+	/*cast to int and validate values*/
 	x_val = atoi(x);
 	y_val = atoi(y);
 	z_val = atoi(z);
@@ -291,20 +295,20 @@ int doSet(Game *game, char *x, char *y, char *z) {
 	x_val -= 1;
 	y_val -= 1;
 
-	//if cell is fixed
+	/*if cell is fixed*/
 	if (getNodeValByType(game, ISGIVEN, x_val, y_val) == 1) {
 		printf("Error: cell is fixed\n");
 		printBoard(game, VALUE);
 		return 0;
 	}
 
-	//update game->filledNodes
+	/*update game->filledNodes*/
 	if (getNodeValByType(game, VALUE, x_val, y_val) == 0){
 		game->filledNodes++; }
 	if (z_val == 0){
 		game->filledNodes--; }
 
-	//set new value and save to redo/undo list
+	/*set new value and save to redo/undo list*/
 	val_before = getNodeValByType(game, VALUE, x_val, y_val);
 	setNodeValByType(game, VALUE, x_val , y_val, z_val);
 
