@@ -117,28 +117,18 @@ int validateCommandMode(command_e command, mode_e mode) {
 
 int executeCommand(Game *game, command_e command, char *x, char *y, char *z) {
 	int res = 0;
-
 	switch(command){
 	case print_board:
 		printBoard(game, VALUE);
 		return 1;
 	case validate:
-		printf("starting validate\n");
 		res = doValidate(game);
-		printf("finished validate\n");
-		fflush(stdout);
 		return res;
 	case undo:
-		printf("starting undo\n");
 		res = doUndo(game);
-		printf("finished undo\n");
-		fflush(stdout);
 		return res;
 	case redo:
-		printf("starting redo\n");
 		res = doRedo(game);
-		fflush(stdout);
-		printf("finished redo\n");
 		return res;
 	case num_solutions:
 		res = doGetNumofSols(game);
@@ -147,31 +137,19 @@ int executeCommand(Game *game, command_e command, char *x, char *y, char *z) {
 		res = doAutofill(game);
 		return res;
 	case reset:
-		printf("starting reset\n");
 		res = doReset(game);
-		printf("finished reset\n");
-		fflush(stdout);
 		return res;
 	case mark_errors:
 		res = doMarkErrors(game, x);
 		return res;
 	case save:
-		printf("starting save\n");
 		res = doSave(game, x);
-		printf("finished save\n");
-		fflush(stdout);
 		return res;
 	case generate:
-		printf("starting generate\n");
 		res = doGenerate(game, x, y);
-		printf("finished generate\n");
-		fflush(stdout);
 		return res;
 	case hint:
-		printf("starting hint\n");
 		res = doHint(game, x, y);
-		printf("finished hint\n");
-		fflush(stdout);
 		return res;
 	case set:
 		res = doSet(game, x, y, z);
@@ -186,8 +164,7 @@ int executeCommand(Game *game, command_e command, char *x, char *y, char *z) {
 		game->mode = EDIT;
 		printBoard(game, VALUE);
 		return 1;
-	case exit_game:
-	case not_found:
+	case default:
 		return -1;
 	}
 	return -1;

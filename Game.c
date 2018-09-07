@@ -17,8 +17,7 @@
 
 
 Game* initGame(int block_height, int block_width) {
-	int rowlen = 0, x = 0, y = 0, i = 0;
-	Node* newNode = NULL;
+	int rowlen = 0, x = 0;
 
 	Game *gp = (Game*)calloc(1,sizeof(Game));
 	if(gp){
@@ -106,18 +105,14 @@ void freeAllActions(Game* gp){
 }
 
 void freeGameBoard(Game* gp){
-	int x, y, rowlen;
-	Node* node;
+	int x, rowlen;
 
 	rowlen = gp->N;
 	for (x = 0; x < rowlen; x++){
 		free(gp->gameBoard[x]);
-		printf("freed col(%d)",x);
 		fflush(stdout);
 	}
 	free(gp->gameBoard);
-	printf("freed b"
-			"oard");
 	fflush(stdout);
 }
 void freeGame(Game* gp){

@@ -67,7 +67,6 @@ Game* readFromFile (FILE *file_ptr){
 
 			/*get the number*/
 			chr = fgetc(file_ptr);
-			printf("i got the char %s\n",&chr);
 
 			while(isdigit(chr)){
 				num *= 10;
