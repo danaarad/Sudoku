@@ -44,17 +44,22 @@ void freeChanges(Change *change) {
 	}
 }
 
-
+/*
+ * Prints the correct message while redoing or undoing a change.
+ */
 int printChange(command_e command, actionType_e actionType, Change *change){
 	int x, y, z1, z2;
 
+	/*if the action type is not set then don't print*/
 	if(actionType != SET_A){
 		return 0;
 	}
 
+	/*x and y for users is lagrer by 1*/
 	x = change->x + 1;
 	y = change->y + 1;
 
+	/*generic switch for type of action*/
 	switch(command){
 		case undo:
 			printf("Undo ");
@@ -71,6 +76,7 @@ int printChange(command_e command, actionType_e actionType, Change *change){
 	}
 	printf("%d,%d: ", x, y);
 
+	/*replace 0 with '_'*/
 	printf("from ");
 	if(z1 == 0){
 		printf("_ ");
