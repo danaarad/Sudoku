@@ -14,7 +14,7 @@
 #include "change.h"
 
 /*
- * Varifies that x, y, and the set value (z) are valid values (between 0 and N = block_height*block_width);
+ * Verifies that x, y, and the set value (z) are valid values (between 0 and N = block_height*block_width);
  */
 int validate_values_for_set(int x, int y, int z, char *z_str, int N) {
 	if (x < 1 || x > N) {
@@ -34,7 +34,7 @@ int validate_values_for_set(int x, int y, int z, char *z_str, int N) {
 }
 
 /*
- * Varifies that nuber of cells to be filled (x param)
+ * Verifies that number of cells to be filled (x param)
  * and number of cells to be cleared (y param) are valid values (between 0 and E = empty cells);
  */
 int validate_values_for_generate(int x, char *x_str, int y, char *y_str, int E) {
