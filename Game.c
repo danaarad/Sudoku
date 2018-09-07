@@ -77,7 +77,7 @@ int initTempBoard(Game* gp){
 }
 
 int isErrornousBoard(Game* gp) {
-	int N = gp->N, i, j;
+	int N = gp->N, i = 0, j = 0;
 	for (i = 0; i < N; i++){
 		for (j = 0; j < N; j++){
 			if (getNodeValByType(gp,ISERROR, i, j) == 1){
@@ -125,6 +125,7 @@ void freeGameBoard(Game* gp){
 	free(gp->gameBoard);
 	fflush(stdout);
 }
+
 void freeGame(Game* gp){
 	freeAllActions(gp);
 	freeGameBoard(gp);

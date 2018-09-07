@@ -20,6 +20,11 @@
 #include "commandsAux.h"
 #include "change.h"
 
+
+/*
+ * Execute save command
+ * Returns 1 on success, 0 on failure
+ */
 int doSave(Game* gp, char *fileName){
 	FILE* file_ptr = NULL;
 		if (!isErrornousBoard(gp)){
@@ -45,6 +50,10 @@ int doSave(Game* gp, char *fileName){
 	return 0;
 	}
 
+/*
+ * Execute undo command
+ * Returns 1 on success, 0 on failure
+ */
 int doUndo(Game *game) {
 	Action *action_to_undo = game->LatestAction;
 	if (action_to_undo->type != INIT_A) {
@@ -61,6 +70,11 @@ int doUndo(Game *game) {
 	return 1;
 }
 
+
+/*
+ * Execute redo command
+ * Returns 1 on success, 0 on failure
+ */
 int doRedo(Game *game) {
 	Action *action_to_redo;
 	if (game->LatestAction != NULL) {
@@ -81,6 +95,11 @@ int doRedo(Game *game) {
 	return 1;
 }
 
+
+/*
+ * Execute reset command
+ * Returns 1 on success, 0 on failure
+ */
 int doReset(Game *game) {
 	Action *prev_action = NULL;
 
@@ -97,6 +116,10 @@ int doReset(Game *game) {
 
 }
 
+/*
+ * Execute autofill command
+ * Returns 1 on success, 0 on failure
+ */
 int doAutofill(Game *game) {
 	int x = 0, y = 0;
 	int N = game->blockHeight * game->blockWidth;
@@ -141,6 +164,11 @@ int doAutofill(Game *game) {
 	return 1;
 }
 
+
+/*
+ * Execute num_solutions command
+ * Returns 1 on success, 0 on failure
+ */
 int doGetNumofSols(Game *game) {
 	int num_of_sols = 0;
 	if (isErrornousBoard(game) == 1) {
@@ -182,6 +210,7 @@ int doHint(Game *game, char *x, char *y) {
 
 	if (isErrornousBoard(game) == 1) {
 		printf("Error: board contains erroneous values\n");
+		printBoard(game, ISERROR);
 		printBoard(game, VALUE);
 		return 0;
 	}
@@ -213,6 +242,11 @@ int doHint(Game *game, char *x, char *y) {
 
 }
 
+
+/*
+ * Execute edit from file command
+ * Returns 1 on success, 0 on failure
+ */
 int doEditFile(Game *game, char *fileName)  {
 	FILE *f_pointer = fopen(fileName, "r");
 
@@ -229,6 +263,10 @@ int doEditFile(Game *game, char *fileName)  {
 	return 1;
 }
 
+/*
+ * Execute solve command
+ * Returns 1 on success, 0 on failure
+ */
 int doSolveFile(Game *game, char *fileName) {
 	FILE *f_pointer = fopen(fileName, "r");
 	if (f_pointer == NULL) {
@@ -243,6 +281,10 @@ int doSolveFile(Game *game, char *fileName) {
 	return 1;
 }
 
+/*
+ * Execute mark_errors command
+ * Returns 1 on success, 0 on failure
+ */
 int doMarkErrors(Game *game, char *x) {
 	int mark_errors_value = -1;
 
@@ -257,6 +299,11 @@ int doMarkErrors(Game *game, char *x) {
 	return 0;
 }
 
+
+/*
+ * Execute validate command
+ * Returns 1 on success, 0 on failure
+ */
 int doValidate(Game *game) {
 	int solvable = 0;
 
@@ -278,6 +325,11 @@ int doValidate(Game *game) {
 	return 1;
 }
 
+
+/*
+ * Execute set command
+ * Returns 1 on success, 0 on failure
+ */
 int doSet(Game *game, char *x, char *y, char *z) {
 	int x_val = 0, y_val = 0, z_val = 0;
 	int N = game->blockHeight * game->blockWidth;
@@ -303,11 +355,13 @@ int doSet(Game *game, char *x, char *y, char *z) {
 		return 0;
 	}
 
-	/*update game->filledNodes*/
+	/*update game->filledNodes and cell error*/
 	if (getNodeValByType(game, VALUE, x_val, y_val) == 0){
 		game->filledNodes++; }
 	if (z_val == 0){
-		game->filledNodes--; }
+		game->filledNodes--;
+		setNodeValByType(game, ISERROR, x_val , y_val, 0);
+	}
 
 	/*set new value and save to redo/undo list*/
 	val_before = getNodeValByType(game, VALUE, x_val, y_val);
