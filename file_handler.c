@@ -67,14 +67,13 @@ Game* readFromFile (FILE *file_ptr){
 
 			/*get the number*/
 			chr = fgetc(file_ptr);
-			printf("i got the char %c",chr);
+			printf("i got the char %s\n",&chr);
 
 			while(isdigit(chr)){
 				num *= 10;
 				num += atoi(&chr);
 				chr = fgetc(file_ptr);
 				/*in the last iteration this will be '\n', '.', ' ', or '\r' in windows*/
-				printf("i got the char %c, the one before was a digit",chr);
 			}
 			setNodeValByType(gp, VALUE, x, y, num);
 			if(chr == '.'){
@@ -82,7 +81,6 @@ Game* readFromFile (FILE *file_ptr){
 				/*get empty space after dot*/
 				chr = fgetc(file_ptr);
 				/*this will be '\n', ' ', or '\r' in windows*/
-				("i got the char %c, the one before was a dot",chr);
 			}
 		}
 	}
