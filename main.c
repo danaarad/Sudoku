@@ -34,19 +34,15 @@ int main() {
 			}
 			command = getCommand(game->mode, x, y, z);
 			printf("%s, %s, %s, %d \n", x, y, z, (int)command);
-			fflush(stdout);
 			if (command == exit_game) {
 				exit = 1;
 				break;
 			} else {
 				printf("executing in mode = %d\n", game->mode);
-				fflush(stdout);
 				execute = executeCommand(game, command, x, y, z);
 				printf("execute result is = %d\n",execute);
-				fflush(stdout);
 				iswin = isWin(game);
 				printf("is win = %d\n",iswin);
-				fflush(stdout);
 				if (execute == -1){
 					return -1;
 				}

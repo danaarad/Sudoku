@@ -46,10 +46,8 @@ command_e getCommand(mode_e mode, char *x_p, char *y_p, char *z_p){
 	int valid_command = 0;
 	command_e command = 0;
 
-	fflush(stdout);
 	if (str == NULL) {
 		printf(CALLOC_ERROR);
-		fflush(stdout);
 		return -1;
 	}
 	 /*
@@ -57,8 +55,6 @@ command_e getCommand(mode_e mode, char *x_p, char *y_p, char *z_p){
 	 */
 	while (valid == 0) {
 		printf("Enter your command:\n");
-		fflush(stdout);
-
 		if (fgets(str, MAX_SIZE, stdin) == NULL){
 			strcpy(str, "exit\n");
 			break;
@@ -66,7 +62,6 @@ command_e getCommand(mode_e mode, char *x_p, char *y_p, char *z_p){
 
 		while ((strcmp(str,"\n") == 0)  || (strcmp(str,"\r\n") == 0)) {
 			printf("Enter your command:\n");
-			fflush(stdout);
 			if (fgets(str, MAX_SIZE, stdin) == NULL){
 				strcpy(str, "exit\n");
 				valid = 1;
@@ -85,7 +80,6 @@ command_e getCommand(mode_e mode, char *x_p, char *y_p, char *z_p){
 		}
 	}
 	free(str);
-	fflush(stdout);
 	return command;
 }
 
@@ -105,7 +99,6 @@ int validateCommandMode(command_e command, mode_e mode) {
 	switch(mode){
 	case INIT:
 		for(i = 0; i < (int)(sizeof (allowed_init) / sizeof (allowed_init[0])); ++i) {
-			fflush(stdout);
 			if (command == allowed_init[i]) {
 				result = 1;
 				break;
