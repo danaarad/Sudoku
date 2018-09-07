@@ -19,7 +19,7 @@
 /*
  * Returns a pointer to a new game of size NxN (N = block_height*block_width);
  * Sets LatestAction to an action of type INIT.
- * Allocs place for board with nodes that are all 0;
+ * Allocates place for board with nodes that are all 0;
  */
 Game* initGame(int block_height, int block_width) {
 	int rowlen = 0, x = 0;
@@ -85,8 +85,8 @@ int initTempBoard(Game* gp){
 }
 
 /*
- * All nodes have an ISERROR boolian value.
- * If one of the nodes has a true ISERROR field, it is an error and the board is errornous.
+ * All nodes have an ISERROR boolean value.
+ * If one of the nodes has a true ISERROR field, it is an error and the board is errorneous.
  */
 int isErrornousBoard(Game* gp) {
 	int N = gp->N, i = 0, j = 0;
@@ -101,7 +101,7 @@ int isErrornousBoard(Game* gp) {
 }
 
 /*
- * All nodes have an ISERROR boolian value.
+ * All nodes have an ISERROR boolean value.
  * If a node has a true ISERROR field, it is an error and it is counted as such.
  */
 int CountErrorsInBoard(Game* gp) {
@@ -139,7 +139,7 @@ int isSolvableBoard(Game *gp) {
 }
 
 /*
- * Frees all actions before and after action (recursivly).
+ * Frees all actions before and after action (recursively).
  * Frees action.
  */
 void freeAllActions(Game* gp){
@@ -177,7 +177,7 @@ void freeGame(Game* gp){
  * Creates a check table foe every row, col and block.
  * A check table is a 3D array that contains x,y values by value.
  * The check table is then sent to "updateErrorsFromCheckTable"
- * that updates the errors respectivly.
+ * that updates the errors respectively.
  */
 int UpdateErrors(Game *gp){
 	int x, y, val, idx, emptyPlace, x_corner, y_corner;
