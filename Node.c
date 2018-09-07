@@ -12,14 +12,6 @@
 #include "Node.h"
 #include "settings.h"
 
-Node* initNode(){
-	Node* newNode = (Node*)calloc(1,sizeof(Node));
-	if(!newNode){
-		printf(CALLOC_ERROR);
-	}
-	return newNode;
-}
-
 Node* getNode(Game* gp, int x, int y){
 	return &(gp->gameBoard[x][y]);
 }
@@ -32,14 +24,6 @@ int copyNodetoNode(Node* copyfrom, Node* copyto){
 		worked *= setNodeValByTypeDirectly(copyto, valtype, val);
 	}
 	return worked;
-}
-
-Node* cloneNode(Node *orignode){
-	Node *clone = initNode();
-	if(clone != NULL){
-		copyNodetoNode(orignode, clone);
-	}
-	return clone;
 }
 
 int getNodeValByType(Game* gp, valType_e valType, int x, int y){
