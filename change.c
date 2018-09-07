@@ -10,7 +10,7 @@
 #include <stdlib.h>
 
 /*
- * Craetes a change and adds it after previous change.
+ * Creates a change and adds it after previous change.
  * This change should be set after the last change in the change chain.
  */
 Change *initChange(int x, int y, int val_before, int val_after, Change *prev) {
