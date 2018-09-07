@@ -277,6 +277,10 @@ int doSolveFile(Game **game, char *fileName) {
 
 	freeGame(*game);
 	*game = readFromFile(f_pointer);
+	fclose(f_pointer);
+	if (*game == NULL) {
+		return 0;
+	}
 	(*game)->mode = SOLVE;
 	UpdateErrors(*game);
 	printBoard(*game, VALUE);

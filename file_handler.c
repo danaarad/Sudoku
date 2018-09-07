@@ -47,19 +47,25 @@ Game* readFromFile (FILE *file_ptr){
 	int blockHeight = 0, blockWidth = 0;
 	Game* gp = NULL;
 
+	if (file_ptr == NULL) {
+		return NULL;
+	}
+
 	/*get the size and set it*/
 	num = fscanf(file_ptr, "%d %d\n", &blockHeight, &blockWidth);
-	if (num!=2){
+	if (num != 2) {
 		printf(SCANF_ERROR);
 		return NULL;
 	}
 	gp = initGame(blockHeight, blockWidth);
-	N = blockWidth*blockHeight;
+	if (gp == NULL) {
+		return NULL;
+	}
 
+	N = gp->N;
 	for(y = 0; y < N; y++){
 		for(x = 0; x < N; x++){
 			num = 0;
-
 			chr = fgetc(file_ptr);
 			/*get all spaces before new num*/
 			while(isspace(chr)){
@@ -74,11 +80,10 @@ Game* readFromFile (FILE *file_ptr){
 				/*in the last iteration this will be '.' or space of some kind*/
 			}
 			setNodeValByType(gp, VALUE, x, y, num);
-			if(chr == '.'){
+			if(chr == '.') {
 				setNodeValByType(gp, ISGIVEN, x, y, 1);
 			}
 		}
 	}
-	fclose(file_ptr);
 	return gp;
 }

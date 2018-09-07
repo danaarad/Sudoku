@@ -39,7 +39,7 @@ int main() {
 				break;
 			} else {
 				printf("executing in mode = %d\n", game->mode);
-				execute = executeCommand(game, command, x, y, z);
+				execute = executeCommand(&game, command, x, y, z);
 				printf("execute result is = %d\n",execute);
 				iswin = isWin(game);
 				printf("is win = %d\n",iswin);

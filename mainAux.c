@@ -130,8 +130,10 @@ int validateCommandMode(command_e command, mode_e mode) {
 /*
  * Execute the do function for the command, and returns same value as do function.
  */
-int executeCommand(Game *game, command_e command, char *x, char *y, char *z) {
+int executeCommand(Game **game_p, command_e command, char *x, char *y, char *z) {
 	int res = 0;
+	Game *game = *game_p;
+
 	switch(command){
 	case print_board:
 		printBoard(game, VALUE);
@@ -170,10 +172,10 @@ int executeCommand(Game *game, command_e command, char *x, char *y, char *z) {
 		res = doSet(game, x, y, z);
 		return res;
 	case solve:
-		res = doSolveFile(&game, x);
+		res = doSolveFile(game_p, x);
 		return res;
 	case edit:
-		res = doEditFile(&game, x);
+		res = doEditFile(game_p, x);
 		return res;
 	case edit_default:
 		game->mode = EDIT;
