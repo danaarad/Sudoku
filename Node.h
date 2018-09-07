@@ -11,6 +11,6 @@
 #include "Game_structs.h"
 
 Node* getNode(Game* gp, int x, int y);
-int setNodeValByType(Game* gp, valType_e valType, int x, int y, int val);
+void setNodeValByType(Game* gp, valType_e valType, int x, int y, int val);
 int getNodeValByType(Game* gp, valType_e valType, int x, int y);
 #endif /* NODE_H_ */
