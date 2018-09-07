@@ -32,9 +32,12 @@ void printCeckTable(int ***checkTable, int lenOfArr){
 }
 
 
-/*This function recieves a check table representing a row, col or block.
- *
- *
+/*
+ * This function recieves a check table representing a row, col or block.
+ * It goes over the values, if more than one node in the section
+ * share the same value, they are marked as errors and are marked in the TEMP value.
+ * This insures that values that are errors once will remain errors througout the
+ * whole check procces.
  */
 int updateErrorsFromCheckTable(Game *gp, int ***checkTable, int lenOfArr){
 	int val, i, x, y, firstEmpty;
@@ -69,6 +72,9 @@ int updateErrorsFromCheckTable(Game *gp, int ***checkTable, int lenOfArr){
 	return 1;
 }
 
+/*
+ * Free the check table on all dimentions.
+ */
 void freeCheckTable(int ***checkTable, int rowSize){
 	int i, j;
 	for (i = 0; i < rowSize; ++i){
@@ -80,6 +86,17 @@ void freeCheckTable(int ***checkTable, int rowSize){
 	free(checkTable);
 }
 
+/*
+ * Allocs the check table on all dimentions.
+ * The check table is built in the following manner:
+ *
+ *   ~1~    ~2~    ~3~  ...
+ * (x1,y1)       (x2,y2)
+ * (x3,y3)
+ *   ...
+ *
+ * for each value, a 2D table containes all x,y values that have that value.
+ */
 int ***callocCheckTable(int N){
 	int i, j;
 	int ***checkTable = (int***)calloc(N,sizeof(int**));
@@ -87,7 +104,7 @@ int ***callocCheckTable(int N){
 		for (i = 0; i < N; ++i){
 			checkTable[i] = (int**)calloc(N,sizeof(int*));
 			if(checkTable[i]){
-				for (j = 0; j < rowSize; ++j){
+				for (j = 0; j < N; ++j){
 					checkTable[i][j] = (int*)calloc(2,sizeof(int));
 					if(!checkTable[i][j]){
 						printf(CALLOC_ERROR);
@@ -105,6 +122,10 @@ int ***callocCheckTable(int N){
 	}
 	return checkTable;
 }
+
+/*
+ * Sets all values in check table to -1
+ */
 
 int resetCheckTable(int ***checkTable, int rowSize){
 	int i,j;
