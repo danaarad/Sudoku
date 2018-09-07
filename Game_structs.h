@@ -67,8 +67,6 @@ typedef struct Game {
 	int N;
 	Node** gameBoard;
 	mode_e mode;
-	int isErrornous;
-	int isSolvable;
 	int markErrors;
 	Action* LatestAction;
 	int filledNodes;
