@@ -87,7 +87,7 @@ int ***callocCheckTable(int N){
 		for (i = 0; i < N; ++i){
 			checkTable[i] = (int**)calloc(N,sizeof(int*));
 			if(checkTable[i]){
-				for (j = 0; j < rowSize; ++j){
+				for (j = 0; j < N; ++j){
 					checkTable[i][j] = (int*)calloc(2,sizeof(int));
 					if(!checkTable[i][j]){
 						printf(CALLOC_ERROR);
