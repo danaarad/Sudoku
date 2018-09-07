@@ -14,7 +14,7 @@
 #include "Action.h"
 
 /*
- * Return the first change of the action whitch
+ * Return the first change of the action which
  * is also the head of the change list (since changes are saved as a linked list).
  */
 Change *getChangeHead(Action *action){
@@ -23,8 +23,8 @@ Change *getChangeHead(Action *action){
 
 /*
  * Sets the given change to head of the actions change list.
- * the function alse frees all changes of the action if there are any.
- * This should not happen, however this is a safty mesure to prevent
+ * the function also frees all changes of the action if there are any.
+ * This should not happen, however this is a safety measure to prevent
  * memory leaks.
  */
 int setChangeHead(Action *action, Change *head){
@@ -53,7 +53,7 @@ Action* getNextAction(Action *action){
 /*
  * Sets the second action as the next action of the first action,
  * and sets the first action as the previous action for the second one.
- * Any of the action pointers given to this func can be NULL.
+ * Any of the action pointers given to this function can be NULL.
  * Returns 1 on success, 0 on failure.
  */
 int setNextAction(Action *action, Action *next_action){
@@ -72,7 +72,7 @@ int setNextAction(Action *action, Action *next_action){
 	return isprev && isnext;
 }
 
-/*Recursivly frees all action before the given action (not included)*/
+/*Recursively frees all action before the given action (not included)*/
 void freeActionsBefore(Action *action){
 	Action *prev = action->prev_action;
 	if (prev != NULL){
@@ -82,7 +82,7 @@ void freeActionsBefore(Action *action){
 	}
 }
 
-/*Recursivly frees all action after the given action (not included)*/
+/*Recursively frees all action after the given action (not included)*/
 void freeActionsAfter(Action *action){
 	Action *next = action->next_action;
 	if (next != NULL){
