@@ -145,7 +145,7 @@ int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int
 			/*for every value*/
 			for (v = 1; v <= N; ++v) {
 				idx = 0;
-				/*for every xy in the block*/
+				/* sum of every xy in the block = 1*/
 				for(c = q c < (q + block_w); ++c) {
 					for (r = p; r < (p + block_h); ++r) {
 						ind[idx] = vcrToidx(v, c, r, N);
