@@ -164,7 +164,7 @@ int executeCommand(Game *game, command_e command, char *x, char *y, char *z) {
 		game->mode = EDIT;
 		printBoard(game, VALUE);
 		return 1;
-	case default:
+	default:
 		return -1;
 	}
 	return -1;
