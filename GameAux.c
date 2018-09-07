@@ -37,7 +37,7 @@ void printCeckTable(int ***checkTable, int lenOfArr){
  * It goes over the values, if more than one node in the section
  * share the same value, they are marked as errors and are marked in the TEMP value.
  * This insures that values that are errors once will remain errors throughout the
- * whole check proces	s.
+ * whole check process.
  */
 int updateErrorsFromCheckTable(Game *gp, int ***checkTable, int lenOfArr){
 	int val, i, x, y, firstEmpty;
@@ -73,7 +73,7 @@ int updateErrorsFromCheckTable(Game *gp, int ***checkTable, int lenOfArr){
 }
 
 /*
- * Free the check table on all dimentions.
+ * Free the check table on all dimensions.
  */
 void freeCheckTable(int ***checkTable, int N){
 	int i, j;
@@ -87,7 +87,7 @@ void freeCheckTable(int ***checkTable, int N){
 }
 
 /*
- * Allocs the check table on all dimentions.
+ * Allocs the check table on all dimensions.
  * The check table is built in the following manner:
  *
  *   ~1~    ~2~    ~3~  ...
@@ -95,7 +95,7 @@ void freeCheckTable(int ***checkTable, int N){
  * (x3,y3)
  *   ...
  *
- * for each value, a 2D table containes all x,y values that have that value.
+ * for each value, a 2D table contains all x,y values that have that value.
  */
 int ***callocCheckTable(int N){
 	int i, j;
