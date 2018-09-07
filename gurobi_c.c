@@ -137,24 +137,29 @@ int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int
   }
 
   /* Fourth constraint: for each block sum(Xvcr) = 1
-   * Each block has only one of each val
+   * Each value appears once in each block.
    */
-	for (q = 0; q < block_h; ++q) {
-		for (p = 0; p < block_w; ++p) {
+	for (q = 0; q < N; q += block_w) {
+		for (p = 0; p < N; p += block_h) {
 
-			for(c = q*block_w; c < (q*block_w + block_w); ++c) {
-				for (r = p*block_h; r < (p*block_h + block_h); ++r) {
-					for (v = 1; v <= N; ++v) {
-						ind[v-1] = vcrToidx(v, c, r, N);
-						val[v-1] = 1;
+			/*for every value*/
+			for (v = 1; v <= N; ++v) {
+				idx = 0;
+				/* sum of every xy in the block = 1*/
+				for(c = q c < (q + block_w); ++c) {
+					for (r = p; r < (p + block_h); ++r) {
+						ind[idx] = vcrToidx(v, c, r, N);
+						val[idx] = 1;
+						idx++;
 					}
-					/* add constraint to model */
-					sprintf(const_name, "oneOfValPerBlock[%d,%d]", q, p);
-					error = GRBaddconstr(model, N, ind, val, GRB_EQUAL, 1.0, const_name);
-					if (error) {
-						printf("ERROR %d %s GRBaddconstr(): %s\n", error, const_name, GRBgeterrormsg(env));
-						return -1;
-					}
+
+				}
+				/* add constraint to model */
+				sprintf(const_name, "oneOfValPerBlock[%d,%d]", q, p);
+				error = GRBaddconstr(model, N, ind, val, GRB_EQUAL, 1.0, const_name);
+				if (error) {
+					printf("ERROR %d %s GRBaddconstr(): %s\n", error, const_name, GRBgeterrormsg(env));
+					return -1;
 				}
 			}
 		}
