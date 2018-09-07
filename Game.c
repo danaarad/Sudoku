@@ -105,15 +105,30 @@ int isErrornousBoard(Game* gp) {
  * If a node has a true ISERROR field, it is an error and it is counted as such.
  */
 int CountErrorsInBoard(Game* gp) {
-	int N = gp->N, i, j, numOfErrors = 0;
+	int N = gp->N, i = 0, j = 0, numOfErrors = 0;
 	for (i = 0; i < N; i++){
 		for (j = 0; j < N; j++){
-			if (getNodeValByType(gp,ISERROR, i, j) == 1){
+			if (getNodeValByType(gp, ISERROR, i, j) == 1){
 				numOfErrors++;
 			}
 		}
 	}
 	return numOfErrors;
+}
+
+/*
+ * Returned number of filled nodes in board
+ */
+int CountValuesInBoard(Game* gp) {
+	int N = gp->N, i = 0, j = 0, numOfValues = 0;
+	for (i = 0; i < N; i++){
+		for (j = 0; j < N; j++){
+			if (getNodeValByType(gp, VALUE, i, j) != 0){
+				numOfValues++;
+			}
+		}
+	}
+	return numOfValues;
 }
 
 /*

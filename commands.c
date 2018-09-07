@@ -149,7 +149,6 @@ int doAutofill(Game *game) {
 			if (num_of_possible_vals == 1 && value == 0) {
 				auto_value = get_first_value(possible_vals_arr, game->N);
 				setNodeValByType(game, TEMP, x, y, auto_value);
-				++game->filledNodes;
 				printf("Cell <%d,%d> set to %d\n", (x+1), (y+1), auto_value);
 			}
 
@@ -229,6 +228,7 @@ int doHint(Game *game, char *x, char *y) {
 	if (ILP_result == GRB_OPTIMAL) {
 		hint_val = getNodeValByType(game, TEMP, x_val, y_val);
 		printf("Hint: set cell to %d\n", hint_val);
+		printBoard(game, TEMP);
 		printBoard(game, VALUE);
 		return 1;
 	} else {
@@ -361,11 +361,8 @@ int doSet(Game *game, char *x, char *y, char *z) {
 		return 0;
 	}
 
-	/*update game->filledNodes and cell error*/
-	if (getNodeValByType(game, VALUE, x_val, y_val) == 0){
-		game->filledNodes++; }
+	/*update cell error*/
 	if (z_val == 0){
-		game->filledNodes--;
 		setNodeValByType(game, ISERROR, x_val , y_val, 0);
 	}
 
@@ -391,7 +388,8 @@ int doSet(Game *game, char *x, char *y, char *z) {
 
 int doGenerate(Game *game, char *x, char *y) {
 	int N = game->blockHeight * game->blockWidth;
-	int E = (N*N) - game->filledNodes;
+	int filled_nodes = CountValuesInBoard(game);
+	int E = (N*N) - filled_nodes;
 	int x_val = 0, y_val = 0;
 	int attempt;
 
@@ -403,7 +401,7 @@ int doGenerate(Game *game, char *x, char *y) {
 		return 0;
 	}
 
-	if (game->filledNodes != 0) {
+	if (filled_nodes != 0) {
 		printf("Error: board is not empty\n");
 		printBoard(game, VALUE);
 		return 0;
