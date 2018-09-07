@@ -20,7 +20,6 @@ int getNodeValByType(Game* gp, valType_e valType, int x, int y){
 	switch(valType){
 	case VALUE: return gp->gameBoard[x][y].value;
 	case ISGIVEN: return gp->gameBoard[x][y].isGiven;
-	case SOLUTION: return gp->gameBoard[x][y].solution;
 	case TEMP: return gp->gameBoard[x][y].tempValue;
 	case ISERROR: return gp->gameBoard[x][y].isError;
 	}

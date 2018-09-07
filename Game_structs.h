@@ -28,7 +28,6 @@ typedef enum Mode {
 typedef enum valType {
 	VALUE,
 	ISGIVEN,
-	SOLUTION,
 	TEMP,
 	ISERROR
 } valType_e;
@@ -42,7 +41,6 @@ typedef enum actionType {
 typedef struct Node {
 	int value;
 	int isGiven;
-	int solution;
 	int tempValue;
 	int isError;
 }Node;
