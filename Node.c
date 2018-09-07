@@ -30,6 +30,9 @@ void setNodeValByType(Game* gp, valType_e valType, int x, int y, int val){
 	switch(valType){
 	case VALUE:
 		gp->gameBoard[x][y].value = val;
+		if (val == 0){
+			gp->gameBoard[x][y].isError = 0;
+		}
 		break;
 	case ISGIVEN:
 		gp->gameBoard[x][y].isGiven = val;
