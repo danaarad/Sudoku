@@ -212,7 +212,7 @@ int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int
 
   /* solution found */
   if (optimstatus == GRB_OPTIMAL) {
-    printf("Solution found");
+    printf("Solution found\n");
   }
   /* no solution found */
   else if (optimstatus == GRB_INF_OR_UNBD) {

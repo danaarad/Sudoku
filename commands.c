@@ -226,12 +226,12 @@ int doHint(Game *game, char *x, char *y) {
 	}
 
 	ILP_result = fill_nodes_ILP(game);
-	if (ILP_result == 1) {
+	if (ILP_result == GRB_OPTIMAL) {
 		hint_val = getNodeValByType(game, TEMP, x_val, y_val);
 		printf("Hint: set cell to %d\n", hint_val);
 		printBoard(game, VALUE);
 		return 1;
-	} else if (ILP_result == 0) {
+	} else {
 		printf("Error: board is unsolvable\n");
 		printBoard(game, VALUE);
 		return 1;
