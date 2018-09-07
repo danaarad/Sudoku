@@ -69,7 +69,6 @@ typedef struct Game {
 	mode_e mode;
 	int markErrors;
 	Action* LatestAction;
-	int filledNodes;
 }Game;
 
 

@@ -61,7 +61,7 @@ int GurobiToSolution(Game *gp, double* solFromGurobi){
 int fill_nodes_ILP(Game *gp){
 	int N = gp->N;
 	int num_values = N*N*N;
-	int solfound, count;
+	int solfound = 0, count = 0;
 	int *ConstrainsForGurobi = BoardToGurobi(gp);
 	double *solsFromGurobi = (double *)calloc(num_values, sizeof(double));
 
