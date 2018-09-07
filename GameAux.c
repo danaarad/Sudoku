@@ -31,6 +31,11 @@ void printCeckTable(int ***checkTable, int lenOfArr){
 	fflush(stdout);
 }
 
+
+/*This function recieves a check table representing a row, col or block.
+ *
+ *
+ */
 int updateErrorsFromCheckTable(Game *gp, int ***checkTable, int lenOfArr){
 	int val, i, x, y, firstEmpty;
 
