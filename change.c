@@ -9,6 +9,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/*
+ * Craetes a change and adds it after previous change.
+ * This change should be set after the last change in the change chain.
+ */
 Change *initChange(int x, int y, int val_before, int val_after, Change *prev) {
 	Change *newChange = (Change*)calloc(1,sizeof(Change));
 
@@ -28,6 +32,9 @@ Change *initChange(int x, int y, int val_before, int val_after, Change *prev) {
 	return newChange;
 }
 
+/*
+ * Recursive free of changes in action.
+ */
 void freeChanges(Change *change) {
 	Change *next;
 	if (change != NULL) {
