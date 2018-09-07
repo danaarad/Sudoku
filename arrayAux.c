@@ -6,7 +6,9 @@
  */
 #include <stdio.h>
 
-
+/*
+ * Returns the number of nonzero values in array.
+ */
 int filled_cells(int *arr, int len){
 	int i = 0;
 	int filled_cells = 0;
@@ -21,6 +23,9 @@ int filled_cells(int *arr, int len){
 
 }
 
+/*
+ * Returns the index(+1) of the first nonzero value in array.
+ */
 int get_first_value(int *arr, int len){
 	int i = 0;
 
@@ -33,6 +38,10 @@ int get_first_value(int *arr, int len){
 
 }
 
+/*
+ * Returns the index of the first zero value in a 2d array.
+ * This function is used for working with check tables.
+ */
 int findFirstFreeCellIn2DArr(int **Arr2D, int lenOfArr){
 	int i;
 	for (i = 0; i < lenOfArr; i++){

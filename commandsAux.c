@@ -13,6 +13,9 @@
 #include "Game.h"
 #include "change.h"
 
+/*
+ * Varifies that x, y, and the set value (z) are valid values (between 0 and N = block_height*block_width);
+ */
 int validate_values_for_set(int x, int y, int z, char *z_str, int N) {
 	if (x < 1 || x > N) {
 		return 0;
@@ -23,12 +26,17 @@ int validate_values_for_set(int x, int y, int z, char *z_str, int N) {
 	if (z < 0 || z > N) {
 		return 0;
 	}
+	/*since atoi might return 0 on success if the string was 0*/
 	if (z == 0 && strcmp(z_str, "0") != 0) {
 		return 0;
 	}
 	return 1;
 }
 
+/*
+ * Varifies that nuber of cells to be filled (x param)
+ * and number of cells to be cleared (y param) are valid values (between 0 and E = empty cells);
+ */
 int validate_values_for_generate(int x, char *x_str, int y, char *y_str, int E) {
 	if (x < 0 || x > E) {
 		return 0;
@@ -45,6 +53,9 @@ int validate_values_for_generate(int x, char *x_str, int y, char *y_str, int E) 
 	return 1;
 }
 
+/*
+ * Varifies that x and y are valid values (between 1 and N = block_height*block_width);
+ */
 int validate_values_for_hint(int x, int y, int N) {
 	if (x < 1 || x > N) {
 		return 0;
@@ -54,6 +65,13 @@ int validate_values_for_hint(int x, int y, int N) {
 	}
 	return 1;
 }
+
+/*
+ * Moves the TEMP value to the VALUE of all nonzero tempValues in board.
+ * This represents a multiple change move (such as autofill and generate).
+ * Therefore, each updated value is saved as a change and added to the new action.
+ * This action will become the new latest action.
+ */
 int moveTempToValue(Game *game, actionType_e action_type) {
 	int x = 0, y = 0;
 	int N = game->blockHeight * game->blockWidth;
