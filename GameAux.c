@@ -75,29 +75,29 @@ void freeCheckTable(int ***checkTable, int rowSize){
 	free(checkTable);
 }
 
-int ***callocCheckTable(int rowSize){
+int ***callocCheckTable(int N){
 	int i, j;
-	int ***checkTable = (int***)calloc(rowSize,sizeof(int**));
-		if(checkTable){
-			for (i = 0; i < rowSize; ++i){
-				checkTable[i] = (int**)calloc(rowSize,sizeof(int*));
-				if(checkTable[i]){
-					for (j = 0; j < rowSize; ++j){
-						checkTable[i][j] = (int*)calloc(2,sizeof(int*));
-						if(!checkTable[i][j]){
-							printf(CALLOC_ERROR);
-							return NULL;
-						}
+	int ***checkTable = (int***)calloc(N,sizeof(int**));
+	if(checkTable){
+		for (i = 0; i < N; ++i){
+			checkTable[i] = (int**)calloc(N,sizeof(int*));
+			if(checkTable[i]){
+				for (j = 0; j < rowSize; ++j){
+					checkTable[i][j] = (int*)calloc(2,sizeof(int));
+					if(!checkTable[i][j]){
+						printf(CALLOC_ERROR);
+						return NULL;
 					}
-				}else{
-					printf(CALLOC_ERROR);
-					return NULL;
 				}
+			}else{
+				printf(CALLOC_ERROR);
+				return NULL;
 			}
-		}else{
-			printf(CALLOC_ERROR);
-			return NULL;
 		}
+	}else{
+		printf(CALLOC_ERROR);
+		return NULL;
+	}
 	return checkTable;
 }
 
