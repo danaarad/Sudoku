@@ -13,10 +13,20 @@
 #include "settings.h"
 #include "Action.h"
 
+/*
+ * Return the first change of the action whitch
+ * is also the head of the change list (since changes are saved as a linked list).
+ */
 Change *getChangeHead(Action *action){
 	return action->changes;
 }
 
+/*
+ * Sets the given change to head of the actions change list.
+ * the function alse frees all changes of the action if there are any.
+ * This should not happen, however this is a safty mesure to prevent
+ * memory leaks.
+ */
 int setChangeHead(Action *action, Change *head){
 	freeChanges(action->changes);
 	action->changes = head;
@@ -40,6 +50,12 @@ Action* getNextAction(Action *action){
 	return action->next_action;
 }
 
+/*
+ * Sets the second action as the next action of the first action,
+ * and sets the first action as the previous action for the second one.
+ * Any of the action pointers given to this func can be NULL.
+ * Returns 1 on success, 0 on failure.
+ */
 int setNextAction(Action *action, Action *next_action){
 	int isprev = 1, isnext = 1;
 
@@ -56,6 +72,7 @@ int setNextAction(Action *action, Action *next_action){
 	return isprev && isnext;
 }
 
+/*Recursivly frees all action before the given action (not included)*/
 void freeActionsBefore(Action *action){
 	Action *prev = action->prev_action;
 	if (prev != NULL){
@@ -64,6 +81,8 @@ void freeActionsBefore(Action *action){
 		free(prev);
 	}
 }
+
+/*Recursivly frees all action after the given action (not included)*/
 void freeActionsAfter(Action *action){
 	Action *next = action->next_action;
 	if (next != NULL){
@@ -73,12 +92,18 @@ void freeActionsAfter(Action *action){
 	}
 }
 
-/*assumes before and after are free*/
+/*
+ * Frees a single action.
+ * Assumes before and after are free.
+ */
 void freeSingleAction(Action *action){
 	freeChanges(action->changes);
 	free(action);
 }
 
+/*
+ * Returns a pointer to a new allocated action with given paramaters.
+ */
 Action* initAction(actionType_e actionType,Change* changes, Action* prev_action){
 	Action *newAction = (Action*)calloc(1,sizeof(Action));
 	int atok, cok, paok;
@@ -96,7 +121,11 @@ Action* initAction(actionType_e actionType,Change* changes, Action* prev_action)
 	}
 	return newAction;
 }
-
+/*
+ * Undo the latest action change by change.
+ * Every change is undone by changing the value of node x,y from val after to val before.
+ * The function returns the number of changes that were undone.
+ */
 int undoAction(Game *gp, int print){
 	int x = 0, y = 0, val_before = 0, numOfUndone = 0;
 	Action *action = gp->LatestAction;
@@ -116,6 +145,11 @@ int undoAction(Game *gp, int print){
 	return numOfUndone;
 }
 
+/*
+ * Redo the latest action change by change.
+ * Every change is redone by changing the value of node x,y from val before to val after.
+ * The function returns the number of changes that were redone.
+ */
 int redoAction(Game *gp, int print){
 	int x = 0, y = 0, val_after = 0, numOfUndone = 0;
 	Action *action = gp->LatestAction;
