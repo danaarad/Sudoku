@@ -16,7 +16,11 @@
 #include "arrayAux.h"
 #include "solver.h"
 
-
+/*
+ * Returns a pointer to a new game of size NxN (N = block_height*block_width);
+ * Sets LatestAction to an action of type INIT.
+ * Allocs place for board with nodes that are all 0;
+ */
 Game* initGame(int block_height, int block_width) {
 	int rowlen = 0, x = 0;
 
@@ -63,6 +67,10 @@ Game* initGame(int block_height, int block_width) {
 	return gp;
 }
 
+/*
+ * Sets all values of type TEMP to 0 for all nodes.
+ * This creates an alternative board with alternative values (currently 0).
+ */
 int initTempBoard(Game* gp){
 	int rowlen = gp->N;
 	int i, j;
@@ -76,6 +84,10 @@ int initTempBoard(Game* gp){
 	return 1;
 }
 
+/*
+ * All nodes have an ISERROR boolian value.
+ * If one of the nodes has a true ISERROR field, it is an error and the board is errornous.
+ */
 int isErrornousBoard(Game* gp) {
 	int N = gp->N, i = 0, j = 0;
 	for (i = 0; i < N; i++){
@@ -88,6 +100,10 @@ int isErrornousBoard(Game* gp) {
 	return 0;
 }
 
+/*
+ * All nodes have an ISERROR boolian value.
+ * If a node has a true ISERROR field, it is an error and it is counted as such.
+ */
 int CountErrorsInBoard(Game* gp) {
 	int N = gp->N, i, j, numOfErrors = 0;
 	for (i = 0; i < N; i++){
@@ -100,30 +116,35 @@ int CountErrorsInBoard(Game* gp) {
 	return numOfErrors;
 }
 
+/*
+ * Calls Linear programming, returns the optimstatus from gurobi.
+ */
 int isSolvableBoard(Game *gp) {
 	return fill_nodes_ILP(gp);
 }
 
-int setLatestAction(Game* gp, Action *action){
-	return setNextAction(gp->LatestAction, action);
-}
-
+/*
+ * Frees all actions before and after action (recursivly).
+ * Frees action.
+ */
 void freeAllActions(Game* gp){
 	freeActionsBefore(gp->LatestAction);
 	freeActionsAfter(gp->LatestAction);
 	freeSingleAction(gp->LatestAction);
 }
 
+/*
+ * Frees all arrays of nodes from 2D node array.
+ * Frees the gameBoard.
+ */
 void freeGameBoard(Game* gp){
 	int x, rowlen;
 
 	rowlen = gp->N;
 	for (x = 0; x < rowlen; x++){
 		free(gp->gameBoard[x]);
-		fflush(stdout);
 	}
 	free(gp->gameBoard);
-	fflush(stdout);
 }
 
 void freeGame(Game* gp){
