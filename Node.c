@@ -11,6 +11,10 @@
 #include "Node.h"
 #include "settings.h"
 
+/*
+ * The function gets type, x, y and returns
+ * the value (by type) of the node in position x,y.
+ */
 int getNodeValByType(Game* gp, valType_e valType, int x, int y) {
 	switch (valType) {
 	case VALUE:
@@ -25,6 +29,10 @@ int getNodeValByType(Game* gp, valType_e valType, int x, int y) {
 	return -1;
 }
 
+/*
+ * The function gets type, x, y, val and sets
+ * the value (by type) of the node in position x,y.
+ */
 void setNodeValByType(Game* gp, valType_e valType, int x, int y, int val) {
 	switch (valType) {
 	case VALUE:
