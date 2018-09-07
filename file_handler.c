@@ -60,8 +60,8 @@ Game* readFromFile (FILE *file_ptr){
 		for(x = 0; x < rowlen; x++){
 			num = 0;
 
-			/*relevant for files from windows*/
-			while(chr == '\r'){
+			/*get all spaces before new num*/
+			while(isspace(chr)){
 				chr = fgetc(file_ptr);
 			}
 
