@@ -9,6 +9,11 @@
 #include <ctype.h>
 #include <stdlib.h>
 
+
+/*
+ * Returns 1 if game board is solved successfully
+ * 		   0 if board is erroneous of not full
+ */
 int isWin(Game *game) {
 	int N = game->blockHeight * game->blockWidth;
 	if (game->filledNodes == (N * N)){
@@ -26,6 +31,14 @@ int isWin(Game *game) {
 	return 0;
 }
 
+
+/*
+ * get command from user - returns the compatible command_e enum,
+ * and sets x_ptr, y_ptr and z_ptr to command parameters
+ *
+ * returns -1 on system function failure
+ *
+ */
 command_e getCommand(mode_e mode, char *x_p, char *y_p, char *z_p){
 	char *str = (char*) calloc(MAX_SIZE, sizeof(char));
 	int valid = 0;
@@ -76,6 +89,10 @@ command_e getCommand(mode_e mode, char *x_p, char *y_p, char *z_p){
 	return command;
 }
 
+/*
+ * Validates command is compatible with mode, according to project documents.
+ * Return 1 if compatible, 0 otherwise
+ */
 int validateCommandMode(command_e command, mode_e mode) {
 	command_e allowed_init[] = {solve, edit, edit_default, exit_game};
 	command_e allowed_edit[] = {solve, edit, edit_default, print_board, set,
@@ -115,6 +132,10 @@ int validateCommandMode(command_e command, mode_e mode) {
 	return result;
 }
 
+
+/*
+ * Execute the do function for the command, and returns same value as do function.
+ */
 int executeCommand(Game *game, command_e command, char *x, char *y, char *z) {
 	int res = 0;
 	switch(command){
