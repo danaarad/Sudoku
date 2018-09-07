@@ -28,8 +28,9 @@ Game* initGame(int block_height, int block_width) {
 		gp->mode = INIT;
 		gp->markErrors = 1;
 		gp->LatestAction = initAction(INIT_A, 0, 0);
-		if (!LatestAction){
+		if (!gp->LatestAction){
 			printf(CALLOC_ERROR);
+			free(gp);
 			return NULL;
 		}
 	}else{
@@ -45,12 +46,17 @@ Game* initGame(int block_height, int block_width) {
 			gp->gameBoard[x]=(Node*)calloc(rowlen,sizeof(Node));
 
 			if(!gp->gameBoard[x]){
+				free(gp->LatestAction);
+				free(gp->gameBoard);
+				free(gp);
 				printf(CALLOC_ERROR);
 				return NULL;
 			}
 		}
 	}else{
 		printf(CALLOC_ERROR);
+		free(gp->LatestAction);
+		free(gp);
 		return NULL;
 	}
 
