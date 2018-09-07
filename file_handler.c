@@ -60,26 +60,22 @@ Game* readFromFile (FILE *file_ptr){
 		for(x = 0; x < rowlen; x++){
 			num = 0;
 
+			chr = fgetc(file_ptr);
 			/*get all spaces before new num*/
 			while(isspace(chr)){
 				chr = fgetc(file_ptr);
 			}
 
 			/*get the number*/
-			chr = fgetc(file_ptr);
-
 			while(isdigit(chr)){
 				num *= 10;
 				num += atoi(&chr);
 				chr = fgetc(file_ptr);
-				/*in the last iteration this will be '\n', '.', ' ', or '\r' in windows*/
+				/*in the last iteration this will be '.' or space of some kind*/
 			}
 			setNodeValByType(gp, VALUE, x, y, num);
 			if(chr == '.'){
 				setNodeValByType(gp, ISGIVEN, x, y, 1);
-				/*get empty space after dot*/
-				chr = fgetc(file_ptr);
-				/*this will be '\n', ' ', or '\r' in windows*/
 			}
 		}
 	}
