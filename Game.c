@@ -147,12 +147,23 @@ void freeGameBoard(Game* gp){
 	free(gp->gameBoard);
 }
 
+/*
+ * Frees the actions (and all the changes within),
+ * Frees the game board (and all nodes within),
+ * Frees the game.
+ */
 void freeGame(Game* gp){
 	freeAllActions(gp);
 	freeGameBoard(gp);
 	free(gp);
 }
 
+/*
+ * Creates a check table foe every row, col and block.
+ * A check table is a 3D array that contains x,y values by value.
+ * The check table is then sent to "updateErrorsFromCheckTable"
+ * that updates the errors respectivly.
+ */
 int UpdateErrors(Game *gp){
 	int x, y, val, idx, emptyPlace, x_corner, y_corner;
 	int blockWidth = gp->blockWidth;
