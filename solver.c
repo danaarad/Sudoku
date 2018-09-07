@@ -32,8 +32,10 @@ int* BoardToGurobi(Game *gp){
 	for (c = 0; c < N; c++){
 		for (r = 0; r < N; r++){
 			v = getNodeValByType(gp, VALUE, c, r);
-			idx = vcrToidx(v, c, r, N);
-			forGurobi[idx] = 1;
+			if (v != 0) {
+				idx = vcrToidx(v, c, r, N);
+				forGurobi[idx] = 1;
+			}
 		}
 	}
 	return forGurobi;
@@ -69,6 +71,7 @@ int fill_nodes_ILP(Game *gp){
 		printf(CALLOC_ERROR);
 		return -1;
 	}
+
 	if (ConstrainsForGurobi == NULL){
 		return -1;
 	}
@@ -81,6 +84,8 @@ int fill_nodes_ILP(Game *gp){
 			solfound = 0;
 		}
 	}
+	(void) solfound;
+	(void) count;
 
 	free(solsFromGurobi);
 	free(ConstrainsForGurobi);
