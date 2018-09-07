@@ -40,23 +40,13 @@ Game* initGame(int block_height, int block_width) {
 		for (x = 0; x < rowlen; x++){
 			gp->gameBoard[x]=(Node*)calloc(rowlen,sizeof(Node));
 
-			if(gp->gameBoard[x]){
-				for (y = 0; y < rowlen; y++){
-					newNode = initNode();
-					gp->gameBoard[x][y] = *newNode;
-				}
-			}else{
-				for (i = 0; i <= x; i++){
-					free(gp->gameBoard[i]);
-				}
-				free(gp);
+			if(!gp->gameBoard[x]){
 				printf(CALLOC_ERROR);
 				return NULL;
 			}
 		}
 	}else{
 		printf(CALLOC_ERROR);
-		free(gp);
 		return NULL;
 	}
 
@@ -121,18 +111,13 @@ void freeGameBoard(Game* gp){
 
 	rowlen = gp->N;
 	for (x = 0; x < rowlen; x++){
-		for (y = 0; y < rowlen; y++){
-			node = &(gp->gameBoard[x][y]);
-			free(node);
-			printf("freed node (%d,%d)",x,y);
-			fflush(stdout);
-		}
 		free(gp->gameBoard[x]);
 		printf("freed col(%d)",x);
 		fflush(stdout);
 	}
 	free(gp->gameBoard);
-	printf("freed board");
+	printf("freed b"
+			"oard");
 	fflush(stdout);
 }
 void freeGame(Game* gp){
