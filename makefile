@@ -1,5 +1,4 @@
 CC = gcc
-OBJS = Action.o arrayAux.o change.o commands.o commandsAux.o file_handler.o Game.o GameAux.o gurobi_c.o main.o mainAux.o Node.o parser.o printer.o solver.o stack.o
 EXEC = sudoku
 OBJS = Action.o arrayAux.o change.o commands.o commandsAux.o file_handler.o Game.o GameAux.o gurobi_c.o main.o mainAux.o Node.o parser.o printer.o solver.o stack.o
 COMP_FLAGS = -ansi -O3 -Wall -Wextra -Werror -pedantic-errors
