@@ -136,13 +136,14 @@ int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int
 	  }
   }
 
-  /* Fourth constraint: for c in [0,N-1], sum(Xvcr) = 1
+  /* Fourth constraint: for each block sum(Xvcr) = 1
    * Each block has only one of each val
    */
 	for (q = 0; q < block_h; ++q) {
 		for (p = 0; p < block_w; ++p) {
-			for(c = q; c < (q + block_w); ++c) {
-				for (r = p; r < (p + block_h); ++r) {
+
+			for(c = q*block_w; c < (q*block_w + block_w); ++c) {
+				for (r = p*block_h; r < (p*block_h + block_h); ++r) {
 					for (v = 1; v <= N; ++v) {
 						ind[v-1] = vcrToidx(v, c, r, N);
 						val[v-1] = 1;
