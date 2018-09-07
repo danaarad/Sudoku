@@ -15,15 +15,18 @@
 #include "Node.h"
 #include "Game.h"
 
-
+/*
+ * Writes board into given file.
+ * The file is written according to the structure specified in the project assignment.
+ */
 int writeToFile (Game* gp, FILE *file_ptr){
-	int blockHeight = gp->blockHeight, blockWidth = gp->blockWidth;
-	int x = 0, y = 0, val = 0, rowlen = blockWidth*blockHeight;
+	int blockHeight = gp->blockHeight, blockWidth = gp->blockWidth, N = gp->N;
+	int x = 0, y = 0, val = 0;
 
 	fprintf(file_ptr, "%d %d\n", blockHeight, blockWidth);
 
-	for(y = 0; y < rowlen; y++){
-		for(x = 0; x < rowlen; x++){
+	for(y = 0; y < N; y++){
+		for(x = 0; x < N; x++){
 			if(x > 0){
 				fprintf(file_ptr," ");
 			}
@@ -41,6 +44,9 @@ int writeToFile (Game* gp, FILE *file_ptr){
 	return 1;
 }
 
+/*
+ * Returns a pointer to a new game as loaded from a given file.
+ */
 Game* readFromFile (FILE *file_ptr){
 	char chr = '\0';
 	char num_as_str[2] = {0};
