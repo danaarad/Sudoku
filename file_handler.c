@@ -60,18 +60,20 @@ Game* readFromFile (FILE *file_ptr){
 		for(x = 0; x < rowlen; x++){
 			num = 0;
 			chr = fgetc(file_ptr);
+			printf("i got the char %c",chr);
 
 			while(isdigit(chr)){
 				num *= 10;
 				num += atoi(&chr);
 				chr = fgetc(file_ptr);
+				printf("i got the char %c, the one before was a digit",chr);
 			}
 			setNodeValByType(gp, VALUE, x, y, num);
 			if(chr == '.'){
 				setNodeValByType(gp, ISGIVEN, x, y, 1);
-				setNodeValByType(gp, SOLUTION, x, y, num);
 				/*get empty space after dot*/
 				chr = fgetc(file_ptr);
+				("i got the char %c, the one before was a dot",chr);
 			}
 		}
 	}
