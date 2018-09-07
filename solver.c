@@ -21,7 +21,7 @@ int isSolvable(Game* gp){
 int* BoardToGurobi(Game *gp){
 	int N = gp->N;
 	int num_vars = N*N*N;
-	int r, c, v, idx;
+	int r = 0, c = 0, v = 0, idx = 0;
 
 	int *forGurobi = (int *)calloc(num_vars, sizeof(int));
 	if (forGurobi == NULL) {
@@ -40,7 +40,7 @@ int* BoardToGurobi(Game *gp){
 }
 
 int GurobiToSolution(Game *gp, double* solFromGurobi){
-	int v, c, r, idx, count = 0;
+	int v = 0, c = 0, r = 0, idx = 0, count = 0;
 	int N = gp->N;
 
 	initTempBoard(gp);
@@ -78,7 +78,7 @@ int fill_nodes_ILP(Game *gp){
 		count = GurobiToSolution(gp, solsFromGurobi);
 		if (count != N*N){
 			printf("Number of values from gurobi does not match board! %d", count);
-			return 0;
+			solfound = 0;
 		}
 	}
 

@@ -4,6 +4,7 @@
 #include "Game.h"
 #include <stdio.h>
 #include <string.h>
+#include <strings.h>
 #include <stdlib.h>
 #include <time.h>
 
@@ -11,9 +12,10 @@ int main() {
 	int exit = 0, execute = 0, iswin = 0;
 	Game *game;
 	command_e command;
-	char  *x;
-	char  *y;
-	char  *z;
+	char  x[MAX_SIZE] = {0};
+	char  y[MAX_SIZE] = {0};
+	char  z[MAX_SIZE] = {0};
+
 	srand(time(NULL));
 
 	printf("Sudoku\n------\n");
@@ -25,13 +27,10 @@ int main() {
 			return -1;
 		}
 		while (1) {
-			x = (char*) calloc(MAX_SIZE, sizeof(char));
-			y = (char*) calloc(MAX_SIZE, sizeof(char));
-			z = (char*) calloc(MAX_SIZE, sizeof(char));
-			if (x == NULL || y == NULL || z == NULL){
-				printf(CALLOC_ERROR);
-				return -1;
-			}
+			bzero(x, MAX_SIZE);
+			bzero(y, MAX_SIZE);
+			bzero(z, MAX_SIZE);
+
 			command = getCommand(game->mode, x, y, z);
 			printf("%s, %s, %s, %d \n", x, y, z, (int)command);
 			if (command == exit_game) {
@@ -51,15 +50,9 @@ int main() {
 					break;
 				}
 			}
-		free(x);
-		free(y);
-		free(z);
 		}
 		if (exit == 1) {
 			printf( "Exiting...\n");
-			free(x);
-			free(y);
-			free(z);
 			freeGame(game);
 		}
 

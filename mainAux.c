@@ -40,16 +40,12 @@ int isWin(Game *game) {
  *
  */
 command_e getCommand(mode_e mode, char *x_p, char *y_p, char *z_p){
-	char *str = (char*) calloc(MAX_SIZE, sizeof(char));
+	char str[MAX_SIZE] = {0};
 	int valid = 0;
 	int parsed;
 	int valid_command = 0;
 	command_e command = 0;
 
-	if (str == NULL) {
-		printf(CALLOC_ERROR);
-		return -1;
-	}
 	 /*
 	 * get command string, ignore \n
 	 */
@@ -63,7 +59,6 @@ command_e getCommand(mode_e mode, char *x_p, char *y_p, char *z_p){
 		while ((strcmp(str,"\n") == 0)  || (strcmp(str,"\r\n") == 0)) {
 			printf("Enter your command:\n");
 			if (fgets(str, MAX_SIZE, stdin) == NULL){
-				free(str);
 				return exit_game;
 
 			}
@@ -80,7 +75,6 @@ command_e getCommand(mode_e mode, char *x_p, char *y_p, char *z_p){
 			}
 		}
 	}
-	free(str);
 	return command;
 }
 
