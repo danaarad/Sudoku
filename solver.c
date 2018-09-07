@@ -24,7 +24,8 @@ int* BoardToGurobi(Game *gp){
 	int r, c, v, idx;
 
 	int *forGurobi = (int *)calloc(num_vars, sizeof(int));
-	if(!forGurobi){
+	if (forGurobi == NULL) {
+		printf(CALLOC_ERROR);
 		return NULL;
 	}
 
@@ -61,17 +62,19 @@ int fill_nodes_ILP(Game *gp){
 	int N = gp->N;
 	int num_values = N*N*N;
 	int solfound, count;
+	int *ConstrainsForGurobi = BoardToGurobi(gp);
 	double *solsFromGurobi = (double *)calloc(num_values, sizeof(double));
 
-	int *ConstrainsForGurobi = BoardToGurobi(gp);
-	if (!ConstrainsForGurobi){
+	if (solsFromGurobi == NULL) {
+		printf(CALLOC_ERROR);
+		return -1;
+	}
+	if (ConstrainsForGurobi == NULL){
 		return -1;
 	}
 
-
 	solfound = get_gurobi_solution(solsFromGurobi, ConstrainsForGurobi, gp->blockHeight, gp->blockWidth);
-
-	if (solfound){
+	if (solfound) {
 		count = GurobiToSolution(gp, solsFromGurobi);
 		if (count != N*N){
 			printf("Number of values from gurobi does not match board! %d", count);
@@ -98,7 +101,7 @@ int fill_nodes_random(Game *game, valType_e val_type, int num_of_cells) {
 		y = rand()%(game->N);
 		if (getNodeValByType(game, val_type, x, y) == 0) {
 			possible_vals_arr = calloc(game->N, sizeof(int));
-			if (possible_vals_arr == 0) {
+			if (possible_vals_arr == NULL) {
 				printf(CALLOC_ERROR);
 				return 0;
 			}

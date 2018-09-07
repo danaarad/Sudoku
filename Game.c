@@ -120,7 +120,7 @@ int CountErrorsInBoard(Game* gp) {
  * Calls Linear programming, returns the optimstatus from gurobi.
  */
 int isSolvableBoard(Game *gp) {
-	return fill_nodes_ILP(gp);
+	return fill_nodes_ILP(gp) == GRB_OPTIMAL;
 }
 
 /*

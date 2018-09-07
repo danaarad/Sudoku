@@ -4,6 +4,7 @@
 #define _GUROBI_C_H
 
 #include <stdio.h>
+#include "settings.h"
 
 typedef struct _GRBmodel GRBmodel;
 typedef struct _GRBenv GRBenv;
@@ -696,23 +697,6 @@ int __stdcall
 
 int __stdcall
   GRBgetBasisHead(GRBmodel *model, int *bhead);
-
-/* Model status codes (after call to GRBoptimize()) */
-
-#define GRB_LOADED          1
-#define GRB_OPTIMAL         2
-#define GRB_INFEASIBLE      3
-#define GRB_INF_OR_UNBD     4
-#define GRB_UNBOUNDED       5
-#define GRB_CUTOFF          6
-#define GRB_ITERATION_LIMIT 7
-#define GRB_NODE_LIMIT      8
-#define GRB_TIME_LIMIT      9
-#define GRB_SOLUTION_LIMIT 10
-#define GRB_INTERRUPTED    11
-#define GRB_NUMERIC        12
-#define GRB_SUBOPTIMAL     13
-#define GRB_INPROGRESS     14
 
 /* Basis status info */
 
