@@ -110,12 +110,9 @@ void freeGameBoard(Game* gp){
 	rowlen = gp->N;
 	for (x = 0; x < rowlen; x++){
 		free(gp->gameBoard[x]);
-		printf("freed col(%d)",x);
 		fflush(stdout);
 	}
 	free(gp->gameBoard);
-	printf("freed b"
-			"oard");
 	fflush(stdout);
 }
 void freeGame(Game* gp){
