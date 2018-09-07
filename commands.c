@@ -209,7 +209,6 @@ int doHint(Game *game, char *x, char *y) {
 
 	if (isErrornousBoard(game) == 1) {
 		printf("Error: board contains erroneous values\n");
-		printBoard(game, ISERROR);
 		printBoard(game, VALUE);
 		return 0;
 	}
@@ -228,7 +227,6 @@ int doHint(Game *game, char *x, char *y) {
 	if (ILP_result == GRB_OPTIMAL) {
 		hint_val = getNodeValByType(game, TEMP, x_val, y_val);
 		printf("Hint: set cell to %d\n", hint_val);
-		printBoard(game, TEMP);
 		printBoard(game, VALUE);
 		return 1;
 	} else {
