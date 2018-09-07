@@ -43,6 +43,7 @@ int writeToFile (Game* gp, FILE *file_ptr){
 
 Game* readFromFile (FILE *file_ptr){
 	char chr = '\0';
+	char num_as_str[2] = {0};
 	int num = 0, x = 0, y = 0, N = 0;
 	int blockHeight = 0, blockWidth = 0;
 	Game* gp = NULL;
@@ -75,7 +76,8 @@ Game* readFromFile (FILE *file_ptr){
 			/*get the number*/
 			while(isdigit(chr)){
 				num *= 10;
-				num += atoi(&chr);
+				num_as_str[0] = chr;
+				num += atoi(num_as_str);
 				chr = fgetc(file_ptr);
 				/*in the last iteration this will be '.' or space of some kind*/
 			}
