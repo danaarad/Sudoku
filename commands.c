@@ -105,7 +105,7 @@ int doAutofill(Game *game) {
 	int auto_value = 0;
 	int value;
 
-	if (game->isErrornous == 1) {
+	if (isErrornousBoard(game) == 1) {
 		printf("Error: board contains erroneous values\n");
 		printBoard(game, VALUE);
 		return 0;
@@ -143,7 +143,7 @@ int doAutofill(Game *game) {
 
 int doGetNumofSols(Game *game) {
 	int num_of_sols = 0;
-	if (game->isErrornous == 1) {
+	if (isErrornousBoard(game) == 1) {
 		printf("Error: board contains erroneous values\n");
 		printBoard(game, VALUE);
 		return 0;
@@ -180,7 +180,7 @@ int doHint(Game *game, char *x, char *y) {
 	x_val -= 1;
 	y_val -= 1;
 
-	if (game->isErrornous == 1) {
+	if (isErrornousBoard(game) == 1) {
 		printf("Error: board contains erroneous values\n");
 		printBoard(game, VALUE);
 		return 0;
@@ -260,7 +260,7 @@ int doMarkErrors(Game *game, char *x) {
 int doValidate(Game *game) {
 	int solvable = 0;
 
-	if (game->isErrornous == 1) {
+	if (isErrornousBoard(game) == 1) {
 		printf("Error: board contains erroneous values\n");
 		printBoard(game, VALUE);
 		return 1;

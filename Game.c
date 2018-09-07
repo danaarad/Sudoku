@@ -14,6 +14,7 @@
 #include "settings.h"
 #include "GameAux.h"
 #include "arrayAux.h"
+#include "solver.h"
 
 
 Game* initGame(int block_height, int block_width) {
@@ -89,9 +90,8 @@ int CountErrorsInBoard(Game* gp) {
 	return numOfErrors;
 }
 
-int isSolvableBoard(Game *gp){
-	printf("%d", gp->N);
-	return 0;
+int isSolvableBoard(Game *gp) {
+	return fill_nodes_ILP(gp);
 }
 
 int setLatestAction(Game* gp, Action *action){

@@ -18,7 +18,7 @@ int isWin(Game *game) {
 	int N = game->blockHeight * game->blockWidth;
 	if (game->filledNodes == (N * N)){
 		if (game->mode == SOLVE) {
-			if (game->isErrornous == 0) {
+			if (isErrornousBoard(game) == 0) {
 				printf("Puzzle solved successfully\n");
 				return 1;
 			} else {
