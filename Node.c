@@ -23,6 +23,7 @@ int getNodeValByType(Game* gp, valType_e valType, int x, int y){
 	case TEMP: return gp->gameBoard[x][y].tempValue;
 	case ISERROR: return gp->gameBoard[x][y].isError;
 	}
+	return -1;
 }
 
 void setNodeValByType(Game* gp, valType_e valType, int x, int y, int val){
@@ -32,9 +33,6 @@ void setNodeValByType(Game* gp, valType_e valType, int x, int y, int val){
 		break;
 	case ISGIVEN:
 		gp->gameBoard[x][y].isGiven = val;
-		break;
-	case SOLUTION:
-		gp->gameBoard[x][y].solution = val;
 		break;
 	case TEMP:
 		gp->gameBoard[x][y].tempValue = val;
