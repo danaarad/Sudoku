@@ -247,7 +247,7 @@ int doHint(Game *game, char *x, char *y) {
  * Execute edit from file command
  * Returns 1 on success, 0 on failure
  */
-int doEditFile(Game *game, char *fileName)  {
+int doEditFile(Game **game, char *fileName)  {
 	FILE *f_pointer = fopen(fileName, "r");
 
 	printf("doEditFile!\n");
@@ -256,10 +256,11 @@ int doEditFile(Game *game, char *fileName)  {
 		printf("Error: File cannot be opened\n");
 		return 0;
 	}
-	*game = *readFromFile(f_pointer);
-	game->mode = EDIT;
-	UpdateErrors(game);
-	printBoard(game, VALUE);
+	freeGame(*game);
+	*game = readFromFile(f_pointer);
+	(*game)->mode = EDIT;
+	UpdateErrors(*game);
+	printBoard(*game, VALUE);
 	return 1;
 }
 
@@ -267,17 +268,18 @@ int doEditFile(Game *game, char *fileName)  {
  * Execute solve command
  * Returns 1 on success, 0 on failure
  */
-int doSolveFile(Game *game, char *fileName) {
+int doSolveFile(Game **game, char *fileName) {
 	FILE *f_pointer = fopen(fileName, "r");
 	if (f_pointer == NULL) {
 		printf("Error: File doesn't exist or cannot be opened\n");
 		return 0;
 	}
 
-	*game = *readFromFile(f_pointer);
-	game->mode = SOLVE;
-	UpdateErrors(game);
-	printBoard(game, VALUE);
+	freeGame(*game);
+	*game = readFromFile(f_pointer);
+	(*game)->mode = SOLVE;
+	UpdateErrors(*game);
+	printBoard(*game, VALUE);
 	return 1;
 }
 

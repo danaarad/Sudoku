@@ -43,9 +43,9 @@ int writeToFile (Game* gp, FILE *file_ptr){
 
 Game* readFromFile (FILE *file_ptr){
 	char chr = '\0';
-	int num, x = 0, y = 0, rowlen;
-	int blockHeight=0, blockWidth=0;
-	Game* gp;
+	int num = 0, x = 0, y = 0, N = 0;
+	int blockHeight = 0, blockWidth = 0;
+	Game* gp = NULL;
 
 	/*get the size and set it*/
 	num = fscanf(file_ptr, "%d %d\n", &blockHeight, &blockWidth);
@@ -54,10 +54,10 @@ Game* readFromFile (FILE *file_ptr){
 		return NULL;
 	}
 	gp = initGame(blockHeight, blockWidth);
+	N = blockWidth*blockHeight;
 
-	rowlen = blockWidth*blockHeight;
-	for(y = 0; y < rowlen; y++){
-		for(x = 0; x < rowlen; x++){
+	for(y = 0; y < N; y++){
+		for(x = 0; x < N; x++){
 			num = 0;
 
 			chr = fgetc(file_ptr);

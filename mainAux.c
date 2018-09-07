@@ -170,10 +170,10 @@ int executeCommand(Game *game, command_e command, char *x, char *y, char *z) {
 		res = doSet(game, x, y, z);
 		return res;
 	case solve:
-		res = doSolveFile(game, x);
+		res = doSolveFile(&game, x);
 		return res;
 	case edit:
-		res = doEditFile(game, x);
+		res = doEditFile(&game, x);
 		return res;
 	case edit_default:
 		game->mode = EDIT;
