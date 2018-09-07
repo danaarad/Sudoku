@@ -108,6 +108,7 @@ int fill_nodes_random(Game *game, valType_e val_type, int num_of_cells) {
 
 			num_of_possible_vals = get_possible_values_for_node(game, val_type, x, y, possible_vals_arr);
 			if (num_of_possible_vals == 0) {
+				free(possible_vals_arr);
 				return 0;
 			}
 			is_good_random_val = 0;

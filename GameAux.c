@@ -37,7 +37,7 @@ void printCeckTable(int ***checkTable, int lenOfArr){
  * It goes over the values, if more than one node in the section
  * share the same value, they are marked as errors and are marked in the TEMP value.
  * This insures that values that are errors once will remain errors throughout the
- * whole check process.
+ * whole check proces	s.
  */
 int updateErrorsFromCheckTable(Game *gp, int ***checkTable, int lenOfArr){
 	int val, i, x, y, firstEmpty;
