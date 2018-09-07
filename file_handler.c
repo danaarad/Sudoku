@@ -42,7 +42,7 @@ int writeToFile (Game* gp, FILE *file_ptr){
 }
 
 Game* readFromFile (FILE *file_ptr){
-	char chr;
+	char chr = '\0';
 	int num, x = 0, y = 0, rowlen;
 	int blockHeight=0, blockWidth=0;
 	Game* gp;
@@ -59,6 +59,13 @@ Game* readFromFile (FILE *file_ptr){
 	for(y = 0; y < rowlen; y++){
 		for(x = 0; x < rowlen; x++){
 			num = 0;
+
+			/*relevant for files from windows*/
+			while(chr == '\r'){
+				chr = fgetc(file_ptr);
+			}
+
+			/*get the number*/
 			chr = fgetc(file_ptr);
 			printf("i got the char %c",chr);
 
@@ -66,6 +73,7 @@ Game* readFromFile (FILE *file_ptr){
 				num *= 10;
 				num += atoi(&chr);
 				chr = fgetc(file_ptr);
+				/*in the last iteration this will be '\n', '.', ' ', or '\r' in windows*/
 				printf("i got the char %c, the one before was a digit",chr);
 			}
 			setNodeValByType(gp, VALUE, x, y, num);
@@ -73,6 +81,7 @@ Game* readFromFile (FILE *file_ptr){
 				setNodeValByType(gp, ISGIVEN, x, y, 1);
 				/*get empty space after dot*/
 				chr = fgetc(file_ptr);
+				/*this will be '\n', ' ', or '\r' in windows*/
 				("i got the char %c, the one before was a dot",chr);
 			}
 		}
