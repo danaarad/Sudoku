@@ -196,7 +196,7 @@ int doHint(Game *game, char *x, char *y) {
 		return 0;
 	}
 
-	ILP_result = fill_nodes_ILP(game, TEMP);
+	ILP_result = fill_nodes_ILP(game);
 	if (ILP_result == 1) {
 		hint_val = getNodeValByType(game, TEMP, x_val, y_val);
 		printf("Hint: set cell to %d\n", hint_val);
@@ -353,7 +353,7 @@ int doGenerate(Game *game, char *x, char *y) {
 		if (fill_nodes_random(game, TEMP, x_val) != 1) {
 			continue;
 		}
-		if (fill_nodes_ILP(game, TEMP) != 1) {
+		if (fill_nodes_ILP(game) != 1) {
 			continue;
 		}
 		if (clear_nodes(game, TEMP, y_val) != 1) {
