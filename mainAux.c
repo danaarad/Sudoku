@@ -56,15 +56,16 @@ command_e getCommand(mode_e mode, char *x_p, char *y_p, char *z_p){
 	while (valid == 0) {
 		printf("Enter your command:\n");
 		if (fgets(str, MAX_SIZE, stdin) == NULL){
-			strcpy(str, "exit\n");
+			command = exit_game;
 			break;
 		}
 
 		while ((strcmp(str,"\n") == 0)  || (strcmp(str,"\r\n") == 0)) {
 			printf("Enter your command:\n");
 			if (fgets(str, MAX_SIZE, stdin) == NULL){
-				strcpy(str, "exit\n");
-				valid = 1;
+				free(str);
+				return exit_game;
+
 			}
 		}
 
