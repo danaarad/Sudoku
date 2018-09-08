@@ -287,6 +287,7 @@ static int doEdit(Game **game)  {
 	printBoard(*game, VALUE);
 	return 1;
 }
+
 /*
  * Execute solve command
  * Returns 1 on success, 0 on failure
@@ -432,18 +433,12 @@ static int doGenerate(Game *game, char *x, char *y) {
 		if (fill_nodes_random(game, TEMP, x_val) != 1) {
 			continue;
 		}
-		printf("filled random %d cells\n", x_val);
-		printBoard(game, TEMP);
 		if (fill_nodes_ILP(game, TEMP) != GRB_OPTIMAL) {
 			continue;
 		}
-		printf("filled ILP\n");
-		printBoard(game, TEMP);
 		if (clear_nodes(game, TEMP, y_val) != 1) {
 			continue;
 		}
-		printf("cleared all but %d cells\n", y_val);
-		printBoard(game, TEMP);
 		if (moveTempToValue(game, GENERATE_A) != 1){
 			continue;
 		}
