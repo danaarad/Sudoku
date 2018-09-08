@@ -213,21 +213,21 @@ int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int
 	  return -1;
   }
 
-  /* print results */
+  /* print results
   printf("\nOptimization complete\n");
 
-  /* solution found */
+  solution found
   if (optimstatus == GRB_OPTIMAL) {
     printf("Solution found\n");
   }
-  /* no solution found */
+  no solution found
   else if (optimstatus == GRB_INF_OR_UNBD) {
     printf("Model is infeasible or unbounded\n");
   }
-  /* error or calculation stopped */
+  error or calculation stopped
   else {
     printf("Optimization was stopped early\n");
-  }
+  } */
 
   /* IMPORTANT !!! - Free model and environment */
   GRBfreemodel(model);

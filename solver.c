@@ -83,7 +83,6 @@ int fill_nodes_ILP(Game *gp, valType_e val_type){
 	if (solfound) {
 		count = GurobiToSolution(gp, solsFromGurobi);
 		if (count != N*N){
-			printf("Number of values from gurobi does not match board! %d", count);
 			solfound = 0;
 		}
 	}
