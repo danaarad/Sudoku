@@ -19,13 +19,14 @@
 #include "file_handler.h"
 #include "commandsAux.h"
 #include "change.h"
+#include "parser.h"
 
 
 /*
  * Execute save command
  * Returns 1 on success, 0 on failure
  */
-int doSave(Game* gp, char *fileName){
+static int doSave(Game* gp, char *fileName){
 	FILE* file_ptr = NULL;
 		if (!isErrornousBoard(gp)){
 			if (isSolvable(gp)){
@@ -54,7 +55,7 @@ int doSave(Game* gp, char *fileName){
  * Execute undo command
  * Returns 1 on success, 0 on failure
  */
-int doUndo(Game *game) {
+static int doUndo(Game *game) {
 	Action *action_to_undo = game->LatestAction;
 	if (action_to_undo->type != INIT_A) {
 		undoAction(game, 1);
@@ -74,7 +75,7 @@ int doUndo(Game *game) {
  * Execute redo command
  * Returns 1 on success, 0 on failure
  */
-int doRedo(Game *game) {
+static int doRedo(Game *game) {
 	Action *action_to_redo;
 	if (game->LatestAction != NULL) {
 		action_to_redo = game->LatestAction->next_action;
@@ -98,7 +99,7 @@ int doRedo(Game *game) {
  * Execute reset command
  * Returns 1 on success, 0 on failure
  */
-int doReset(Game *game) {
+static int doReset(Game *game) {
 	Action *prev_action = NULL;
 
 	while (game->LatestAction->type != INIT_A) {
@@ -118,7 +119,7 @@ int doReset(Game *game) {
  * Execute autofill command
  * Returns 1 on success, 0 on failure
  */
-int doAutofill(Game *game) {
+static int doAutofill(Game *game) {
 	int x = 0, y = 0;
 	int N = game->blockHeight * game->blockWidth;
 	int *possible_vals_arr;
@@ -165,7 +166,7 @@ int doAutofill(Game *game) {
  * Execute num_solutions command
  * Returns 1 on success, 0 on failure
  */
-int doGetNumofSols(Game *game) {
+static int doGetNumofSols(Game *game) {
 	int num_of_sols = 0;
 	if (isErrornousBoard(game) == 1) {
 		printf("Error: board contains erroneous values\n");
@@ -188,7 +189,7 @@ int doGetNumofSols(Game *game) {
 	return 1;
 }
 
-int doHint(Game *game, char *x, char *y) {
+static int doHint(Game *game, char *x, char *y) {
 	int N = game->N;
 	int x_val = 0, y_val = 0, hint_val = 0;
 	int ILP_result = 0;
@@ -242,7 +243,7 @@ int doHint(Game *game, char *x, char *y) {
  * Sets mode to edit and mark_errors to 1.
  * Returns 1 on success, 0 on failure.
  */
-int doEditFile(Game **game, char *fileName)  {
+static int doEditFile(Game **game, char *fileName)  {
 	FILE *f_pointer = fopen(fileName, "r");
 
 	printf("doEditFile!\n");
@@ -270,7 +271,7 @@ int doEditFile(Game **game, char *fileName)  {
  * Sets mode to edit and mark_errors to 1.
  * Returns 1 on success, 0 on failure.
  */
-int doEdit(Game **game)  {
+static int doEdit(Game **game)  {
 	printf("doEdit!\n");
 
 	freeGame(*game);
@@ -290,7 +291,7 @@ int doEdit(Game **game)  {
  * Execute solve command
  * Returns 1 on success, 0 on failure
  */
-int doSolveFile(Game **game, char *fileName) {
+static int doSolveFile(Game **game, char *fileName) {
 	FILE *f_pointer = fopen(fileName, "r");
 	if (f_pointer == NULL) {
 		printf("Error: File doesn't exist or cannot be opened\n");
@@ -313,7 +314,7 @@ int doSolveFile(Game **game, char *fileName) {
  * Execute mark_errors command
  * Returns 1 on success, 0 on failure
  */
-int doMarkErrors(Game *game, char *x) {
+static int doMarkErrors(Game *game, char *x) {
 	int mark_errors_value = -1;
 
 	printf("doMarkErrors!\n");
@@ -331,7 +332,7 @@ int doMarkErrors(Game *game, char *x) {
  * Execute validate command
  * Returns 1 on success, 0 on failure
  */
-int doValidate(Game *game) {
+static int doValidate(Game *game) {
 	int solvable = 0;
 
 	if (isErrornousBoard(game) == 1) {
@@ -356,7 +357,7 @@ int doValidate(Game *game) {
  * Execute set command
  * Returns 1 on success, 0 on failure
  */
-int doSet(Game *game, char *x, char *y, char *z) {
+static int doSet(Game *game, char *x, char *y, char *z) {
 	int x_val = 0, y_val = 0, z_val = 0;
 	int N = game->blockHeight * game->blockWidth;
 	Action *new_action; Change *new_change;
@@ -406,7 +407,7 @@ int doSet(Game *game, char *x, char *y, char *z) {
 	return 1;
 }
 
-int doGenerate(Game *game, char *x, char *y) {
+static int doGenerate(Game *game, char *x, char *y) {
 	int N = game->blockHeight * game->blockWidth;
 	int filled_nodes = CountValuesInBoard(game);
 	int E = (N*N) - filled_nodes;
@@ -448,4 +449,140 @@ int doGenerate(Game *game, char *x, char *y) {
 	return 0;
 
 }
+
+
+/*
+ * Validates command is compatible with mode, according to project documents.
+ * Return 1 if compatible, 0 otherwise
+ */
+static int validateCommandMode(command_e command, mode_e mode) {
+	command_e allowed_init[] = {solve, edit, edit_default, exit_game};
+	command_e allowed_edit[] = {solve, edit, edit_default, print_board, set,
+			validate, generate, undo, redo, save, num_solutions, reset, exit_game};
+	command_e allowed_solve[] = {solve, edit, edit_default, mark_errors, print_board,
+			set, validate, save, undo, redo, hint, num_solutions, autofill, reset, exit_game};
+	int i = 0;
+	int result = 0;
+
+	switch(mode){
+	case INIT:
+		for(i = 0; i < (int)(sizeof (allowed_init) / sizeof (allowed_init[0])); ++i) {
+			if (command == allowed_init[i]) {
+				result = 1;
+				break;
+			}
+		}
+		break;
+	case EDIT:
+		for(i = 0; i < (int)(sizeof (allowed_edit) / sizeof (allowed_edit[0])); ++i) {
+			if (command == allowed_edit[i]) {
+				result = 1;
+				break;
+			}
+		}
+		break;
+	case SOLVE:
+		for(i = 0; i < (int)(sizeof (allowed_solve) / sizeof (allowed_solve[0])); ++i) {
+			if (command == allowed_solve[i]) {
+				result = 1;
+				break;
+			}
+		}
+		break;
+	}
+	return result;
+}
+
+
+
+/*
+ * get command from user - returns the compatible command_e enum,
+ * and sets x_ptr, y_ptr and z_ptr to command parameters
+ *
+ * returns -1 on system function failure
+ *
+ */
+command_e getCommand(mode_e mode, char *x_p, char *y_p, char *z_p){
+	char str[MAX_SIZE] = {0};
+	int valid = 0;
+	int parsed;
+	int valid_command = 0;
+	command_e command = 0;
+
+	 /*
+	 * get command string, ignore \n
+	 */
+	while (valid == 0) {
+		printf("Enter your command:\n");
+		if (fgets(str, MAX_SIZE, stdin) == NULL){
+			command = exit_game;
+			break;
+		}
+
+		while ((strcmp(str,"\n") == 0)  || (strcmp(str,"\r\n") == 0)) {
+			printf("Enter your command:\n");
+			if (fgets(str, MAX_SIZE, stdin) == NULL){
+				return exit_game;
+
+			}
+		}
+
+		if ((parsed = parse(str, &command, x_p, y_p, z_p)) == 0) {
+			printf("ERROR: invalid command 111111\n");
+		} else if (parsed == 1) {
+			valid_command = validateCommandMode(command, mode);
+			if (valid_command == 1){
+				valid = 1;
+			} else {
+				printf("ERROR: invalid command 2222\n");
+			}
+		}
+	}
+	return command;
+}
+
+/*
+ * Execute the do function for the command, and returns same value as do function.
+ */
+int executeCommand(Game **game_p, command_e command, char *x, char *y, char *z) {
+	Game *game = *game_p;
+
+	switch(command){
+	case print_board:
+		printBoard(game, VALUE);
+		return 1;
+	case validate:
+		return doValidate(game);
+	case undo:
+		return doUndo(game);
+	case redo:
+		return doRedo(game);
+	case num_solutions:
+		return doGetNumofSols(game);
+	case autofill:
+		return doAutofill(game);
+	case reset:
+		return doReset(game);
+	case mark_errors:
+		return doMarkErrors(game, x);
+	case save:
+		return doSave(game, x);
+	case generate:
+		return doGenerate(game, x, y);
+	case hint:
+		return doHint(game, x, y);
+	case set:
+		return doSet(game, x, y, z);
+	case solve:
+		return doSolveFile(game_p, x);
+	case edit:
+		return doEditFile(game_p, x);
+	case edit_default:
+		return doEdit(game_p);
+	default:
+		return -1;
+	}
+	return -1;
+}
+
 

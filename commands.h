@@ -9,20 +9,8 @@
 #define COMMANDS_H_
 #include "Game_structs.h"
 
-int doReset(Game *game);
-int doAutofill(Game *game);
-int doGetNumofSols(Game *game);
-int doHint(Game *game, char *x, char *y);
-int doSave(Game *game, char *fileName);
-int doEditFile(Game **game, char *fileName);
-int doEdit(Game **game);
-int doSolveFile(Game **game, char *fileName);
-int doUndo(Game *game);
-int doRedo(Game *game);
-int doMarkErrors(Game *game, char *x);
-int doValidate(Game *game);
-int doSet(Game *game, char *x, char *y, char *z);
-int doGenerate(Game *game, char *x, char *y);
+command_e getCommand(mode_e mode, char *x_p, char *y_p, char *z_p);
+int executeCommand(Game **game_p, command_e command, char *x, char *y, char *z);
 
 #endif /* COMMANDS_H_ */
 
