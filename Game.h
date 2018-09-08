@@ -16,7 +16,6 @@ int isErrornousBoard(Game* gp);
 void freeGame(Game* gp);
 int UpdateErrors(Game *gp);
 int initTempBoard(Game* gp);
-int moveValueToTemp(Game *game);
 int CountValuesInBoard(Game *game);
 
 #endif /* GAME_H_ */
