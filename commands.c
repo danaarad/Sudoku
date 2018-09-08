@@ -244,8 +244,6 @@ static int doHint(Game *game, char *x, char *y) {
 static int doEditFile(Game **game, char *fileName)  {
 	FILE *f_pointer = fopen(fileName, "r");
 
-	printf("doEditFile!\n");
-
 	if (f_pointer == NULL) {
 		printf("Error: File cannot be opened\n");
 		return 0;
