@@ -15,7 +15,7 @@ int setLatestAction(Game* gp, Action *action);
 int isErrornousBoard(Game* gp);
 void freeGame(Game* gp);
 int UpdateErrors(Game *gp);
-int initTempBoard(Game* gp);
+int clearBoardByValType(Game* gp, valType_e val_type);
 int CountValuesInBoard(Game *game);
 
 #endif /* GAME_H_ */
