@@ -44,7 +44,7 @@ void printBoard(Game* gp, valType_e valType) {
 						fflush(stdout);
 						if (getNodeValByType(gp, ISGIVEN, x, y) == 1 && mode != EDIT){
 							printf(".");
-						}else if(getNodeValByType(gp, ISERROR, x, y) == 1 && (markErrors || mode == EDIT)){
+						}else if(getNodeValByType(gp, ISERROR, x, y) == 1 && markErrors){
 							printf("*");
 						}else {
 							printf(" ");
