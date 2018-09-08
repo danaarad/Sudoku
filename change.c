@@ -44,15 +44,36 @@ void freeChanges(Change *change) {
 	}
 }
 
+static void printVal(int val) {
+	/*replace 0 with '_'*/
+	if(val == 0){
+		printf("_ ");
+	}else{
+		printf("%d ",val);
+	}
+}
+
+static void printChangeInner(int x, int y, int val_before, int val_after) {
+	printf("%d,%d: ", x, y);
+
+	printf("from ");
+	printVal(val_before);
+
+	printf("to ");
+	printVal(val_after);
+
+	printf("\n");
+}
+
 /*
  * Prints the correct message while redoing or undoing a change.
  */
-int printChange(command_e command, actionType_e actionType, Change *change){
-	int x, y, z1, z2;
+void printChange(command_e command, actionType_e actionType, Change *change){
+	int x, y;
 
 	/*if the action type is not set then don't print*/
 	if(actionType != SET_A){
-		return 0;
+		return;
 	}
 
 	/*x and y for users is lagrer by 1*/
@@ -63,37 +84,17 @@ int printChange(command_e command, actionType_e actionType, Change *change){
 	switch(command){
 		case undo:
 			printf("Undo ");
-			z1 = change->val_after;
-			z2 = change->val_before;
+			printChangeInner(x, y, change->val_after, change->val_before);
 			break;
 		case redo:
 			printf("Redo ");
-			z1 = change->val_before;
-			z2 = change->val_after;
+			printChangeInner(x, y, change->val_before, change->val_after);
 			break;
 		default:
-			return 0;
-	}
-	printf("%d,%d: ", x, y);
-
-	/*replace 0 with '_'*/
-	printf("from ");
-	if(z1 == 0){
-		printf("_ ");
-	}else{
-		printf("%d ",z1);
+			break;
 	}
 
-	printf("to ");
-	if(z2 == 0){
-		printf("_ ");
-	}else{
-		printf("%d ",z2);
-	}
-
-	printf("\n");
 	fflush(stdout);
-	return 1;
 }
 
 
