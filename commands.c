@@ -168,19 +168,16 @@ static int doAutofill(Game *game) {
  * Returns 1 on success, 0 on failure
  */
 static int doGetNumofSols(Game *game) {
-	int num_of_sols = 0;
+	unsigned long num_of_sols = 0;
 	if (isErrornousBoard(game) == 1) {
 		printf("Error: board contains erroneous values\n");
 		printBoard(game, VALUE);
 		return 0;
 	}
 
-	if ((num_of_sols = exhaustive_backtracking(game)) == -1) {
-		printBoard(game, VALUE);
-		return 0;
-	}
-
+	num_of_sols = exhaustive_backtracking(game);
 	printf("Number of solutions: %d\n", num_of_sols);
+
 	if (num_of_sols == 1) {
 		printf("This is a good board!\n");
 	} else if (num_of_sols > 1) {

@@ -202,11 +202,11 @@ static int isPossibleValue(Game* gp, valType_e valType, int x, int y, int valToC
 	return 1;
 }
 
-int exhaustive_backtracking(Game *game){
+unsigned long exhaustive_backtracking(Game *game){
 	int x = 0, y = 0;
 	int value = 1;
 	int game_value = 0;
-	int num_of_solutions = 0;
+	unsigned long num_of_solutions = 0;
 	stack_node *top = NULL;
 	int backwards = 0;
 
