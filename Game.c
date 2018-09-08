@@ -202,6 +202,7 @@ int UpdateErrors(Game *gp){
 				checkTable[idx][emptyPlace][1] = y;
 			}
 		}
+		printCeckTable(checkTable, rowSize);
 		updateErrorsFromCheckTable(gp, checkTable, rowSize);
 		resetCheckTable(checkTable, rowSize);
 	}
@@ -218,6 +219,7 @@ int UpdateErrors(Game *gp){
 				checkTable[idx][emptyPlace][1] = y;
 			}
 		}
+		printCeckTable(checkTable, rowSize);
 		updateErrorsFromCheckTable(gp, checkTable, rowSize);
 		resetCheckTable(checkTable, rowSize);
 	}
@@ -237,6 +239,7 @@ int UpdateErrors(Game *gp){
 					}
 				}
 			}
+			printCeckTable(checkTable, rowSize);
 			updateErrorsFromCheckTable(gp, checkTable, rowSize);
 			resetCheckTable(checkTable, rowSize);
 		}
