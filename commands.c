@@ -20,8 +20,128 @@
 #include "commandsAux.h"
 #include "change.h"
 #include "parser.h"
+#include "commands.h"
 
 
+/******* validators **********/
+/*
+ * Validates command is compatible with mode, according to project documents.
+ * Return 1 if compatible, 0 otherwise
+ */
+static int validateCommandMode(command_e command, mode_e mode) {
+	command_e allowed_init[] = {solve, edit, edit_default, exit_game};
+	command_e allowed_edit[] = {solve, edit, edit_default, print_board, set,
+			validate, generate, undo, redo, save, num_solutions, reset, exit_game};
+	command_e allowed_solve[] = {solve, edit, edit_default, mark_errors, print_board,
+			set, validate, save, undo, redo, hint, num_solutions, autofill, reset, exit_game};
+	int i = 0;
+	int result = 0;
+
+	switch(mode){
+	case INIT:
+		for(i = 0; i < (int)(sizeof (allowed_init) / sizeof (allowed_init[0])); ++i) {
+			if (command == allowed_init[i]) {
+				result = 1;
+				break;
+			}
+		}
+		break;
+	case EDIT:
+		for(i = 0; i < (int)(sizeof (allowed_edit) / sizeof (allowed_edit[0])); ++i) {
+			if (command == allowed_edit[i]) {
+				result = 1;
+				break;
+			}
+		}
+		break;
+	case SOLVE:
+		for(i = 0; i < (int)(sizeof (allowed_solve) / sizeof (allowed_solve[0])); ++i) {
+			if (command == allowed_solve[i]) {
+				result = 1;
+				break;
+			}
+		}
+		break;
+	}
+	return result;
+}
+
+
+/*
+ * Verifies that x, y, and the set value (z) are valid values (between 0 and N = block_height*block_width);
+ */
+static int validate_values_for_set(char *x_str, char *y_str, char *z_str, int N) {
+	int x = atoi(x_str);
+	int y = atoi(y_str);
+	int z = atoi(z_str);
+
+	double x_d = atof(x_str);
+	double y_d = atof(y_str);
+	double z_d = atof(z_str);
+
+	if (x < 1 || x > N || (x - x_d) != 0) {
+		return 0;
+	}
+	if (y < 1 || y > N || (y - y_d) != 0) {
+		return 0;
+	}
+	if (z < 0 || z > N || (z - z_d) != 0) {
+		return 0;
+	}
+	/*since atoi might return 0 on success if the string was 0*/
+	if (z == 0 && strcmp(z_str, "0") != 0) {
+		return 0;
+	}
+	return 1;
+}
+
+
+/*
+ * Verifies that number of cells to be filled (x param)
+ * and number of cells to be cleared (y param) are valid values (between 0 and E = empty cells);
+ */
+static int validate_values_for_generate(char *x_str, char *y_str, int E) {
+	int x = atoi(x_str);
+	int y = atoi(y_str);
+
+	double x_d = atof(x_str);
+	double y_d = atof(y_str);
+
+	if (x < 0 || x > E || (x - x_d) != 0) {
+		return 0;
+	}
+	if (x == 0 && strcmp(x_str, "0") != 0) {
+		return 0;
+	}
+	if (y < 0 || y > E || (y - y_d) != 0) {
+		return 0;
+	}
+	if (y == 0 && strcmp(y_str, "0") != 0) {
+		return 0;
+	}
+	return 1;
+}
+
+/*
+ * Varifies that x and y are valid values (between 1 and N = block_height*block_width);
+ */
+static int validate_values_for_hint(char *x_str, char *y_str, int N) {
+	int x = atoi(x_str);
+	int y = atoi(y_str);
+
+	double x_d = atof(x_str);
+	double y_d = atof(y_str);
+
+	if (x < 1 || x > N || (x - x_d) != 0) {
+		return 0;
+	}
+	if (y < 1 || y > N || (y - y_d) != 0) {
+		return 0;
+	}
+	return 1;
+}
+
+/********* do commands ********/
 /*
  * Execute save command
  * Returns 1 on success, 0 on failure
@@ -194,7 +314,7 @@ static int doHint(Game *game, char *x, char *y) {
 
 	x_val = atoi(x);
 	y_val = atoi(y);
-	if (validate_values_for_hint(x_val, y_val, N) != 1) {
+	if (validate_values_for_hint(x, y, N) != 1) {
 		printf("Error: value not in range 1-%d\n", N);
 		printBoard(game, VALUE);
 		return 0;
@@ -352,6 +472,7 @@ static int doValidate(Game *game) {
 	return 1;
 }
 
+
 /*
  * Execute set command
  * Returns 1 on success, 0 on failure
@@ -363,16 +484,14 @@ static int doSet(Game *game, char *x, char *y, char *z) {
 	int val_before;
 
 	/*cast to int and validate values*/
-	x_val = atoi(x);
-	y_val = atoi(y);
-	z_val = atoi(z);
-	if (validate_values_for_set(x_val, y_val, z_val, z, N) != 1) {
+	if (validate_values_for_set(x, y, z, N) != 1) {
 		printf("Error: value not in range 0-%d\n", N);
 		printBoard(game, VALUE);
 		return 0;
 	}
-	x_val -= 1;
-	y_val -= 1;
+	x_val = atoi(x) - 1;
+	y_val = atoi(y) - 1;
+	z_val = atoi(z);
 
 	/*if cell is fixed*/
 	if (getNodeValByType(game, ISGIVEN, x_val, y_val) == 1) {
@@ -413,13 +532,13 @@ static int doGenerate(Game *game, char *x, char *y) {
 	int x_val = 0, y_val = 0;
 	int attempt;
 
-	x_val = atoi(x);
-	y_val = atoi(y);
-	if (validate_values_for_generate(x_val, x, y_val, y, E) != 1) {
+	if (validate_values_for_generate(x, y, E) != 1) {
 		printf("Error: value not in range 0-%d\n", E);
 		printBoard(game, VALUE);
 		return 0;
 	}
+	x_val = atoi(x);
+	y_val = atoi(y);
 
 	if (filled_nodes != 0) {
 		printf("Error: board is not empty\n");
@@ -450,50 +569,7 @@ static int doGenerate(Game *game, char *x, char *y) {
 }
 
 
-/*
- * Validates command is compatible with mode, according to project documents.
- * Return 1 if compatible, 0 otherwise
- */
-static int validateCommandMode(command_e command, mode_e mode) {
-	command_e allowed_init[] = {solve, edit, edit_default, exit_game};
-	command_e allowed_edit[] = {solve, edit, edit_default, print_board, set,
-			validate, generate, undo, redo, save, num_solutions, reset, exit_game};
-	command_e allowed_solve[] = {solve, edit, edit_default, mark_errors, print_board,
-			set, validate, save, undo, redo, hint, num_solutions, autofill, reset, exit_game};
-	int i = 0;
-	int result = 0;
-
-	switch(mode){
-	case INIT:
-		for(i = 0; i < (int)(sizeof (allowed_init) / sizeof (allowed_init[0])); ++i) {
-			if (command == allowed_init[i]) {
-				result = 1;
-				break;
-			}
-		}
-		break;
-	case EDIT:
-		for(i = 0; i < (int)(sizeof (allowed_edit) / sizeof (allowed_edit[0])); ++i) {
-			if (command == allowed_edit[i]) {
-				result = 1;
-				break;
-			}
-		}
-		break;
-	case SOLVE:
-		for(i = 0; i < (int)(sizeof (allowed_solve) / sizeof (allowed_solve[0])); ++i) {
-			if (command == allowed_solve[i]) {
-				result = 1;
-				break;
-			}
-		}
-		break;
-	}
-	return result;
-}
-
-
-
+/******* main functions ******/
 /*
  * get command from user - returns the compatible command_e enum,
  * and sets x_ptr, y_ptr and z_ptr to command parameters
@@ -583,5 +659,4 @@ int executeCommand(Game **game_p, command_e command, char *x, char *y, char *z) 
 	}
 	return -1;
 }
-
 
