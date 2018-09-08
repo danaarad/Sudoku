@@ -1,5 +1,5 @@
 #include "Game_structs.h"
-#include "mainAux.h"
+#include "commands.h"
 #include "settings.h"
 #include "Game.h"
 #include <stdio.h>
@@ -7,6 +7,28 @@
 #include <strings.h>
 #include <stdlib.h>
 #include <time.h>
+
+/*
+ * Returns 1 if game board is solved successfully
+ * 		   0 if board is erroneous of not full
+ */
+static int isWin(Game *game) {
+	int N = game->blockHeight * game->blockWidth;
+	if (CountValuesInBoard(game) == (N * N)){
+		if (game->mode == SOLVE) {
+			if (isErrornousBoard(game) == 0) {
+				printf("Puzzle solved successfully\n");
+				return 1;
+			} else {
+				printf("Puzzle solution erroneous\n");
+				return 0;
+			}
+		}
+	}
+
+	return 0;
+}
+
 
 int main() {
 	int exit = 0, execute = 0, iswin = 0;
