@@ -1,0 +1,43 @@
+solve boards/4X3.txt
+set 10 3 0
+set 11 3 0
+set 8 3 9
+set 1 7 11
+undo
+undo
+undo
+set 1 1 3
+set 456 1 6
+set 3 6 3
+set 3 456 3
+set 3 3 456
+set 0 5 5 
+mark_errors 0
+solve boards/2X2.txt
+set 1 2 3 
+set 2 2 4
+set 3 2 2
+set 4 2 1
+set 1 3 4
+set 1 4 2 
+set 2 3 3
+set 2 4 1
+set 3 3 1
+set 4 4 3
+set 3 4 4
+set 4 3 2
+set 1 1 0
+solve boards/2X2.txt
+set 1 1 0\
+set 1 1 0
+se 2 1 2
+validate
+set 2 2 0
+ser 2 2 2
+set 2 2 2
+validate
+undo
+aoutofill
+autofill
+undo
+exit
