@@ -1,0 +1,70 @@
+****1****
+inserting
+>>>>> maxi = 15
+>>>>> meani = 2.4687999999999977
+deleating
+>>>>> maxd = 10
+>>>>> meand = 1.297699999999998
+****2****
+inserting
+>>>>> maxi = 16
+>>>>> meani = 2.4904499999999925
+deleating
+>>>>> maxd = 11
+>>>>> meand = 1.3031500000000098
+****3****
+inserting
+>>>>> maxi = 17
+>>>>> meani = 2.4984666666666744
+deleating
+>>>>> maxd = 11
+>>>>> meand = 1.3020333333333323
+****4****
+inserting
+>>>>> maxi = 17
+>>>>> meani = 2.4846249999999794
+deleating
+>>>>> maxd = 12
+>>>>> meand = 1.2984
+****5****
+inserting
+>>>>> maxi = 18
+>>>>> meani = 2.491859999999995
+deleating
+>>>>> maxd = 15
+>>>>> meand = 1.3085000000000058
+****6****
+inserting
+>>>>> maxi = 18
+>>>>> meani = 2.4749333333333445
+deleating
+>>>>> maxd = 13
+>>>>> meand = 1.2944333333333278
+****7****
+inserting
+>>>>> maxi = 18
+>>>>> meani = 2.471042857142856
+deleating
+>>>>> maxd = 12
+>>>>> meand = 1.300257142857136
+****8****
+inserting
+>>>>> maxi = 18
+>>>>> meani = 2.4823000000000013
+deleating
+>>>>> maxd = 15
+>>>>> meand = 1.2995499999999915
+****9****
+inserting
+>>>>> maxi = 19
+>>>>> meani = 2.489588888888931
+deleating
+>>>>> maxd = 15
+>>>>> meand = 1.3060888888888755
+****10****
+inserting
+>>>>> maxi = 19
+>>>>> meani = 2.4918499999999995
+deleating
+>>>>> maxd = 14
+>>>>> meand = 1.3003800000000167

@@ -9,7 +9,7 @@
 #define SETTINGS_H_
 
 #define MAX_COMMAND_SIZE 256
-#define MAX_SIZE 1024
+#define MAX_SIZE 5000
 #define CALLOC_ERROR "Error: calloc has failed\n"
 #define MALLOC_ERROR "Error: malloc has failed\n"
 #define SCANF_ERROR "Error: scanf has failed\n"

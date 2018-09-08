@@ -134,7 +134,7 @@ static int doAutofill(Game *game) {
 		return 0;
 	}
 
-	initTempBoard(game);
+	clearBoardByValType(game, TEMP);
 	for (y = 0; y < N; ++y) {
 		for (x = 0; x < N; ++x) {
 			possible_vals_arr = calloc(N, sizeof(int));
@@ -257,6 +257,7 @@ static int doEditFile(Game **game, char *fileName)  {
 		return 0;
 	}
 	/*set mode and edit*/
+	clearBoardByValType(*game, ISGIVEN);
 	(*game)->mode = EDIT;
 	(*game)->markErrors = 1;
 	UpdateErrors(*game);
@@ -270,8 +271,6 @@ static int doEditFile(Game **game, char *fileName)  {
  * Returns 1 on success, 0 on failure.
  */
 static int doEdit(Game **game)  {
-	printf("doEdit!\n");
-
 	freeGame(*game);
 	*game = initGame(DEFAULT_BLOCK_HEIGHT,DEFAULT_BLOCK_WIDTH);
 	/*check calloc*/
@@ -428,7 +427,7 @@ static int doGenerate(Game *game, char *x, char *y) {
 		return 0;
 	}
 	for (attempt = 0; attempt < RETRY_ATTEMPTS_FOR_GENERATE; ++attempt) {
-		initTempBoard(game);
+		clearBoardByValType(game, TEMP);
 		if (fill_nodes_random(game, TEMP, x_val) != 1) {
 			continue;
 		}

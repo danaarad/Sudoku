@@ -71,13 +71,13 @@ Game* initGame(int block_height, int block_width) {
  * Sets all values of type TEMP to 0 for all nodes.
  * This creates an alternative board with alternative values (currently 0).
  */
-int initTempBoard(Game* gp){
+int clearBoardByValType(Game* gp, valType_e val_type){
 	int rowlen = gp->N;
 	int i, j;
 
 	for (i = 0; i < rowlen; i++){
 		for (j = 0; j < rowlen; j++){
-			setNodeValByType(gp, TEMP, i, j, 0);
+			setNodeValByType(gp, val_type, i, j, 0);
 		}
 	}
 
