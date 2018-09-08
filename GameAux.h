@@ -16,6 +16,4 @@ int ***callocCheckTable(int rowSize);
 
 int resetCheckTable(int ***checkTable, int rowSize);
 
-void printCheckTable(int ***checkTable, int lenOfArr);
-
 #endif /* GAMEAUX_H_ */

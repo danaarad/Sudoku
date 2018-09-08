@@ -194,7 +194,6 @@ int UpdateErrors(Game *gp){
 	for (y = 0; y < rowSize; y++){
 		for (x = 0; x < rowSize; x++){
 			val = getNodeValByType(gp, VALUE, x, y);
-			printf("i got value (%d,%d), %d\n",x,y,val);
 			if(val > 0){
 				idx = val-1;
 				/*insert x and y into checkTable*/
@@ -203,7 +202,6 @@ int UpdateErrors(Game *gp){
 				checkTable[idx][emptyPlace][1] = y;
 			}
 		}
-		printCheckTable(checkTable, rowSize);
 		updateErrorsFromCheckTable(gp, checkTable, rowSize);
 		resetCheckTable(checkTable, rowSize);
 	}
@@ -220,7 +218,6 @@ int UpdateErrors(Game *gp){
 				checkTable[idx][emptyPlace][1] = y;
 			}
 		}
-		printCheckTable(checkTable, rowSize);
 		updateErrorsFromCheckTable(gp, checkTable, rowSize);
 		resetCheckTable(checkTable, rowSize);
 	}
@@ -240,7 +237,6 @@ int UpdateErrors(Game *gp){
 					}
 				}
 			}
-			printCheckTable(checkTable, rowSize);
 			updateErrorsFromCheckTable(gp, checkTable, rowSize);
 			resetCheckTable(checkTable, rowSize);
 		}
