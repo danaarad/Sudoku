@@ -15,7 +15,7 @@ arrayAux.o: arrayAux.c
 	$(CC) $(COMP_FLAGS) $(GUROBI_COMP) -c $*.c
 change.o: change.c change.h settings.h
 	$(CC) $(COMP_FLAGS) $(GUROBI_COMP) -c $*.c
-commands.o: commands.c settings.h Game.h Node.h Action.h solver.h printer.h arrayAux.h file_handler.h commandsAux.h change.h parser.h
+commands.o: commands.c commands.h settings.h Game.h Node.h Action.h solver.h printer.h arrayAux.h file_handler.h commandsAux.h change.h parser.h
 	$(CC) $(COMP_FLAGS) $(GUROBI_COMP) -c $*.c
 commandsAux.o: commandsAux.c commandsAux.h printer.h Action.h Node.h Game.h change.h
 	$(CC) $(COMP_FLAGS) $(GUROBI_COMP) -c $*.c
