@@ -99,10 +99,12 @@ int moveTempToValue(Game *game, actionType_e action_type) {
 			}
 		}
 	}
-	new_action = (Action *) initAction(action_type, changes, game->LatestAction);
-	game->LatestAction = new_action;
-	if (new_action == NULL) {
-		return -1;
+	if (changes != NULL) {
+		new_action = (Action *) initAction(action_type, changes, game->LatestAction);
+		game->LatestAction = new_action;
+		if (new_action == NULL) {
+			return -1;
+		}
 	}
 	return 1;
 
