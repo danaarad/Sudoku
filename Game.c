@@ -132,13 +132,6 @@ int CountValuesInBoard(Game* gp) {
 }
 
 /*
- * Calls Linear programming, returns the optimstatus from gurobi.
- */
-int isSolvableBoard(Game *gp) {
-	return fill_nodes_ILP(gp) == GRB_OPTIMAL;
-}
-
-/*
  * Frees all actions before and after action (recursively).
  * Frees action.
  */

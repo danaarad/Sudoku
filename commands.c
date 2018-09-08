@@ -60,7 +60,7 @@ int doUndo(Game *game) {
 		undoAction(game, 1);
 		game->LatestAction = action_to_undo->prev_action;
 		if (action_to_undo->type == GENERATE_A) {
-			printf("Undo Generate");
+			printf("Undo Generate\n");
 		}
 		UpdateErrors(game);
 	} else {
@@ -83,7 +83,7 @@ int doRedo(Game *game) {
 			game->LatestAction = action_to_redo;
 			redoAction(game, 1);
 			if (action_to_redo->type == GENERATE_A) {
-				printf("Redo Generate");
+				printf("Redo Generate\n");
 			}
 			UpdateErrors(game);
 			printBoard(game, VALUE);
@@ -223,7 +223,7 @@ int doHint(Game *game, char *x, char *y) {
 		return 0;
 	}
 
-	ILP_result = fill_nodes_ILP(game);
+	ILP_result = fill_nodes_ILP(game, VALUE);
 	if (ILP_result == GRB_OPTIMAL) {
 		hint_val = getNodeValByType(game, TEMP, x_val, y_val);
 		printf("Hint: set cell to %d\n", hint_val);
@@ -409,12 +409,18 @@ int doGenerate(Game *game, char *x, char *y) {
 		if (fill_nodes_random(game, TEMP, x_val) != 1) {
 			continue;
 		}
-		if (fill_nodes_ILP(game) != 1) {
+		printf("filled random %d cells\n", x_val);
+		printBoard(game, TEMP);
+		if (fill_nodes_ILP(game, TEMP) != GRB_OPTIMAL) {
 			continue;
 		}
+		printf("filled ILP\n");
+		printBoard(game, TEMP);
 		if (clear_nodes(game, TEMP, y_val) != 1) {
 			continue;
 		}
+		printf("cleared all but %d cells\n", y_val);
+		printBoard(game, TEMP);
 		if (moveTempToValue(game, GENERATE_A) != 1){
 			continue;
 		}

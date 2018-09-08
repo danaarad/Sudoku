@@ -13,7 +13,6 @@
 Game* initGame(int block_height, int block_width);
 int setLatestAction(Game* gp, Action *action);
 int isErrornousBoard(Game* gp);
-int isSolvableBoard(Game* gp);
 void freeGame(Game* gp);
 int UpdateErrors(Game *gp);
 int initTempBoard(Game* gp);

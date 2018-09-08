@@ -14,11 +14,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int isSolvable(Game* gp){
-	return fill_nodes_ILP(gp);
+/*
+ * Calls Linear programming, returns the optimstatus from gurobi.
+ */
+int isSolvable(Game *gp) {
+	return fill_nodes_ILP(gp, VALUE) == GRB_OPTIMAL;
 }
 
-int* BoardToGurobi(Game *gp){
+int* BoardToGurobi(Game *gp, valType_e val_type){
 	int N = gp->N;
 	int num_vars = N*N*N;
 	int r = 0, c = 0, v = 0, idx = 0;
@@ -31,7 +34,7 @@ int* BoardToGurobi(Game *gp){
 
 	for (c = 0; c < N; c++){
 		for (r = 0; r < N; r++){
-			v = getNodeValByType(gp, VALUE, c, r);
+			v = getNodeValByType(gp, val_type, c, r);
 			if (v != 0) {
 				idx = vcrToidx(v, c, r, N);
 				forGurobi[idx] = 1;
@@ -60,11 +63,11 @@ int GurobiToSolution(Game *gp, double* solFromGurobi){
 	return count;
 }
 
-int fill_nodes_ILP(Game *gp){
+int fill_nodes_ILP(Game *gp, valType_e val_type){
 	int N = gp->N;
 	int num_values = N*N*N;
 	int solfound = 0, count = 0;
-	int *ConstrainsForGurobi = BoardToGurobi(gp);
+	int *ConstrainsForGurobi = BoardToGurobi(gp, val_type);
 	double *solsFromGurobi = (double *)calloc(num_values, sizeof(double));
 
 	if (solsFromGurobi == NULL) {
@@ -116,14 +119,15 @@ int fill_nodes_random(Game *game, valType_e val_type, int num_of_cells) {
 				free(possible_vals_arr);
 				return 0;
 			}
+
 			is_good_random_val = 0;
-			while (is_good_random_val == 0) {
-				random_val = rand() % (game->N);
+			while (is_good_random_val != 1) {
+				random_val = (rand() % (game->N));
 				is_good_random_val = possible_vals_arr[random_val];
 			}
-			setNodeValByType(game, val_type, x, y, random_val);
-			free(possible_vals_arr);
+			setNodeValByType(game, val_type, x, y, (random_val+1));
 			++filled;
+			free(possible_vals_arr);
 		}
 	}
 	return 1;
