@@ -528,13 +528,13 @@ command_e getCommand(mode_e mode, char *x_p, char *y_p, char *z_p){
 		}
 
 		if ((parsed = parse(str, &command, x_p, y_p, z_p)) == 0) {
-			printf("ERROR: invalid command 111111\n");
+			printf("ERROR: invalid command\n");
 		} else if (parsed == 1) {
 			valid_command = validateCommandMode(command, mode);
 			if (valid_command == 1){
 				valid = 1;
 			} else {
-				printf("ERROR: invalid command 2222\n");
+				printf("ERROR: invalid command\n");
 			}
 		}
 	}
