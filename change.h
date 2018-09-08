@@ -11,6 +11,6 @@
 
 Change *initChange(int x, int y, int val_before, int val_after, Change *prev);
 void freeChanges(Change *change);
-int printChange(command_e command, actionType_e actionType, Change *change);
+void printChange(command_e command, actionType_e actionType, Change *change);
 
 #endif /* CHANGE_H_ */
