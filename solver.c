@@ -48,7 +48,7 @@ static int GurobiToSolution(Game *gp, double* solFromGurobi){
 	int v = 0, c = 0, r = 0, idx = 0, count = 0;
 	int N = gp->N;
 
-	initTempBoard(gp);
+	clearBoardByValType(gp, TEMP);
 	for (c = 0; c < N; c++){
 		for (r = 0; r < N; r++){
 			for (v = 1; v <= N; v++){
