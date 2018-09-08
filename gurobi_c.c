@@ -26,16 +26,18 @@ int vcrToidx(int v, int c, int r, int dim){
 int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int block_w){
   GRBenv   *env   = NULL;
   GRBmodel *model = NULL;
+
   int idx = 0, N = block_h*block_w, i = 0;
+  int buff_size = 256, error = 0, optimstatus = 0;
+  int v = 0, c = 0, r = 0, q = 0, p = 0;
   double num_vars = N*N*N;
-  int buff_size = 256, error = 0;
+
   int *ind = (int *) calloc(N, sizeof(int));
   double *val = (double *) calloc(N, sizeof(double));
   char *vtype = (char *) calloc((int)num_vars, sizeof(char));
-  int optimstatus;
-  int v = 0, c = 0, r = 0, q = 0, p = 0;
   char *const_name = (char *) calloc(buff_size, sizeof(char));
-  if (!ind || !val || !vtype || !const_name){
+
+  if (!ind || !val || !vtype || !const_name) {
 	  printf(CALLOC_ERROR);
 	  return -1;
   }
@@ -44,6 +46,10 @@ int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int
   error = GRBloadenv(&env, "mip1.log");
   if (error) {
 	  printf("ERROR %d GRBloadenv(): %s\n", error, GRBgeterrormsg(env));
+	  free(ind);
+	  free(val);
+	  free(vtype);
+	  free(const_name);
 	  return -1;
   }
 
@@ -51,6 +57,7 @@ int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int
   error = GRBnewmodel(env, &model, "mip1", 0, NULL, NULL, NULL, NULL, NULL);
   if (error) {
 	  printf("ERROR %d GRBnewmodel(): %s\n", error, GRBgeterrormsg(env));
+	  GRBfreeenv(env); free(ind); free(val); free(vtype); free(const_name);
 	  return -1;
   }
 
@@ -64,6 +71,8 @@ int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int
   error = GRBaddvars(model, num_vars, 0, NULL, NULL, NULL, NULL, NULL, NULL, vtype, NULL);
   if (error) {
 	  printf("ERROR %d GRBaddvars(): %s\n", error, GRBgeterrormsg(env));
+	  GRBfreemodel(model); GRBfreeenv(env);
+	  free(ind); free(val); free(vtype); free(const_name);
 	  return -1;
   }
 
@@ -71,6 +80,8 @@ int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int
   error = GRBsetintattr(model, GRB_INT_ATTR_MODELSENSE, GRB_MAXIMIZE);
   if (error) {
 	  printf("ERROR %d GRBsetintattr(): %s\n", error, GRBgeterrormsg(env));
+	  GRBfreemodel(model); GRBfreeenv(env);
+	  free(ind); free(val); free(vtype); free(const_name);
 	  return -1;
   }
 
@@ -79,6 +90,8 @@ int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int
   error = GRBupdatemodel(model);
   if (error) {
 	  printf("ERROR %d GRBupdatemodel(): %s\n", error, GRBgeterrormsg(env));
+	  GRBfreemodel(model); GRBfreeenv(env);
+	  free(ind); free(val); free(vtype); free(const_name);
 	  return -1;
   }
 
@@ -99,6 +112,8 @@ int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int
 		  error = GRBaddconstr(model, N, ind, val, GRB_EQUAL, 1.0, const_name);
 		  if (error) {
 			  printf("ERROR %d %s GRBaddconstr(): %s\n", error, const_name, GRBgeterrormsg(env));
+			  GRBfreemodel(model); GRBfreeenv(env);
+			  free(ind); free(val); free(vtype); free(const_name);
 			  return -1;
 		  }
 	  }
@@ -119,6 +134,8 @@ int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int
 		  error = GRBaddconstr(model, N, ind, val, GRB_EQUAL, 1.0, const_name);
 		  if (error) {
 			  printf("ERROR %d %s GRBaddconstr(): %s\n", error, const_name, GRBgeterrormsg(env));
+			  GRBfreemodel(model); GRBfreeenv(env);
+			  free(ind); free(val); free(vtype); free(const_name);
 			  return -1;
 		  }
 	  }
@@ -138,6 +155,8 @@ int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int
 		  error = GRBaddconstr(model, N, ind, val, GRB_EQUAL, 1.0, const_name);
 		  if (error) {
 			  printf("ERROR %d %s GRBaddconstr(): %s\n", error, const_name, GRBgeterrormsg(env));
+			  GRBfreemodel(model); GRBfreeenv(env);
+			  free(ind); free(val); free(vtype); free(const_name);
 			  return -1;
 		  }
 	  }
@@ -166,6 +185,8 @@ int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int
 				error = GRBaddconstr(model, N, ind, val, GRB_EQUAL, 1.0, const_name);
 				if (error) {
 					printf("ERROR %d %s GRBaddconstr(): %s\n", error, const_name, GRBgeterrormsg(env));
+					GRBfreemodel(model); GRBfreeenv(env);
+				    free(ind); free(val); free(vtype); free(const_name);
 					return -1;
 				}
 			}
@@ -185,6 +206,8 @@ int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int
 				  error = GRBaddconstr(model, 1, ind, val, GRB_EQUAL, 1.0, const_name);
 				  if (error) {
 					  printf("ERROR %d %s GRBaddconstr(): %s\n", error, const_name, GRBgeterrormsg(env));
+					  GRBfreemodel(model); GRBfreeenv(env);
+					  free(ind); free(val); free(vtype); free(const_name);
 					  return -1;
 				  }
 			  }
@@ -196,6 +219,8 @@ int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int
   error = GRBoptimize(model);
   if (error) {
 	  printf("ERROR %d GRBoptimize(): %s\n", error, GRBgeterrormsg(env));
+	  GRBfreemodel(model); GRBfreeenv(env);
+	  free(ind); free(val); free(vtype); free(const_name);
 	  return -1;
   }
 
@@ -203,6 +228,8 @@ int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int
   error = GRBwrite(model, "mip1.lp");
   if (error) {
 	  printf("ERROR %d GRBwrite(): %s\n", error, GRBgeterrormsg(env));
+	  GRBfreemodel(model); GRBfreeenv(env);
+	  free(ind); free(val); free(vtype); free(const_name);
 	  return -1;
   }
 
@@ -210,6 +237,8 @@ int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int
   error = GRBgetintattr(model, GRB_INT_ATTR_STATUS, &optimstatus);
   if (error) {
 	  printf("ERROR %d GRBgetintattr(): %s\n", error, GRBgeterrormsg(env));
+	  GRBfreemodel(model); GRBfreeenv(env);
+	  free(ind); free(val); free(vtype); free(const_name);
 	  return -1;
   }
 
@@ -217,6 +246,8 @@ int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int
   error = GRBgetdblattrarray(model, GRB_DBL_ATTR_X, 0, num_vars, sol);
   if (error) {
 	  printf("ERROR %d GRBgetdblattrarray(): %s\n", error, GRBgeterrormsg(env));
+	  GRBfreemodel(model); GRBfreeenv(env);
+	  free(ind); free(val); free(vtype); free(const_name);
 	  return -1;
   }
 
