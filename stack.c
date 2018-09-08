@@ -8,9 +8,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "stack.h"
+#include "settings.h"
 
 stack_node *push(stack_node *top, int x, int y, int value) {
     struct node *nptr = malloc(sizeof(struct node));
+    if (nptr == NULL) {
+    	printf(MALLOC_ERROR);
+    	return NULL;
+    }
     nptr->x = x;
     nptr->y = y;
     nptr->value = value;

@@ -247,9 +247,15 @@ unsigned long exhaustive_backtracking(Game *game){
 			++num_of_solutions; backwards = 1; ++value;
 		} else if (x == (game->N - 1)) {
 			top = (stack_node *) push(top, x, y, value);
+			/*check for push error*/
+			if (top == NULL) {
+				return 0; }
 			backwards = 0; x = 0; y += 1; value = 1;
 		} else {
 			top = (stack_node *) push(top, x, y, value);
+			/*check for push error*/
+			if (top == NULL) {
+				return 0; }
 			backwards = 0; x += 1; value = 1;
 		}
 	} while (!(top == NULL && value > game->N));

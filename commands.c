@@ -323,6 +323,7 @@ static int doMarkErrors(Game *game, char *x) {
 	mark_errors_value = atoi(x);
 	if (mark_errors_value == 0 || mark_errors_value == 1) {
 		game->markErrors = mark_errors_value;
+		printBoard(game, VALUE);
 		return 1;
 	}
 	printf("Error: the value should be 0 or 1\n");
