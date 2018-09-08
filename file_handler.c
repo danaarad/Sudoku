@@ -40,7 +40,6 @@ int writeToFile (Game* gp, FILE *file_ptr){
 		fprintf(file_ptr,"\n");
 	}
 
-	fclose(file_ptr);
 	return 1;
 }
 

@@ -35,6 +35,7 @@ static int doSave(Game* gp, char *fileName){
 					/*success*/
 					writeToFile(gp, file_ptr);
 					printf("Saved to: %s\n",fileName);
+					fclose(file_ptr);
 					return 0;
 				}else{
 					/*couldn't open file*/
@@ -254,6 +255,8 @@ static int doEditFile(Game **game, char *fileName)  {
 	}
 	freeGame(*game);
 	*game = readFromFile(f_pointer);
+	fclose(f_pointer);
+
 	/*check calloc*/
 	if (*game == NULL) {
 		return 0;
@@ -287,6 +290,7 @@ static int doEdit(Game **game)  {
 	printBoard(*game, VALUE);
 	return 1;
 }
+
 /*
  * Execute solve command
  * Returns 1 on success, 0 on failure
