@@ -5,7 +5,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-
+/*prints the separator between blocks*/
 void printSeperator(int BLOCK_HEIGHT, int BLOCK_WIDTH){
 	int  i = 0;
 	int numofchars = ( 4*BLOCK_HEIGHT*BLOCK_WIDTH + BLOCK_HEIGHT + 1 );
@@ -17,7 +17,7 @@ void printSeperator(int BLOCK_HEIGHT, int BLOCK_WIDTH){
 	fflush(stdout);
 }
 
-
+/*prints game board*/
 void printBoard(Game* gp, valType_e valType) {
 
 	int i = 0, j = 0, k = 0, l = 0, x = 0, y = 0;
