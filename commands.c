@@ -70,7 +70,6 @@ int doUndo(Game *game) {
 	return 1;
 }
 
-
 /*
  * Execute redo command
  * Returns 1 on success, 0 on failure
@@ -94,7 +93,6 @@ int doRedo(Game *game) {
 	printBoard(game, VALUE);
 	return 1;
 }
-
 
 /*
  * Execute reset command
@@ -162,7 +160,6 @@ int doAutofill(Game *game) {
 	printBoard(game, VALUE);
 	return 1;
 }
-
 
 /*
  * Execute num_solutions command
@@ -240,10 +237,10 @@ int doHint(Game *game, char *x, char *y) {
 
 }
 
-
 /*
- * Execute edit from file command
- * Returns 1 on success, 0 on failure
+ * Execute edit from file command.
+ * Sets mode to edit and mark_errors to 1.
+ * Returns 1 on success, 0 on failure.
  */
 int doEditFile(Game **game, char *fileName)  {
 	FILE *f_pointer = fopen(fileName, "r");
@@ -256,12 +253,39 @@ int doEditFile(Game **game, char *fileName)  {
 	}
 	freeGame(*game);
 	*game = readFromFile(f_pointer);
+	/*check calloc*/
+	if (*game == NULL) {
+		return 0;
+	}
+	/*set mode and edit*/
 	(*game)->mode = EDIT;
+	(*game)->markErrors = 1;
 	UpdateErrors(*game);
 	printBoard(*game, VALUE);
 	return 1;
 }
 
+/*
+ * Execute edit command.
+ * Sets mode to edit and mark_errors to 1.
+ * Returns 1 on success, 0 on failure.
+ */
+int doEdit(Game **game)  {
+	printf("doEdit!\n");
+
+	freeGame(*game);
+	*game = initGame(DEFAULT_BLOCK_HEIGHT,DEFAULT_BLOCK_WIDTH);
+	/*check calloc*/
+	if (*game == NULL) {
+		return 0;
+	}
+	/*set mode and edit*/
+	(*game)->mode = EDIT;
+	(*game)->markErrors = 1;
+	UpdateErrors(*game);
+	printBoard(*game, VALUE);
+	return 1;
+}
 /*
  * Execute solve command
  * Returns 1 on success, 0 on failure
@@ -303,7 +327,6 @@ int doMarkErrors(Game *game, char *x) {
 	return 0;
 }
 
-
 /*
  * Execute validate command
  * Returns 1 on success, 0 on failure
@@ -328,7 +351,6 @@ int doValidate(Game *game) {
 	printBoard(game, VALUE);
 	return 1;
 }
-
 
 /*
  * Execute set command

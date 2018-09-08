@@ -31,7 +31,6 @@ int isWin(Game *game) {
 	return 0;
 }
 
-
 /*
  * get command from user - returns the compatible command_e enum,
  * and sets x_ptr, y_ptr and z_ptr to command parameters
@@ -172,9 +171,8 @@ int executeCommand(Game **game_p, command_e command, char *x, char *y, char *z) 
 		res = doEditFile(game_p, x);
 		return res;
 	case edit_default:
-		game->mode = EDIT;
-		printBoard(game, VALUE);
-		return 1;
+		res = doEdit(game_p);
+		return res;
 	default:
 		return -1;
 	}

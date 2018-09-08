@@ -15,6 +15,7 @@ int doGetNumofSols(Game *game);
 int doHint(Game *game, char *x, char *y);
 int doSave(Game *game, char *fileName);
 int doEditFile(Game **game, char *fileName);
+int doEdit(Game **game);
 int doSolveFile(Game **game, char *fileName);
 int doUndo(Game *game);
 int doRedo(Game *game);
@@ -24,3 +25,4 @@ int doSet(Game *game, char *x, char *y, char *z);
 int doGenerate(Game *game, char *x, char *y);
 
 #endif /* COMMANDS_H_ */
+
