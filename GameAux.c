@@ -13,7 +13,7 @@
 #include "Node.h"
 
 
-void printCeckTable(int ***checkTable, int lenOfArr){
+void printCheckTable(int ***checkTable, int lenOfArr){
 	int val, num;
 	for (val = 1; val <= lenOfArr; val++){
 		printf(" ~%d~ ",val);
