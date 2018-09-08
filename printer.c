@@ -5,8 +5,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-/*prints the separator between blocks*/
-void printSeperator(int BLOCK_HEIGHT, int BLOCK_WIDTH){
+static void printSeperator(int BLOCK_HEIGHT, int BLOCK_WIDTH){
 	int  i = 0;
 	int numofchars = ( 4*BLOCK_HEIGHT*BLOCK_WIDTH + BLOCK_HEIGHT + 1 );
 

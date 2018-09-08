@@ -31,7 +31,7 @@ static int isWin(Game *game) {
 
 
 int main() {
-	int exit = 0, execute = 0, iswin = 0;
+	int exit = 0;
 	Game *game;
 	command_e command;
 	char  x[MAX_SIZE] = {0};
@@ -54,20 +54,14 @@ int main() {
 			bzero(z, MAX_SIZE);
 
 			command = getCommand(game->mode, x, y, z);
-			printf("%s, %s, %s, %d \n", x, y, z, (int)command);
 			if (command == exit_game) {
 				exit = 1;
 				break;
 			} else {
-				printf("executing in mode = %d\n", game->mode);
-				execute = executeCommand(&game, command, x, y, z);
-				printf("execute result is = %d\n",execute);
-				iswin = isWin(game);
-				printf("is win = %d\n",iswin);
-				if (execute == -1){
+				if (executeCommand(&game, command, x, y, z) == -1){
 					return -1;
 				}
-				if (iswin) {
+				if (isWin(game)) {
 					freeGame(game);
 					break;
 				}

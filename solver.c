@@ -21,7 +21,7 @@ int isSolvable(Game *gp) {
 	return fill_nodes_ILP(gp, VALUE) == GRB_OPTIMAL;
 }
 
-int* BoardToGurobi(Game *gp, valType_e val_type){
+static int* BoardToGurobi(Game *gp, valType_e val_type){
 	int N = gp->N;
 	int num_vars = N*N*N;
 	int r = 0, c = 0, v = 0, idx = 0;
@@ -44,7 +44,7 @@ int* BoardToGurobi(Game *gp, valType_e val_type){
 	return forGurobi;
 }
 
-int GurobiToSolution(Game *gp, double* solFromGurobi){
+static int GurobiToSolution(Game *gp, double* solFromGurobi){
 	int v = 0, c = 0, r = 0, idx = 0, count = 0;
 	int N = gp->N;
 
@@ -83,7 +83,6 @@ int fill_nodes_ILP(Game *gp, valType_e val_type){
 	if (solfound) {
 		count = GurobiToSolution(gp, solsFromGurobi);
 		if (count != N*N){
-			printf("Number of values from gurobi does not match board! %d", count);
 			solfound = 0;
 		}
 	}
@@ -166,6 +165,42 @@ static int moveValueToTemp(Game *game) {
 
 }
 
+static int isPossibleValue(Game* gp, valType_e valType, int x, int y, int valToCheck){
+	int i = 0, j = 0, x_corner = 0, y_corner = 0, otherVal = 0;
+	int rowSize, colSize, blockWidth, blockHeight;
+	blockWidth = gp->blockWidth;
+	blockHeight = gp->blockHeight;
+	rowSize = colSize = blockWidth*blockHeight;
+
+	/*check row*/
+	for (i = 0; i < rowSize; ++i){
+		otherVal = getNodeValByType(gp, valType, i, y);
+		if (otherVal == valToCheck && i != x){
+			return 0;
+		}
+	}
+
+	/*check col*/
+	for (j = 0; j < colSize; ++j){
+		otherVal = getNodeValByType(gp, valType, x, j);
+		if (otherVal == valToCheck && j != y){
+			return 0;
+		}
+	}
+
+	/*check block*/
+	x_corner = (x/blockWidth)*blockWidth;
+	y_corner = (y/blockHeight)*blockHeight;
+	for (i = x_corner; i < x_corner + blockWidth; ++i){
+		for(j = y_corner; j < y_corner + blockHeight; ++j){
+			otherVal = getNodeValByType(gp, valType, i, j);
+			if (otherVal == valToCheck && (i != x || j != y)){
+				return 0;
+			}
+		}
+	}
+	return 1;
+}
 
 int exhaustive_backtracking(Game *game){
 	int x = 0, y = 0;
@@ -231,41 +266,4 @@ int get_possible_values_for_node(Game *game, valType_e valType, int x, int y, in
 		}
 	}
 	return count;
-}
-
-int isPossibleValue(Game* gp, valType_e valType, int x, int y, int valToCheck){
-	int i = 0, j = 0, x_corner = 0, y_corner = 0, otherVal = 0;
-	int rowSize, colSize, blockWidth, blockHeight;
-	blockWidth = gp->blockWidth;
-	blockHeight = gp->blockHeight;
-	rowSize = colSize = blockWidth*blockHeight;
-
-	/*check row*/
-	for (i = 0; i < rowSize; ++i){
-		otherVal = getNodeValByType(gp, valType, i, y);
-		if (otherVal == valToCheck && i != x){
-			return 0;
-		}
-	}
-
-	/*check col*/
-	for (j = 0; j < colSize; ++j){
-		otherVal = getNodeValByType(gp, valType, x, j);
-		if (otherVal == valToCheck && j != y){
-			return 0;
-		}
-	}
-
-	/*check block*/
-	x_corner = (x/blockWidth)*blockWidth;
-	y_corner = (y/blockHeight)*blockHeight;
-	for (i = x_corner; i < x_corner + blockWidth; ++i){
-		for(j = y_corner; j < y_corner + blockHeight; ++j){
-			otherVal = getNodeValByType(gp, valType, i, j);
-			if (otherVal == valToCheck && (i != x || j != y)){
-				return 0;
-			}
-		}
-	}
-	return 1;
 }
