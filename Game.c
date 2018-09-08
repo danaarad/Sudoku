@@ -194,7 +194,7 @@ int UpdateErrors(Game *gp){
 	for (y = 0; y < rowSize; y++){
 		for (x = 0; x < rowSize; x++){
 			val = getNodeValByType(gp, VALUE, x, y);
-			printf("i got value (%d,%d), %d",x,y,val);
+			printf("i got value (%d,%d), %d\n",x,y,val);
 			if(val > 0){
 				idx = val-1;
 				/*insert x and y into checkTable*/
