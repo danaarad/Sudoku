@@ -11,6 +11,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "gurobi_c.h"
+#include "settings.h"
+
+
 
 int vcrToidx(int v, int c, int r, int dim){
 	int idx = 0;
@@ -32,6 +35,10 @@ int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int
   int optimstatus;
   int v = 0, c = 0, r = 0, q = 0, p = 0;
   char *const_name = (char *) calloc(buff_size, sizeof(char));
+  if (!ind || !val || !vtype || !const_name){
+	  printf(CALLOC_ERROR);
+	  return -1;
+  }
 
   /* Create environment - log file is mip1.log */
   error = GRBloadenv(&env, "mip1.log");
