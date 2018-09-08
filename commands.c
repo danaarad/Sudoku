@@ -176,7 +176,7 @@ static int doGetNumofSols(Game *game) {
 	}
 
 	num_of_sols = exhaustive_backtracking(game);
-	printf("Number of solutions: %d\n", num_of_sols);
+	printf("Number of solutions: %lu\n", num_of_sols);
 
 	if (num_of_sols == 1) {
 		printf("This is a good board!\n");
