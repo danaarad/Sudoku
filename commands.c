@@ -28,8 +28,8 @@
  */
 static int doSave(Game* gp, char *fileName){
 	FILE* file_ptr = NULL;
-		if (!isErrornousBoard(gp)){
-			if (isSolvable(gp)){
+		if (gp->mode == SOLVE||!isErrornousBoard(gp)){
+			if (gp->mode == SOLVE||isSolvable(gp)){
 				file_ptr = fopen(fileName,"w");
 				if (file_ptr != NULL){
 					/*success*/
