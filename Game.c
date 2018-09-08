@@ -188,7 +188,7 @@ int UpdateErrors(Game *gp){
 
 	/*all is set to -1*/
 	resetCheckTable(checkTable, rowSize);
-	initTempBoard(gp);
+	clearBoardByValType(gp, TEMP);
 
 	/*check the rows*/
 	for (y = 0; y < rowSize; y++){
@@ -244,7 +244,7 @@ int UpdateErrors(Game *gp){
 
 	freeCheckTable(checkTable, rowSize);
 	ErrorNum = CountErrorsInBoard(gp);
-	initTempBoard(gp);
+	clearBoardByValType(gp, TEMP);
 	return (ErrorNum);
 
 }
