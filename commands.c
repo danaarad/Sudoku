@@ -148,7 +148,7 @@ static int validate_values_for_hint(char *x_str, char *y_str, int N) {
 }
 
 
-static save_file(Game *gp, char *filename) {
+static int save_file(Game *gp, char *filename) {
 	FILE* file_ptr = fopen(filename,"w");
 	if (file_ptr != NULL){
 		writeToFile(gp, file_ptr);
