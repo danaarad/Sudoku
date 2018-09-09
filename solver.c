@@ -66,7 +66,7 @@ static int GurobiToSolution(Game *gp, double* solFromGurobi){
 int fill_nodes_ILP(Game *gp, valType_e val_type){
 	int N = gp->N;
 	int num_values = N*N*N;
-	int solfound = 0, count = 0;
+	int optimstatus = 0, count = 0;
 	int *ConstrainsForGurobi = BoardToGurobi(gp, val_type);
 	double *solsFromGurobi = (double *)calloc(num_values, sizeof(double));
 
@@ -79,19 +79,19 @@ int fill_nodes_ILP(Game *gp, valType_e val_type){
 		return -1;
 	}
 
-	solfound = get_gurobi_solution(solsFromGurobi, ConstrainsForGurobi, gp->blockHeight, gp->blockWidth);
-	if (solfound) {
+	optimstatus = get_gurobi_solution(solsFromGurobi, ConstrainsForGurobi, gp->blockHeight, gp->blockWidth);
+	if (optimstatus == -1) {
+		return -1;
+	} else if (optimstatus == GRB_OPTIMAL) {
 		count = GurobiToSolution(gp, solsFromGurobi);
 		if (count != N*N){
-			solfound = 0;
+			optimstatus = 0;
 		}
 	}
-	(void) solfound;
-	(void) count;
 
 	free(solsFromGurobi);
 	free(ConstrainsForGurobi);
-	return solfound;
+	return optimstatus;
 }
 
 int fill_nodes_random(Game *game, valType_e val_type, int num_of_cells) {
@@ -173,7 +173,7 @@ static int isPossibleValue(Game* gp, valType_e valType, int x, int y, int valToC
 	rowSize = colSize = blockWidth*blockHeight;
 
 	/*check row*/
-	for (i = 0; i < rowSize; ++i){
+	for (i = 0; i < rowSize; ++i) {
 		otherVal = getNodeValByType(gp, valType, i, y);
 		if (otherVal == valToCheck && i != x){
 			return 0;
