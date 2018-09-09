@@ -110,7 +110,7 @@ int fill_nodes_random(Game *game, valType_e val_type, int num_of_cells) {
 			possible_vals_arr = calloc(game->N, sizeof(int));
 			if (possible_vals_arr == NULL) {
 				printf(CALLOC_ERROR);
-				return 0;
+				return -1;
 			}
 
 			num_of_possible_vals = get_possible_values_for_node(game, val_type, x, y, possible_vals_arr);

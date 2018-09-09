@@ -280,9 +280,8 @@ static int doAutofill(Game *game) {
 			free(possible_vals_arr);
 		}
 	}
-	if (moveTempToValue(game, SET_A) != 1) {
-		printBoard(game, VALUE);
-		return 0;
+	if (moveTempToValue(game, SET_A) == -1) {
+		return -1;
 	}
 	UpdateErrors(game);
 	printBoard(game, VALUE);
@@ -351,6 +350,8 @@ static int doHint(Game *game, char *x, char *y) {
 		printf("Hint: set cell to %d\n", hint_val);
 		printBoard(game, VALUE);
 		return 1;
+	} else if (ILP_result == -1) {
+		return -1;
 	} else {
 		printf("Error: board is unsolvable\n");
 		printBoard(game, VALUE);
@@ -539,7 +540,7 @@ static int doGenerate(Game *game, char *x, char *y) {
 	int filled_nodes = CountValuesInBoard(game);
 	int E = (N*N) - filled_nodes;
 	int x_val = 0, y_val = 0;
-	int attempt;
+	int attempt, return_val = 0;
 
 	if (validate_values_for_generate(x, y, E) != 1) {
 		printf("Error: value not in range 0-%d\n", E);
@@ -556,18 +557,26 @@ static int doGenerate(Game *game, char *x, char *y) {
 	}
 	for (attempt = 0; attempt < RETRY_ATTEMPTS_FOR_GENERATE; ++attempt) {
 		clearBoardByValType(game, TEMP);
-		if (fill_nodes_random(game, TEMP, x_val) != 1) {
-			continue;
-		}
-		if (fill_nodes_ILP(game, TEMP) != GRB_OPTIMAL) {
-			continue;
-		}
-		if (clear_nodes(game, TEMP, y_val) != 1) {
-			continue;
-		}
-		if (moveTempToValue(game, GENERATE_A) != 1){
-			continue;
-		}
+		if ((return_val = fill_nodes_random(game, TEMP, x_val)) == -1) {
+			return -1;
+		} else if (return_val != 1) {
+			continue; }
+
+		if ((return_val = fill_nodes_ILP(game, TEMP)) == -1) {
+			return -1;
+		} else if (return_val != GRB_OPTIMAL){
+			continue; }
+
+		if ((return_val = clear_nodes(game, TEMP, y_val)) == -1) {
+			return -1;
+		} else if (return_val != 1) {
+			continue; }
+
+		if ((return_val = moveTempToValue(game, GENERATE_A)) == -1){
+			return -1;;
+		} else if (return_val != 1) {
+			continue; }
+
 		printBoard(game, VALUE);
 		return 1;
 	}
