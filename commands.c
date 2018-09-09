@@ -311,13 +311,17 @@ static int doAutofill(Game *game) {
  */
 static int doGetNumofSols(Game *game) {
 	unsigned long num_of_sols = 0;
+
 	if (isErroneousBoard(game) == 1) {
 		printf("Error: board contains erroneous values\n");
 		printBoard(game, VALUE);
 		return 0;
 	}
 
-	num_of_sols = exhaustive_backtracking(game);
+	if (num_of_sols = exhaustive_backtracking(game) == -1){
+		return -1;
+	}
+
 	printf("Number of solutions: %lu\n", num_of_sols);
 
 	if (num_of_sols == 1) {

@@ -253,13 +253,13 @@ unsigned long exhaustive_backtracking(Game *game){
 			top = (stack_node *) push(top, x, y, value);
 			/*check for push error*/
 			if (top == NULL) {
-				return 0; }
+				return -1; }
 			backwards = 0; x = 0; y += 1; value = 1;
 		} else {
 			top = (stack_node *) push(top, x, y, value);
 			/*check for push error*/
 			if (top == NULL) {
-				return 0; }
+				return -1; }
 			backwards = 0; x += 1; value = 1;
 		}
 	} while (!(top == NULL && value > game->N));
