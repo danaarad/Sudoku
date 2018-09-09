@@ -147,25 +147,35 @@ static int validate_values_for_hint(char *x_str, char *y_str, int N) {
 	return 1;
 }
 
+
+static save_file(Game *gp, char *filename) {
+	FILE* file_ptr = fopen(fileName,"w");
+	if (file_ptr != NULL){
+		writeToFile(gp, file_ptr);
+		printf("Saved to: %s\n",fileName);
+		fclose(file_ptr);
+	} else {
+		/*couldn't open file*/
+		printf("Error: File cannot be created or modified\n");
+	}
+	return 1;
+}
 /********* do commands ********/
 /*
  * Execute save command
  * Returns 1 on success, 0 on failure
  */
 static int doSave(Game* gp, char *fileName){
-	FILE* file_ptr = NULL;
-		if (gp->mode == SOLVE || !isErroneousBoard(gp)){
-			if (gp->mode == SOLVE || isSolvable(gp)){
-				file_ptr = fopen(fileName,"w");
-				if (file_ptr != NULL){
-					writeToFile(gp, file_ptr);
-					printf("Saved to: %s\n",fileName);
-					fclose(file_ptr);
-					return 0;
-				} else {
-					/*couldn't open file*/
-					printf("Error: File cannot be created or modified\n");
-				}
+	int solvable = 0;
+	if (gp->mode == SOLVE) {
+		save_file(gp, fileName);
+	} else if (gp->mode == EDIT) {
+		if (!isErroneousBoard(gp)) {
+			solvable = isSolvable(gp);
+			if (solvable == -1) {
+				return -1;
+			} else if (solvable) {
+				save_file(gp, fileName);
 			} else {
 				/*board is not solvable*/
 				printf("Error: board validation failed\n");
@@ -174,8 +184,9 @@ static int doSave(Game* gp, char *fileName){
 			/*there are bad values in the board*/
 			printf( "Error: board contains erroneous values\n");
 		}
-	return 0;
 	}
+	return 1;
+}
 
 /*
  * Execute undo command
@@ -377,17 +388,21 @@ static int doHint(Game *game, char *x, char *y) {
 static int doEditFile(Game **game, char *fileName)  {
 	FILE *f_pointer = fopen(fileName, "r");
 	int mark_erros = (*game)->markErrors;
+	int read_errors = 1;
 
 	if (f_pointer == NULL) {
 		printf("Error: File cannot be opened\n");
 		return 0;
 	}
 	freeGame(*game);
-	*game = readFromFile(f_pointer);
+	*game = readFromFile(f_pointer, &read_errors);
 	fclose(f_pointer);
 
-	if (*game == NULL) {
+	/*check error code from read function*/
+	if (*game == NULL || read_errors == -1) {
 		return -1;
+	} else if (*game == NULL || read_errors == 0) {
+		return 0;
 	}
 	/*set mode and edit*/
 	clearBoardByValType(*game, ISGIVEN);
@@ -430,17 +445,24 @@ static int doEdit(Game **game)  {
 static int doSolveFile(Game **game, char *fileName) {
 	FILE *f_pointer = fopen(fileName, "r");
 	int mark_erros = (*game)->markErrors;
+	int read_errors = 1;
+
 	if (f_pointer == NULL) {
 		printf("Error: File doesn't exist or cannot be opened\n");
 		return 0;
 	}
 
 	freeGame(*game);
-	*game = readFromFile(f_pointer);
+	*game = readFromFile(f_pointer, &read_errors);
 	fclose(f_pointer);
-	if (*game == NULL) {
+
+	/*check error code from read function*/
+	if (*game == NULL || read_errors == -1) {
 		return -1;
+	} else if (*game == NULL || read_errors == 0) {
+		return 0;
 	}
+
 	(*game)->markErrors = mark_erros;
 	(*game)->mode = SOLVE;
 	if (UpdateErrors(*game) == -1) {
@@ -488,12 +510,11 @@ static int doValidate(Game *game) {
 		printf("Validation passed: board is solvable\n");
 	} else if (solvable == 0) {
 		printf("Validation failed: board is unsolvable\n");
-	} else {
-		printBoard(game, VALUE);
-		return 0;
+	} else if (solvable == -1){
+		return -1;
 	}
 	printBoard(game, VALUE);
-	return 1;
+	return 0;
 }
 
 

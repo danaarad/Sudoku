@@ -46,7 +46,7 @@ int writeToFile (Game* gp, FILE *file_ptr){
 /*
  * Returns a pointer to a new game as loaded from a given file.
  */
-Game* readFromFile (FILE *file_ptr){
+Game* readFromFile (FILE *file_ptr, int *error){
 	char chr = '\0';
 	char num_as_str[2] = {0};
 	int num = 0, x = 0, y = 0, N = 0;
@@ -60,11 +60,13 @@ Game* readFromFile (FILE *file_ptr){
 	/*get the size and set it*/
 	num = fscanf(file_ptr, "%d %d\n", &blockHeight, &blockWidth);
 	if (num != 2) {
-		printf(SCANF_ERROR);
+		printf("Error: Cannot read from file");
+		*error = 0;
 		return NULL;
 	}
 	gp = initGame(blockHeight, blockWidth);
 	if (gp == NULL) {
+		*error = -1;
 		return NULL;
 	}
 
