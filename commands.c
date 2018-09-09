@@ -75,6 +75,8 @@ static int validate_values_for_set(char *x_str, char *y_str, char *z_str, int N)
 	int y = atoi(y_str);
 	int z = atoi(z_str);
 
+	/*atoi() rounds values to int
+	 *this is used to check input is not a fraction */
 	double x_d = atof(x_str);
 	double y_d = atof(y_str);
 	double z_d = atof(z_str);
@@ -104,6 +106,8 @@ static int validate_values_for_generate(char *x_str, char *y_str, int E) {
 	int x = atoi(x_str);
 	int y = atoi(y_str);
 
+	/*atoi() rounds values to int
+	 *this is used to check input is not a fraction */
 	double x_d = atof(x_str);
 	double y_d = atof(y_str);
 
@@ -129,6 +133,8 @@ static int validate_values_for_hint(char *x_str, char *y_str, int N) {
 	int x = atoi(x_str);
 	int y = atoi(y_str);
 
+	/*atoi() rounds values to int
+	 *this is used to check input is not a fraction */
 	double x_d = atof(x_str);
 	double y_d = atof(y_str);
 
@@ -148,24 +154,23 @@ static int validate_values_for_hint(char *x_str, char *y_str, int N) {
  */
 static int doSave(Game* gp, char *fileName){
 	FILE* file_ptr = NULL;
-		if (gp->mode == SOLVE||!isErroneousBoard(gp)){
-			if (gp->mode == SOLVE||isSolvable(gp)){
+		if (gp->mode == SOLVE || !isErroneousBoard(gp)){
+			if (gp->mode == SOLVE || isSolvable(gp)){
 				file_ptr = fopen(fileName,"w");
 				if (file_ptr != NULL){
-					/*success*/
 					writeToFile(gp, file_ptr);
 					printf("Saved to: %s\n",fileName);
 					fclose(file_ptr);
 					return 0;
-				}else{
+				} else {
 					/*couldn't open file*/
 					printf("Error: File cannot be created or modified\n");
 				}
-			}else{
+			} else {
 				/*board is not solvable*/
 				printf("Error: board validation failed\n");
 			}
-		}else {
+		} else {
 			/*there are bad values in the board*/
 			printf( "Error: board contains erroneous values\n");
 		}
@@ -260,7 +265,7 @@ static int doAutofill(Game *game) {
 			possible_vals_arr = calloc(N, sizeof(int));
 			if (possible_vals_arr == NULL) {
 				printf(CALLOC_ERROR);
-				return 0;
+				return -1;
 			}
 
 			value = getNodeValByType(game, VALUE, x, y);
@@ -374,9 +379,8 @@ static int doEditFile(Game **game, char *fileName)  {
 	*game = readFromFile(f_pointer);
 	fclose(f_pointer);
 
-	/*check calloc*/
 	if (*game == NULL) {
-		return 0;
+		return -1;
 	}
 	/*set mode and edit*/
 	clearBoardByValType(*game, ISGIVEN);
@@ -397,9 +401,8 @@ static int doEdit(Game **game)  {
 
 	freeGame(*game);
 	*game = initGame(DEFAULT_BLOCK_HEIGHT,DEFAULT_BLOCK_WIDTH);
-	/*check calloc*/
 	if (*game == NULL) {
-		return 0;
+		return -1;
 	}
 	/*set mode and edit*/
 	(*game)->mode = EDIT;
@@ -425,7 +428,7 @@ static int doSolveFile(Game **game, char *fileName) {
 	*game = readFromFile(f_pointer);
 	fclose(f_pointer);
 	if (*game == NULL) {
-		return 0;
+		return -1;
 	}
 	(*game)->markErrors = mark_erros;
 	(*game)->mode = SOLVE;
@@ -442,8 +445,11 @@ static int doMarkErrors(Game *game, char *x) {
 	int mark_errors_value = -1;
 	double mark_errors_d;
 
+	/*atoi() rounds values to int
+	 *this is used to check input is not a fraction */
 	mark_errors_value = atoi(x);
 	mark_errors_d = atof(x);
+
 	if ((mark_errors_value == 0 || mark_errors_value == 1) && (mark_errors_value - mark_errors_d) == 0) {
 		game->markErrors = mark_errors_value;
 		return 1;
@@ -516,13 +522,11 @@ static int doSet(Game *game, char *x, char *y, char *z) {
 
 	new_change = (Change *) initChange(x_val, y_val, val_before, z_val, NULL);
 	if (new_change == NULL) {
-		printBoard(game, VALUE);
-		return 0;
+		return -1;
 	}
 	new_action = (Action *) initAction(SET_A, new_change, game->LatestAction);
 	if (new_action == NULL) {
-		printBoard(game, VALUE);
-		return 0;
+		return -1;
 	}
 	game->LatestAction = new_action;
 	UpdateErrors(game);

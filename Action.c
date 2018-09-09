@@ -80,11 +80,11 @@ void freeSingleAction(Action *action) {
  */
 Action* initAction(actionType_e actionType,Change* changes, Action* prev_action) {
 	Action *newAction = (Action*)calloc(1,sizeof(Action));
-	if(newAction){
+	if (newAction) {
 		setActionType(newAction, actionType);
 		setChangeHead(newAction,changes);
 		setNextAction(prev_action,newAction);
-	}else{
+	} else {
 		printf(CALLOC_ERROR);
 	}
 	return newAction;
