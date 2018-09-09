@@ -71,10 +71,10 @@ Game* initGame(int block_height, int block_width) {
  */
 int clearBoardByValType(Game* gp, valType_e val_type){
 	int rowlen = gp->N;
-	int i, j;
+	int i = 0, j = 0;
 
-	for (i = 0; i < rowlen; i++){
-		for (j = 0; j < rowlen; j++){
+	for (i = 0; i < rowlen; i++) {
+		for (j = 0; j < rowlen; j++) {
 			setNodeValByType(gp, val_type, i, j, 0);
 		}
 	}
