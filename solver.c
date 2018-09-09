@@ -53,11 +53,11 @@ static int GurobiToSolution(Game *gp, double* solFromGurobi){
 	int N = gp->N;
 
 	clearBoardByValType(gp, TEMP);
-	for (c = 0; c < N; c++){
-		for (r = 0; r < N; r++){
-			for (v = 1; v <= N; v++){
+	for (c = 0; c < N; c++) {
+		for (r = 0; r < N; r++) {
+			for (v = 1; v <= N; v++) {
 				idx = vcrToidx(v, c, r, N);
-				if (solFromGurobi[idx] != 0){
+				if (solFromGurobi[idx] != 0) {
 					setNodeValByType(gp, TEMP, c, r, v);
 					count++;
 				}
@@ -88,7 +88,7 @@ int fill_nodes_ILP(Game *gp, valType_e val_type){
 		return -1;
 	} else if (optimstatus == GRB_OPTIMAL) {
 		count = GurobiToSolution(gp, solsFromGurobi);
-		if (count != N*N){
+		if (count != N*N) {
 			optimstatus = 0;
 		}
 	}
