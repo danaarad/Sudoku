@@ -606,7 +606,7 @@ static int doGenerate(Game *game, char *x, char *y) {
 		} else if (return_val != GRB_OPTIMAL){
 			continue; }
 
-		if ((return_val = clear_nodes(game, TEMP, y_val)) == -1) {
+		if ((return_val = clear_nodes(game, TEMP, (N - y_val))) == -1) {
 			return -1;
 		} else if (return_val != 1) {
 			continue; }
