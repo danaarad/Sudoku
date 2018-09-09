@@ -440,11 +440,11 @@ static int doSolveFile(Game **game, char *fileName) {
  */
 static int doMarkErrors(Game *game, char *x) {
 	int mark_errors_value = -1;
-
-	printf("doMarkErrors!\n");
+	double mark_errors_d;
 
 	mark_errors_value = atoi(x);
-	if (mark_errors_value == 0 || mark_errors_value == 1) {
+	mark_errors_d = atof(x);
+	if ((mark_errors_value == 0 || mark_errors_value == 1) && (mark_errors_value - mark_errors_d) == 0) {
 		game->markErrors = mark_errors_value;
 		return 1;
 	}

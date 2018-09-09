@@ -61,7 +61,7 @@ int main() {
 				if (executeCommand(&game, command, x, y, z) == -1){
 					return -1;
 				}
-				if (isWin(game)) {
+				if ((command == set || command == autofill) && isWin(game)) {
 					freeGame(game);
 					break;
 				}
