@@ -148,7 +148,7 @@ static int validate_values_for_hint(char *x_str, char *y_str, int N) {
  */
 static int doSave(Game* gp, char *fileName){
 	FILE* file_ptr = NULL;
-		if (gp->mode == SOLVE||!isErrornousBoard(gp)){
+		if (gp->mode == SOLVE||!isErroneousBoard(gp)){
 			if (gp->mode == SOLVE||isSolvable(gp)){
 				file_ptr = fopen(fileName,"w");
 				if (file_ptr != NULL){
@@ -248,7 +248,7 @@ static int doAutofill(Game *game) {
 	int auto_value = 0;
 	int value;
 
-	if (isErrornousBoard(game) == 1) {
+	if (isErroneousBoard(game) == 1) {
 		printf("Error: board contains erroneous values\n");
 		printBoard(game, VALUE);
 		return 0;
@@ -290,7 +290,7 @@ static int doAutofill(Game *game) {
  */
 static int doGetNumofSols(Game *game) {
 	unsigned long num_of_sols = 0;
-	if (isErrornousBoard(game) == 1) {
+	if (isErroneousBoard(game) == 1) {
 		printf("Error: board contains erroneous values\n");
 		printBoard(game, VALUE);
 		return 0;
@@ -324,7 +324,7 @@ static int doHint(Game *game, char *x, char *y) {
 	x_val -= 1;
 	y_val -= 1;
 
-	if (isErrornousBoard(game) == 1) {
+	if (isErroneousBoard(game) == 1) {
 		printf("Error: board contains erroneous values\n");
 		printBoard(game, VALUE);
 		return 0;
@@ -459,7 +459,7 @@ static int doMarkErrors(Game *game, char *x) {
 static int doValidate(Game *game) {
 	int solvable = 0;
 
-	if (isErrornousBoard(game) == 1) {
+	if (isErroneousBoard(game) == 1) {
 		printf("Error: board contains erroneous values\n");
 		printBoard(game, VALUE);
 		return 1;

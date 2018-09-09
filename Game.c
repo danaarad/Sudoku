@@ -86,9 +86,9 @@ int clearBoardByValType(Game* gp, valType_e val_type){
 
 /*
  * All nodes have an ISERROR boolean value.
- * If one of the nodes has a true ISERROR field, it is an error and the board is errorneous.
+ * If one of the nodes has a true ISERROR field, it is an error and the board is erroneous.
  */
-int isErrornousBoard(Game* gp) {
+int isErroneousBoard(Game* gp) {
 	int N = gp->N, i = 0, j = 0;
 	for (i = 0; i < N; i++){
 		for (j = 0; j < N; j++){
