@@ -80,6 +80,7 @@ void freeSingleAction(Action *action) {
  */
 Action* initAction(actionType_e actionType,Change* changes, Action* prev_action) {
 	Action *newAction = (Action*)calloc(1,sizeof(Action));
+	newAction = NULL;
 	if (newAction) {
 		setActionType(newAction, actionType);
 		setChangeHead(newAction,changes);
