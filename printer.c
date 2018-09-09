@@ -30,7 +30,7 @@ void printBoard(Game* gp, valType_e valType) {
 		for (j = 0; j < BLOCK_HEIGHT; ++j) {
 			printf("|");
 			/*is the block x*/
-			for (k=0; k < BLOCK_HEIGHT; ++k) {
+			for (k = 0; k < BLOCK_HEIGHT; ++k) {
 				/*is the local x*/
 				for(l=0; l < BLOCK_WIDTH; ++l) {
 					x = (k * BLOCK_WIDTH) + l;
@@ -38,15 +38,15 @@ void printBoard(Game* gp, valType_e valType) {
 
 					if (getNodeValByType(gp, valType, x, y) != 0) {
 						printf(" %2d",getNodeValByType(gp, valType, x, y));
-						fflush(stdout);
 						if (getNodeValByType(gp, ISGIVEN, x, y) == 1){
 							printf(".");
-						}else if(getNodeValByType(gp, ISERROR, x, y) == 1 && markErrors){
+						} else if(getNodeValByType(gp, ISERROR, x, y) == 1 &&
+								(markErrors || gp->mode == EDIT)){
 							printf("*");
-						}else {
+						} else {
 							printf(" ");
 						}
-					}else{
+					} else {
 						printf("    ");
 					}
 				}

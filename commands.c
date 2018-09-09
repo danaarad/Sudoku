@@ -279,6 +279,7 @@ static int doAutofill(Game *game) {
 		printBoard(game, VALUE);
 		return 0;
 	}
+	UpdateErrors(game);
 	printBoard(game, VALUE);
 	return 1;
 }
@@ -363,6 +364,7 @@ static int doHint(Game *game, char *x, char *y) {
  */
 static int doEditFile(Game **game, char *fileName)  {
 	FILE *f_pointer = fopen(fileName, "r");
+	int mark_erros = *game->markErrors;
 
 	if (f_pointer == NULL) {
 		printf("Error: File cannot be opened\n");
@@ -379,7 +381,7 @@ static int doEditFile(Game **game, char *fileName)  {
 	/*set mode and edit*/
 	clearBoardByValType(*game, ISGIVEN);
 	(*game)->mode = EDIT;
-	(*game)->markErrors = 1;
+	(*game)->markErrors = mark_erros;
 	UpdateErrors(*game);
 	printBoard(*game, VALUE);
 	return 1;
@@ -391,6 +393,8 @@ static int doEditFile(Game **game, char *fileName)  {
  * Returns 1 on success, 0 on failure.
  */
 static int doEdit(Game **game)  {
+	int mark_erros = *game->markErrors;
+
 	freeGame(*game);
 	*game = initGame(DEFAULT_BLOCK_HEIGHT,DEFAULT_BLOCK_WIDTH);
 	/*check calloc*/
@@ -399,7 +403,7 @@ static int doEdit(Game **game)  {
 	}
 	/*set mode and edit*/
 	(*game)->mode = EDIT;
-	(*game)->markErrors = 1;
+	(*game)->markErrors = mark_erros;
 	UpdateErrors(*game);
 	printBoard(*game, VALUE);
 	return 1;
@@ -411,6 +415,7 @@ static int doEdit(Game **game)  {
  */
 static int doSolveFile(Game **game, char *fileName) {
 	FILE *f_pointer = fopen(fileName, "r");
+	int mark_erros = *game->markErrors;
 	if (f_pointer == NULL) {
 		printf("Error: File doesn't exist or cannot be opened\n");
 		return 0;
@@ -422,6 +427,7 @@ static int doSolveFile(Game **game, char *fileName) {
 	if (*game == NULL) {
 		return 0;
 	}
+	(*game)->markErrors = mark_erros;
 	(*game)->mode = SOLVE;
 	UpdateErrors(*game);
 	printBoard(*game, VALUE);
@@ -440,7 +446,6 @@ static int doMarkErrors(Game *game, char *x) {
 	mark_errors_value = atoi(x);
 	if (mark_errors_value == 0 || mark_errors_value == 1) {
 		game->markErrors = mark_errors_value;
-		printBoard(game, VALUE);
 		return 1;
 	}
 	printf("Error: the value should be 0 or 1\n");

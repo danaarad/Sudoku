@@ -194,7 +194,7 @@ int UpdateErrors(Game *gp){
 	for (y = 0; y < rowSize; y++){
 		for (x = 0; x < rowSize; x++){
 			val = getNodeValByType(gp, VALUE, x, y);
-			if(val > 0){
+			if(val > 0) {
 				idx = val-1;
 				/*insert x and y into checkTable*/
 				emptyPlace = findFirstFreeCellIn2DArr(checkTable[idx], rowSize);
