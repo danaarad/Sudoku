@@ -98,15 +98,15 @@ void freeCheckTable(int ***checkTable, int N){
  * for each value, a 2D table contains all x,y values that have that value.
  */
 int ***callocCheckTable(int N){
-	int i, j;
-	int ***checkTable = (int***)calloc(N,sizeof(int**));
-	if(checkTable){
-		for (i = 0; i < N; ++i){
-			checkTable[i] = (int**)calloc(N,sizeof(int*));
-			if(checkTable[i]){
-				for (j = 0; j < N; ++j){
-					checkTable[i][j] = (int*)calloc(2,sizeof(int));
-					if(!checkTable[i][j]){
+	int i = 0, j = 0;
+	int ***checkTable = (int***) calloc(N, sizeof(int**));
+	if (checkTable) {
+		for (i = 0; i < N; ++i) {
+			checkTable[i] = (int**) calloc(N, sizeof(int*));
+			if (checkTable[i]) {
+				for (j = 0; j < N; ++j) {
+					checkTable[i][j] = (int*) calloc(2,sizeof(int));
+					if (!checkTable[i][j]) {
 						printf(CALLOC_ERROR);
 						return NULL;
 					}

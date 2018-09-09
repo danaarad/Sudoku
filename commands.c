@@ -189,7 +189,9 @@ static int doUndo(Game *game) {
 		if (action_to_undo->type == GENERATE_A) {
 			printf("Undo Generate\n");
 		}
-		UpdateErrors(game);
+		if (UpdateErrors(game) == -1) {
+			return -1;
+		}
 	} else {
 		printf("Error: no moves to undo\n");
 	}
@@ -211,7 +213,9 @@ static int doRedo(Game *game) {
 			if (action_to_redo->type == GENERATE_A) {
 				printf("Redo Generate\n");
 			}
-			UpdateErrors(game);
+			if (UpdateErrors(game) == -1) {
+				return -1;
+			}
 			printBoard(game, VALUE);
 			return 1;
 		}
@@ -283,7 +287,9 @@ static int doAutofill(Game *game) {
 	if (moveTempToValue(game, SET_A) == -1) {
 		return -1;
 	}
-	UpdateErrors(game);
+	if (UpdateErrors(game) == -1) {
+		return -1;
+	}
 	printBoard(game, VALUE);
 	return 1;
 }
@@ -387,7 +393,9 @@ static int doEditFile(Game **game, char *fileName)  {
 	clearBoardByValType(*game, ISGIVEN);
 	(*game)->mode = EDIT;
 	(*game)->markErrors = mark_erros;
-	UpdateErrors(*game);
+	if (UpdateErrors(*game) == -1) {
+		return -1;
+	}
 	printBoard(*game, VALUE);
 	return 1;
 }
@@ -408,7 +416,9 @@ static int doEdit(Game **game)  {
 	/*set mode and edit*/
 	(*game)->mode = EDIT;
 	(*game)->markErrors = mark_erros;
-	UpdateErrors(*game);
+	if (UpdateErrors(*game) == -1) {
+		return -1;
+	}
 	printBoard(*game, VALUE);
 	return 1;
 }
@@ -433,7 +443,9 @@ static int doSolveFile(Game **game, char *fileName) {
 	}
 	(*game)->markErrors = mark_erros;
 	(*game)->mode = SOLVE;
-	UpdateErrors(*game);
+	if (UpdateErrors(*game) == -1) {
+		return -1;
+	}
 	printBoard(*game, VALUE);
 	return 1;
 }
@@ -530,7 +542,9 @@ static int doSet(Game *game, char *x, char *y, char *z) {
 		return -1;
 	}
 	game->LatestAction = new_action;
-	UpdateErrors(game);
+	if (UpdateErrors(game) == -1) {
+		return -1;
+	}
 	printBoard(game, VALUE);
 	return 1;
 }
