@@ -206,7 +206,7 @@ static int isPossibleValue(Game* gp, valType_e valType, int x, int y, int valToC
 	return 1;
 }
 
-unsigned long exhaustive_backtracking(Game *game){
+unsigned long exhaustive_backtracking(Game *game, int *error){
 	int x = 0, y = 0;
 	int value = 1;
 	int game_value = 0;
@@ -253,13 +253,13 @@ unsigned long exhaustive_backtracking(Game *game){
 			top = (stack_node *) push(top, x, y, value);
 			/*check for push error*/
 			if (top == NULL) {
-				return -1; }
+				*error = -1; return 0; }
 			backwards = 0; x = 0; y += 1; value = 1;
 		} else {
 			top = (stack_node *) push(top, x, y, value);
 			/*check for push error*/
 			if (top == NULL) {
-				return -1; }
+				*error = -1; return 0; }
 			backwards = 0; x += 1; value = 1;
 		}
 	} while (!(top == NULL && value > game->N));

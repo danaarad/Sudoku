@@ -32,24 +32,23 @@ Game* initGame(int block_height, int block_width) {
 		gp->mode = INIT;
 		gp->markErrors = 1;
 		gp->LatestAction = initAction(INIT_A, 0, 0);
-		if (!gp->LatestAction){
-			printf(CALLOC_ERROR);
+		if (!gp->LatestAction) {
 			free(gp);
 			return NULL;
 		}
-	}else{
+	} else {
 		printf(CALLOC_ERROR);
 		return NULL;
 	}
 
 	rowlen = gp->N;
-	gp->gameBoard = (Node**)calloc(rowlen,sizeof(Node*));
+	gp->gameBoard = (Node**) calloc(rowlen, sizeof(Node*));
 
-	if(gp->gameBoard){
-		for (x = 0; x < rowlen; x++){
-			gp->gameBoard[x]=(Node*)calloc(rowlen,sizeof(Node));
+	if (gp->gameBoard) {
+		for (x = 0; x < rowlen; x++) {
+			gp->gameBoard[x] = (Node*) calloc(rowlen, sizeof(Node));
 
-			if(!gp->gameBoard[x]){
+			if (!gp->gameBoard[x]) {
 				free(gp->LatestAction);
 				free(gp->gameBoard);
 				free(gp);
@@ -57,13 +56,12 @@ Game* initGame(int block_height, int block_width) {
 				return NULL;
 			}
 		}
-	}else{
+	} else {
 		printf(CALLOC_ERROR);
 		free(gp->LatestAction);
 		free(gp);
 		return NULL;
 	}
-
 	return gp;
 }
 

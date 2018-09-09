@@ -311,6 +311,7 @@ static int doAutofill(Game *game) {
  */
 static int doGetNumofSols(Game *game) {
 	unsigned long num_of_sols = 0;
+	int error_code = 1;
 
 	if (isErroneousBoard(game) == 1) {
 		printf("Error: board contains erroneous values\n");
@@ -318,7 +319,8 @@ static int doGetNumofSols(Game *game) {
 		return 0;
 	}
 
-	if (num_of_sols = exhaustive_backtracking(game) == -1){
+	num_of_sols = exhaustive_backtracking(game, &error_code);
+	if (error_code == -1){
 		return -1;
 	}
 
