@@ -18,7 +18,11 @@
  * Calls Linear programming, returns the optimstatus from gurobi.
  */
 int isSolvable(Game *gp) {
-	return fill_nodes_ILP(gp, VALUE) == GRB_OPTIMAL;
+	int solvable =  fill_nodes_ILP(gp, VALUE);
+	if (solvable == -1) {
+		return -1;
+	}
+	return solvable == GRB_OPTIMAL;
 }
 
 static int* BoardToGurobi(Game *gp, valType_e val_type){
