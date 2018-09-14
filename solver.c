@@ -33,6 +33,7 @@ int isSolvable(Game *gp) {
  * Used to add a constraint for each full cell in the current game board.
  * Returns an array where:
  * array[idx = vcrToidx(v, c, r)] == 1 iff Xvcr = 1 should be added as a constraint.
+ * (v = value, c = column, r = row)
  */
 static int* BoardToGurobi(Game *gp, valType_e val_type){
 	int N = gp->N;
@@ -61,6 +62,7 @@ static int* BoardToGurobi(Game *gp, valType_e val_type){
 /*
  * Translate Gurobi solution array to values in the current game board.
  * if solFromGurobi[idx = vcrToidx(v, c, r)] == 1 -> board[r][c] is set to v
+ * (v = value, c = column, r = row)
  */
 static int GurobiToSolution(Game *gp, double* solFromGurobi){
 	int v = 0, c = 0, r = 0, idx = 0, count = 0;
@@ -83,7 +85,7 @@ static int GurobiToSolution(Game *gp, double* solFromGurobi){
 
 /*
  * Returns the Nth non-zero index in arr
- * index is normalized to 1 to len(arr) scale
+ * index is normalized to [1, len(arr)] scale
  */
 static int getNthValOfArray(int *arr, int n) {
 	int i = 0;
