@@ -570,15 +570,19 @@ static int doSet(Game *game, char *x, char *y, char *z) {
 	val_before = getNodeValByType(game, VALUE, x_val, y_val);
 	setNodeValByType(game, VALUE, x_val , y_val, z_val);
 
-	new_change = (Change *) initChange(x_val, y_val, val_before, z_val, NULL);
-	if (new_change == NULL) {
-		return -1;
+	/*update latest action only if value was changes*/
+	if (val_before != z_val) {
+		new_change = (Change *) initChange(x_val, y_val, val_before, z_val, NULL);
+		if (new_change == NULL) {
+			return -1;
+		}
+		new_action = (Action *) initAction(SET_A, new_change, game->LatestAction);
+		if (new_action == NULL) {
+			return -1;
+		}
+		game->LatestAction = new_action;
 	}
-	new_action = (Action *) initAction(SET_A, new_change, game->LatestAction);
-	if (new_action == NULL) {
-		return -1;
-	}
-	game->LatestAction = new_action;
+
 	if (UpdateErrors(game) == -1) {
 		return -1;
 	}
