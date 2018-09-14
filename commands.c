@@ -491,7 +491,8 @@ static int doMarkErrors(Game *game, char *x) {
 	mark_errors_value = atoi(x);
 	mark_errors_d = atof(x);
 
-	if ((mark_errors_value == 0 || mark_errors_value == 1) && (mark_errors_value - mark_errors_d) == 0) {
+	if (((mark_errors_value == 0 && strcmp(x, "0") == 0) || mark_errors_value == 1)
+			&& (mark_errors_value - mark_errors_d) == 0) {
 		game->markErrors = mark_errors_value;
 		return 1;
 	}

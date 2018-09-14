@@ -98,7 +98,7 @@ int fill_nodes_ILP(Game *gp, valType_e val_type){
 	return optimstatus;
 }
 
-static int getNthValOfArray(int *arr int n) {
+static int getNthValOfArray(int *arr, int n) {
 	int i = 0;
 	int count = 0;
 
@@ -120,7 +120,6 @@ int fill_nodes_random(Game *game, valType_e val_type, int num_of_cells) {
 	int *possible_vals_arr;
 	int num_of_possible_vals = 0;
 	int random_val = 0;
-	int is_good_random_val = 0;
 
 	while (filled < num_of_cells) {
 		x = rand()%(game->N);

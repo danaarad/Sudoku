@@ -96,8 +96,6 @@ int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int
   }
 
 
-  /* First constraint: x + 2 y + 3 z <= 4 */
-
   /* First constraint: for v in [1,N], sum(Xvcr) = 1
    * Each cell has only one value
    */
