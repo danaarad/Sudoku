@@ -196,17 +196,18 @@ static int doUndo(Game *game) {
 	if (action_to_undo->type != INIT_A) {
 		undoAction(game);
 		game->LatestAction = action_to_undo->prev_action;
-		printBoard(game, VALUE);
 
+		if (UpdateErrors(game) == -1) {
+			return -1;
+		}
+
+		printBoard(game, VALUE);
 		if (action_to_undo->type == GENERATE_A) {
 			printf("Undo Generate\n");
 		} else {
 			printUndoChanges(action_to_undo);
 		}
 
-		if (UpdateErrors(game) == -1) {
-			return -1;
-		}
 	} else {
 		printf("Error: no moves to undo\n");
 	}
@@ -223,17 +224,17 @@ static int doRedo(Game *game) {
 		action_to_redo = game->LatestAction->next_action;
 		if (action_to_redo != NULL) {
 			game->LatestAction = action_to_redo;
-			redoAction(game);
-			printBoard(game, VALUE);
 
+			redoAction(game);
+			if (UpdateErrors(game) == -1) {
+				return -1;
+			}
+
+			printBoard(game, VALUE);
 			if (action_to_redo->type == GENERATE_A) {
 				printf("Redo Generate\n");
 			} else {
 				printRedoChanges(action_to_redo);
-			}
-
-			if (UpdateErrors(game) == -1) {
-				return -1;
 			}
 
 			return 1;
