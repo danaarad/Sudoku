@@ -18,7 +18,6 @@
 #include "arrayAux.h"
 #include "file_handler.h"
 #include "commandsAux.h"
-#include "change.h"
 #include "parser.h"
 #include "commands.h"
 
@@ -195,18 +194,22 @@ static int doSave(Game* gp, char *fileName){
 static int doUndo(Game *game) {
 	Action *action_to_undo = game->LatestAction;
 	if (action_to_undo->type != INIT_A) {
-		undoAction(game, 1);
+		undoAction(game);
 		game->LatestAction = action_to_undo->prev_action;
+		printBoard(game, VALUE);
+
 		if (action_to_undo->type == GENERATE_A) {
 			printf("Undo Generate\n");
+		} else {
+			printUndoChanges(action_to_undo);
 		}
+
 		if (UpdateErrors(game) == -1) {
 			return -1;
 		}
 	} else {
 		printf("Error: no moves to undo\n");
 	}
-	printBoard(game, VALUE);
 	return 1;
 }
 
@@ -220,14 +223,19 @@ static int doRedo(Game *game) {
 		action_to_redo = game->LatestAction->next_action;
 		if (action_to_redo != NULL) {
 			game->LatestAction = action_to_redo;
-			redoAction(game, 1);
+			redoAction(game);
+			printBoard(game, VALUE);
+
 			if (action_to_redo->type == GENERATE_A) {
 				printf("Redo Generate\n");
+			} else {
+				printRedoChanges(action_to_redo);
 			}
+
 			if (UpdateErrors(game) == -1) {
 				return -1;
 			}
-			printBoard(game, VALUE);
+
 			return 1;
 		}
 	}
@@ -244,7 +252,7 @@ static int doReset(Game *game) {
 	Action *prev_action = NULL;
 
 	while (game->LatestAction->type != INIT_A) {
-		undoAction(game, 0);
+		undoAction(game);
 		prev_action = game->LatestAction;
 		game->LatestAction = game->LatestAction->next_action;
 	}

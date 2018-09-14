@@ -9,9 +9,10 @@
 #include <stdlib.h>
 #include "Game_structs.h"
 #include "Node.h"
-#include "change.h"
 #include "settings.h"
 #include "Action.h"
+
+/********************* SETTERS *********************/
 
 /*
  * Sets the given change to head of the actions change list.
@@ -46,6 +47,61 @@ static void setNextAction(Action *action, Action *next_action) {
 	}
 }
 
+
+/********************* INIT FUNCTIONS *********************/
+
+/*
+ * Creates a change and adds it after previous change.
+ * This change should be set after the last change in the change chain.
+ */
+Change *initChange(int x, int y, int val_before, int val_after, Change *prev) {
+	Change *newChange = (Change*)calloc(1,sizeof(Change));
+
+	if (newChange == NULL) {
+		printf(CALLOC_ERROR);
+		return NULL;
+	}
+	newChange->x = x;
+	newChange->y = y;
+	newChange->val_before = val_before;
+	newChange->val_after = val_after;
+	newChange->next = NULL;
+	if (prev != NULL) {
+		prev->next = newChange;
+	}
+
+	return newChange;
+}
+
+/*
+ * Returns a pointer to a new allocated action with given paramaters.
+ */
+Action* initAction(actionType_e actionType,Change* changes, Action* prev_action) {
+	Action *newAction = (Action*)calloc(1,sizeof(Action));
+	if (newAction) {
+		setActionType(newAction, actionType);
+		setChangeHead(newAction,changes);
+		setNextAction(prev_action,newAction);
+	} else {
+		printf(CALLOC_ERROR);
+	}
+	return newAction;
+}
+
+/********************* FREE FUNCTIONS *********************/
+
+/*
+ * Recursive free of changes in action.
+ */
+void freeChanges(Change *change) {
+	Change *next;
+	if (change != NULL) {
+		next = change->next;
+		freeChanges(next);
+		free(change);
+	}
+}
+
 /*Recursively frees all action before the given action (not included)*/
 void freeActionsBefore(Action *action) {
 	Action *prev = action->prev_action;
@@ -75,38 +131,22 @@ void freeSingleAction(Action *action) {
 	free(action);
 }
 
-/*
- * Returns a pointer to a new allocated action with given paramaters.
- */
-Action* initAction(actionType_e actionType,Change* changes, Action* prev_action) {
-	Action *newAction = (Action*)calloc(1,sizeof(Action));
-	if (newAction) {
-		setActionType(newAction, actionType);
-		setChangeHead(newAction,changes);
-		setNextAction(prev_action,newAction);
-	} else {
-		printf(CALLOC_ERROR);
-	}
-	return newAction;
-}
+
+/********************* UNDO / REDO FUNCTIONS *********************/
 /*
  * Undo the latest action change by change.
  * Every change is undone by changing the value of node x,y from val after to val before.
  */
-void undoAction(Game *gp, int print) {
+void undoAction(Game *gp) {
 	int x = 0, y = 0, val_before = 0;
 	Action *action = gp->LatestAction;
 	Change *curchange = action->changes;
-	actionType_e actionType = action->type ;
 
 	while(curchange) {
 		x = curchange->x;
 		y = curchange->y;
 		val_before = curchange->val_before;
 		setNodeValByType(gp, VALUE, x, y, val_before);
-		if (print == 1) {
-			printChange(undo, actionType, curchange);
-		}
 		curchange = curchange->next;
 	}
 }
@@ -116,21 +156,96 @@ void undoAction(Game *gp, int print) {
  * Every change is redone by changing the value of node x,y from val before to val after.
  * The function returns the number of changes that were redone.
  */
-void redoAction(Game *gp, int print) {
+void redoAction(Game *gp) {
 	int x = 0, y = 0, val_after = 0;
 	Action *action = gp->LatestAction;
 	Change *curchange = action->changes;
-	actionType_e actionType = action->type ;
 
 	while(curchange){
 		x = curchange->x;
 		y = curchange->y;
 		val_after = curchange->val_after;
 		setNodeValByType(gp, VALUE, x, y, val_after);
-		if (print == 1) {
-			printChange(redo, actionType, curchange);
-		}
 		curchange = curchange->next;
 	}
 }
 
+/********************* PRINT FUNCTIONS *********************/
+
+static void printVal(int val) {
+	/*replace 0 with '_'*/
+	if(val == 0){
+		printf("_ ");
+	}else{
+		printf("%d ",val);
+	}
+}
+
+static void printChangeInner(int x, int y, int val_before, int val_after) {
+	printf("%d,%d: ", x, y);
+
+	printf("from ");
+	printVal(val_before);
+
+	printf("to ");
+	printVal(val_after);
+
+	printf("\n");
+}
+
+/*
+ * Prints the correct message while redoing or undoing a change.
+ */
+void printChange(command_e command, actionType_e actionType, Change *change){
+	int x, y;
+
+	/*if the action type is not set then don't print*/
+	if(actionType != SET_A){
+		return;
+	}
+
+	/*x and y for users is lagrer by 1*/
+	x = change->x + 1;
+	y = change->y + 1;
+
+	/*generic switch for type of action*/
+	switch(command){
+		case undo:
+			printf("Undo ");
+			printChangeInner(x, y, change->val_after, change->val_before);
+			break;
+		case redo:
+			printf("Redo ");
+			printChangeInner(x, y, change->val_before, change->val_after);
+			break;
+		default:
+			break;
+	}
+
+	fflush(stdout);
+}
+
+/*
+ * print latest action changes for undo
+ */
+void printUndoChanges(Action *action) {
+	Change *curchange = action->changes;
+
+	while(curchange) {
+		printChange(undo, action->type, curchange);
+		curchange = curchange->next;
+	}
+}
+
+
+/*
+ * print latest action changes for redo
+ */
+void printRedoChanges(Action *action) {
+	Change *curchange = action->changes;
+
+	while(curchange){
+		printChange(redo, action->type, curchange);
+		curchange = curchange->next;
+	}
+}

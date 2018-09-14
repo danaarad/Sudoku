@@ -1,6 +1,6 @@
 CC = gcc
 EXEC = sudoku
-OBJS = Action.o arrayAux.o change.o commands.o commandsAux.o file_handler.o Game.o GameAux.o gurobi_c.o main.o Node.o parser.o printer.o solver.o stack.o
+OBJS = Action.o arrayAux.o commands.o commandsAux.o file_handler.o Game.o GameAux.o gurobi_c.o main.o Node.o parser.o printer.o solver.o stack.o
 COMP_FLAGS = -ansi -O3 -Wall -Wextra -Werror -pedantic-errors -g
 GUROBI_COMP = -I /usr/local/lib/gurobi563/include
 GUROBI_LIB = -L /usr/local/lib/gurobi563/lib -lgurobi56
@@ -12,8 +12,6 @@ main.o: main.c Game_structs.h commands.h settings.h Game.h
 Action.o: Action.c Game_structs.h Node.h change.h settings.h Action.h
 	$(CC) $(COMP_FLAGS) $(GUROBI_COMP) -c $*.c
 arrayAux.o: arrayAux.c 
-	$(CC) $(COMP_FLAGS) $(GUROBI_COMP) -c $*.c
-change.o: change.c change.h settings.h
 	$(CC) $(COMP_FLAGS) $(GUROBI_COMP) -c $*.c
 commands.o: commands.c commands.h settings.h Game.h Node.h Action.h solver.h printer.h arrayAux.h file_handler.h commandsAux.h change.h parser.h
 	$(CC) $(COMP_FLAGS) $(GUROBI_COMP) -c $*.c
