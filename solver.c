@@ -15,7 +15,11 @@
 #include <stdio.h>
 
 /*
- * Calls Linear programming, returns the optimstatus from gurobi.
+ * Runs Gurobi solver
+ * Returns:
+ *  1 if Gorubi found an optimal solution
+ * -1 if Gurobi encountered a memory error
+ *  0 else
  */
 int isSolvable(Game *gp) {
 	int solvable =  fill_nodes_ILP(gp, VALUE);
@@ -25,6 +29,11 @@ int isSolvable(Game *gp) {
 	return solvable == GRB_OPTIMAL;
 }
 
+/*
+ * Used to add a constraint for each full cell in the current game board.
+ * Returns an array where:
+ * array[idx = vcrToidx(v, c, r)] == 1 iff Xvcr = 1 should be added as a constraint.
+ */
 static int* BoardToGurobi(Game *gp, valType_e val_type){
 	int N = gp->N;
 	int num_vars = N*N*N;
@@ -48,6 +57,11 @@ static int* BoardToGurobi(Game *gp, valType_e val_type){
 	return forGurobi;
 }
 
+
+/*
+ * Translate Gurobi solution array to values in the current game board.
+ * if solFromGurobi[idx = vcrToidx(v, c, r)] == 1 -> board[r][c] is set to v
+ */
 static int GurobiToSolution(Game *gp, double* solFromGurobi){
 	int v = 0, c = 0, r = 0, idx = 0, count = 0;
 	int N = gp->N;
@@ -67,6 +81,32 @@ static int GurobiToSolution(Game *gp, double* solFromGurobi){
 	return count;
 }
 
+/*
+ * Returns the Nth non-zero index in arr
+ * index is normalized to 1 to len(arr) scale
+ */
+static int getNthValOfArray(int *arr, int n) {
+	int i = 0;
+	int count = 0;
+
+	for (i = 0; i < (int)(sizeof(arr)/sizeof(int)); ++i) {
+		if (arr[i] != 0) {
+			if (count == n) {
+				return i+1;
+			}
+			++count;
+		}
+	}
+	return -1;
+}
+
+/*
+ * Builds constraints from board,
+ * Run Gurobi solve,
+ * Translates Gurobi solution to board
+ *
+ * Returns -1 on memory error else optimstatus
+ */
 int fill_nodes_ILP(Game *gp, valType_e val_type){
 	int N = gp->N;
 	int num_values = N*N*N;
@@ -98,21 +138,15 @@ int fill_nodes_ILP(Game *gp, valType_e val_type){
 	return optimstatus;
 }
 
-static int getNthValOfArray(int *arr, int n) {
-	int i = 0;
-	int count = 0;
-
-	for (i = 0; i < (int)(sizeof(arr)/sizeof(int)); ++i) {
-		if (arr[i] != 0) {
-			if (count == n) {
-				return i+1;
-			}
-			++count;
-		}
-	}
-	return -1;
-}
-
+/*
+ * Fills val_type board of game with num_of_cells random values
+ * This function generates random x,y values
+ * if board[x][y] is empty, the function generates a random legal value
+ *
+ * when num_of_cells cells are full, the function returns 1.
+ * if a cell with no possible values is found, the function returns 0.
+ * upon memory error, the function returns -1.
+ */
 int fill_nodes_random(Game *game, valType_e val_type, int num_of_cells) {
 	int x = 0;
 	int y = 0;
@@ -148,7 +182,14 @@ int fill_nodes_random(Game *game, valType_e val_type, int num_of_cells) {
 	return 1;
 }
 
-
+/*
+ * Clear num_to_clear values in val_type board of game
+ * This function generates random x,y values
+ * if board[x][y] is not empty, it is set to 0
+ *
+ * When num_to_clear cells are cleared, the function returns 1.
+ *
+ */
 int clear_nodes(Game *game, valType_e val_type, int num_to_clear) {
 	int x = 0;
 	int y = 0;
@@ -165,8 +206,10 @@ int clear_nodes(Game *game, valType_e val_type, int num_to_clear) {
 	return 1;
 }
 
-
-static int moveValueToTemp(Game *game) {
+/*
+ * Copies values from VALUE board to TEMP board of game
+ */
+static void moveValueToTemp(Game *game) {
 	int x = 0, y = 0;
 	int N = game->blockHeight * game->blockWidth;
 	int value = 0;
@@ -177,10 +220,14 @@ static int moveValueToTemp(Game *game) {
 			setNodeValByType(game, TEMP, x , y, value);
 		}
 	}
-	return 1;
-
 }
 
+/*
+ * Validate if valToCheck is a possible value in val_type board of game, in cell x,y
+ * Returns:
+ *  1 if value is possible (legal)
+ *  0 else
+ */
 static int isPossibleValue(Game* gp, valType_e valType, int x, int y, int valToCheck){
 	int i = 0, j = 0, x_corner = 0, y_corner = 0, otherVal = 0;
 	int rowSize, colSize, blockWidth, blockHeight;
@@ -218,6 +265,14 @@ static int isPossibleValue(Game* gp, valType_e valType, int x, int y, int valToC
 	return 1;
 }
 
+
+/*
+ * Performs the Exhaustive Backtracking algorithm as described in project documents
+ * VALUE boards is copied to TEMP board,
+ * then the backtracking is performed on TEMP board.
+ * Note that this function does not change VALUE board.
+ * Returns number of possible solutions for game VALUE board.
+ */
 unsigned long exhaustive_backtracking(Game *game, int *error){
 	int x = 0, y = 0;
 	int value = 1;
@@ -278,7 +333,11 @@ unsigned long exhaustive_backtracking(Game *game, int *error){
 	return num_of_solutions;
 }
 
-
+/*
+ * possible_values[i] = 1 iff i+1 is possible (legal) for cell x,y in val_type board in game,
+ * 						0 else.
+ * Returns total number of possible values for cell
+ */
 int get_possible_values_for_node(Game *game, valType_e valType, int x, int y, int *possible_values) {
 	int val, count = 0;
 	for(val = 1; val <= game->N; val++){

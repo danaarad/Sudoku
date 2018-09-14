@@ -16,6 +16,7 @@
 #define INIT_ERROR "Error: init has failed\n"
 #define DEFAULT_BLOCK_HEIGHT 3
 #define DEFAULT_BLOCK_WIDTH 3
+#define RETRY_ATTEMPTS_FOR_GENERATE 1000
 
 
 /* Gurobi Model status codes (after call to GRBoptimize()) */

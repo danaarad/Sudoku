@@ -15,14 +15,12 @@
 #include "Action.h"
 #include "solver.h"
 #include "printer.h"
-#include "arrayAux.h"
 #include "file_handler.h"
-#include "commandsAux.h"
 #include "parser.h"
 #include "commands.h"
 
 
-/******* validators **********/
+/****************** VALIDATORS ****************/
 /*
  * Validates command is compatible with mode, according to project documents.
  * Return 1 if compatible, 0 otherwise
@@ -159,7 +157,8 @@ static int save_file(Game *gp, char *filename) {
 	}
 	return 1;
 }
-/********* do commands ********/
+
+/****************** INNER COMMAND IMPLEMENTATION ****************/
 /*
  * Execute save command
  * Returns 1 on success, 0 on failure
@@ -251,18 +250,96 @@ static int doRedo(Game *game) {
  */
 static int doReset(Game *game) {
 	Action *prev_action = NULL;
+	Action *action = game->LatestAction;
 
-	while (game->LatestAction->type != INIT_A) {
+	while (action->type != INIT_A) {
 		undoAction(game);
 		prev_action = game->LatestAction;
-		game->LatestAction = game->LatestAction->next_action;
+		game->LatestAction = game->LatestAction->prev_action;
+		action = game->LatestAction;
 	}
-	freeActionsAfter(prev_action);
-	freeSingleAction(prev_action);
+	if (prev_action != NULL) {
+		freeActionsAfter(prev_action);
+		freeSingleAction(prev_action);
+	}
 	printf("Board reset\n");
 	printBoard(game, VALUE);
 	return 1;
 
+}
+
+/*
+ * Moves the TEMP value to the VALUE of all nonzero tempValues in board.
+ * This represents a multiple change move (such as autofill and generate).
+ * Therefore, each updated value is saved as a change and added to the new action.
+ * This action will become the new latest action.
+ */
+static int moveTempToValue(Game *game, actionType_e action_type) {
+	int x = 0, y = 0;
+	int N = game->blockHeight * game->blockWidth;
+	int temp_value = 0;
+	int val_before;
+	Action *new_action = NULL;
+	Change *changes = NULL;
+	Change *new_change = NULL;
+
+	for (y = 0; y < N; ++y) {
+		for (x = 0; x < N; ++x) {
+			temp_value = getNodeValByType(game, TEMP, x, y);
+			if (temp_value != 0) {
+				val_before = getNodeValByType(game, VALUE, x, y);
+				setNodeValByType(game, VALUE, x , y, temp_value);
+
+				new_change = initChange(x, y, val_before, temp_value, new_change);
+				if (new_change == NULL) {
+					printBoard(game, VALUE);
+					return -1;
+				}
+				if (changes == NULL) {
+					changes = new_change;
+				}
+			}
+		}
+	}
+	if (changes != NULL) {
+		new_action = (Action *) initAction(action_type, changes, game->LatestAction);
+		game->LatestAction = new_action;
+		if (new_action == NULL) {
+			return -1;
+		}
+	}
+	return 1;
+
+}
+
+/*
+ * Returns the number of nonzero values in array.
+ */
+static int filled_cells(int *arr, int len){
+	int i = 0;
+	int filled_cells = 0;
+
+	for(i = 0; i < len; ++i) {
+		if (arr[i] != 0) {
+			++filled_cells;
+		}
+	}
+	return filled_cells;
+
+}
+
+/*
+ * Returns the index(+1) of the first nonzero value in array.
+ */
+int get_first_value(int *arr, int len){
+	int i = 0;
+
+	for(i = 0; i < len; ++i) {
+		if (arr[i] == 1) {
+			return i + 1;
+		}
+	}
+	return -1;
 }
 
 /*
@@ -642,7 +719,7 @@ static int doGenerate(Game *game, char *x, char *y) {
 }
 
 
-/******* main functions ******/
+/****************** OUTER INTERFACE FUNCTION ****************/
 /*
  * get command from user - returns the compatible command_e enum,
  * and sets x_ptr, y_ptr and z_ptr to command parameters

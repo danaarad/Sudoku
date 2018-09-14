@@ -18,4 +18,9 @@ int UpdateErrors(Game *gp);
 int clearBoardByValType(Game* gp, valType_e val_type);
 int CountValuesInBoard(Game *game);
 
+int updateErrorsFromCheckTable(Game *gp, int ***checkTable, int lenOfArr);
+void freeCheckTable(int ***checkTable, int rowSize);
+int ***callocCheckTable(int rowSize);
+int resetCheckTable(int ***checkTable, int rowSize);
+
 #endif /* GAME_H_ */
