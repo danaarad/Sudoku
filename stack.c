@@ -10,6 +10,9 @@
 #include "stack.h"
 #include "settings.h"
 
+/*
+ * Inject node to top of stack.
+ */
 stack_node *push(stack_node *top, int x, int y, int value) {
     struct node *nptr = malloc(sizeof(struct node));
     if (nptr == NULL) {
@@ -23,6 +26,9 @@ stack_node *push(stack_node *top, int x, int y, int value) {
     return nptr;
 }
 
+/*
+ * Return and remove stack top.
+ */
 stack_node *pop(stack_node *top, int *x, int *y, int *value) {
 	stack_node *temp;
 	int poped_x = -1;
@@ -45,13 +51,3 @@ stack_node *pop(stack_node *top, int *x, int *y, int *value) {
 }
 
 
-void display(stack_node *top)
-{
-    struct node *temp;
-    temp = top;
-    while (temp != NULL)
-    {
-        printf("\n%d %d %d", temp->x, temp->y, temp->value);
-        temp = temp->next;
-    }
-}
