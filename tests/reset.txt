@@ -1,0 +1,4 @@
+solve boards/2X2.txt
+set 3 1 2
+set 1 2 3
+reset
