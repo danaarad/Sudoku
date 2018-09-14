@@ -5,7 +5,10 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-static void printSeperator(int BLOCK_HEIGHT, int BLOCK_WIDTH){
+/*
+ * Prints the separator according to block height and width.
+ */
+static void printSaperator(int BLOCK_HEIGHT, int BLOCK_WIDTH){
 	int  i = 0;
 	int numofchars = ( 4*BLOCK_HEIGHT*BLOCK_WIDTH + BLOCK_HEIGHT + 1 );
 
@@ -16,7 +19,13 @@ static void printSeperator(int BLOCK_HEIGHT, int BLOCK_WIDTH){
 	fflush(stdout);
 }
 
-/*prints game board*/
+/*
+ * Prints the game board as described in the project documents.
+ * If a value is fixed it is marked by '.'.
+ * If a value is erroneus and the "mark_errors" flag is on,
+ * the value is marked by '*'.
+ * If game mode is EDIT the "mark_errors" flag is ignored and errors are marked.
+ */
 void printBoard(Game* gp, valType_e valType) {
 	int i = 0, j = 0, k = 0, l = 0, x = 0, y = 0;
 	int BLOCK_WIDTH = gp->blockWidth;
@@ -25,7 +34,7 @@ void printBoard(Game* gp, valType_e valType) {
 
 	/* i is the block y this runs for every block n the col*/
 	for (i = 0; i < BLOCK_WIDTH; ++i) {
-		printSeperator(BLOCK_HEIGHT, BLOCK_WIDTH);
+		printSeparator(BLOCK_HEIGHT, BLOCK_WIDTH);
 		/* j is the local y  this runs for every block n the row*/
 		for (j = 0; j < BLOCK_HEIGHT; ++j) {
 			printf("|");
