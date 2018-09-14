@@ -249,19 +249,15 @@ static int doRedo(Game *game) {
  * Returns 1 on success, 0 on failure
  */
 static int doReset(Game *game) {
-	Action *prev_action = NULL;
 	Action *action = game->LatestAction;
 
 	while (action->type != INIT_A) {
 		undoAction(game);
-		prev_action = game->LatestAction;
 		game->LatestAction = game->LatestAction->prev_action;
 		action = game->LatestAction;
 	}
-	if (prev_action != NULL) {
-		freeActionsAfter(prev_action);
-		freeSingleAction(prev_action);
-	}
+
+	freeActionsAfter(action);
 	printf("Board reset\n");
 	printBoard(game, VALUE);
 	return 1;

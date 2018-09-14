@@ -14,6 +14,50 @@
 #include "settings.h"
 #include "solver.h"
 
+
+/************************* NODE GETTER AND SETTER FUNCTIONS ******************************/
+/*
+ * The function gets type, x, y and returns
+ * the value (by type) of the node in position x,y.
+ */
+int getNodeValByType(Game* gp, valType_e valType, int x, int y) {
+	switch (valType) {
+	case VALUE:
+		return gp->gameBoard[x][y].value;
+	case ISGIVEN:
+		return gp->gameBoard[x][y].isGiven;
+	case TEMP:
+		return gp->gameBoard[x][y].tempValue;
+	case ISERROR:
+		return gp->gameBoard[x][y].isError;
+	}
+	return -1;
+}
+
+/*
+ * The function gets type, x, y, val and sets
+ * the value (by type) of the node in position x,y.
+ */
+void setNodeValByType(Game* gp, valType_e valType, int x, int y, int val) {
+	switch (valType) {
+	case VALUE:
+		gp->gameBoard[x][y].value = val;
+		if (val == 0) {
+			gp->gameBoard[x][y].isError = 0;
+		}
+		break;
+	case ISGIVEN:
+		gp->gameBoard[x][y].isGiven = val;
+		break;
+	case TEMP:
+		gp->gameBoard[x][y].tempValue = val;
+		break;
+	case ISERROR:
+		gp->gameBoard[x][y].isError = val;
+		break;
+	}
+}
+
 /************************* CHECK TABLE FUNCTIONS ******************************/
 
 /*
@@ -139,7 +183,7 @@ int resetCheckTable(int ***checkTable, int rowSize){
 /************************ GAME FUNCTIONS ***************************/
 /*
  * Returns a pointer to a new game of size NxN (N = block_height*block_width);
- * Sets LatestAction to an action of type INIT.
+ * Sets LatestAction to an action of type INIT_A.
  * Allocates place for board with nodes that are all 0;
  */
 Game* initGame(int block_height, int block_width) {
@@ -204,38 +248,6 @@ int clearBoardByValType(Game* gp, valType_e val_type){
 }
 
 /*
- * All nodes have an ISERROR boolean value.
- * If one of the nodes has a true ISERROR field, it is an error and the board is erroneous.
- */
-int isErroneousBoard(Game* gp) {
-	int N = gp->N, i = 0, j = 0;
-	for (i = 0; i < N; i++){
-		for (j = 0; j < N; j++){
-			if (getNodeValByType(gp,ISERROR, i, j) == 1){
-				return 1;
-			}
-		}
-	}
-	return 0;
-}
-
-/*
- * All nodes have an ISERROR boolean value.
- * If a node has a true ISERROR field, it is an error and it is counted as such.
- */
-int CountErrorsInBoard(Game* gp) {
-	int N = gp->N, i = 0, j = 0, numOfErrors = 0;
-	for (i = 0; i < N; i++){
-		for (j = 0; j < N; j++){
-			if (getNodeValByType(gp, ISERROR, i, j) == 1){
-				numOfErrors++;
-			}
-		}
-	}
-	return numOfErrors;
-}
-
-/*
  * Returned number of filled nodes in board
  */
 int CountValuesInBoard(Game* gp) {
@@ -249,6 +261,9 @@ int CountValuesInBoard(Game* gp) {
 	}
 	return numOfValues;
 }
+
+
+/************************* FREE FUNCTIONS ******************************/
 
 /*
  * Frees all actions before and after action (recursively).
@@ -283,6 +298,41 @@ void freeGame(Game* gp){
 	freeAllActions(gp);
 	freeGameBoard(gp);
 	free(gp);
+}
+
+
+/************************* ERROR HANDLING FUNCTIONS ******************************/
+
+/*
+ * All nodes have an ISERROR boolean value.
+ * If one of the nodes has a true ISERROR field, it is an error and the board is erroneous.
+ */
+int isErroneousBoard(Game* gp) {
+	int N = gp->N, i = 0, j = 0;
+	for (i = 0; i < N; i++){
+		for (j = 0; j < N; j++){
+			if (getNodeValByType(gp,ISERROR, i, j) == 1){
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
+
+/*
+ * All nodes have an ISERROR boolean value.
+ * If a node has a true ISERROR field, it is an error and it is counted as such.
+ */
+int CountErrorsInBoard(Game* gp) {
+	int N = gp->N, i = 0, j = 0, numOfErrors = 0;
+	for (i = 0; i < N; i++){
+		for (j = 0; j < N; j++){
+			if (getNodeValByType(gp, ISERROR, i, j) == 1){
+				numOfErrors++;
+			}
+		}
+	}
+	return numOfErrors;
 }
 
 /*

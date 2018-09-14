@@ -1,8 +1,22 @@
 /*
  * Game_structs.h
  *
- *  Created on: 24 баев 2018
- *      Author: yael sapir
+ * Contains all of the structs and types for our Sudoku implementation
+ * Contains to following structs:
+ *
+ * Node - each game board is a Node matrix. a Node has different values respective
+ * to different layers of the game board.
+ *
+ * Change - a Change object is used to describe a change that was made to the board.
+ * a Change contains the x and y of the cell and the values before and after the change.
+ *
+ * Action - an Action is used to save a "move" in the game in the undo/redo list.
+ * an Action contains a singly-linked list of Changes that were made to the board
+ * an Action also points to next and previous Actions, thus implementing a doubly-linked list.
+ *
+ * Game - an object that contains dimensions attributes,
+ * a mark_error attribute, a board (Nodes matrix) and a pointer to the latest action.
+ *
  */
 
 #ifndef GAME_STRUCTS_H_

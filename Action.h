@@ -1,8 +1,12 @@
 /*
  * Action.h
  *
- *  Created on: 10 баев 2018
- *      Author: yael sapir
+ * Contains the Action and Changes interface
+ * An action is used to save a "move" in the game in the undo/redo list
+ * An action contains a singly-linked list of changes that were made to the board
+ * An action also points to next and previous actions, thus implementing a doubly-linked list.
+ *
+ *This interface contains init and free functions, and also redo / undo and print functions.
  */
 
 #ifndef ACTION_H_

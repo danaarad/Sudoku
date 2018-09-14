@@ -1,8 +1,9 @@
 /*
  * file_handler.h
  *
- *  Created on: 10 баев 2018
- *      Author: yael sapir
+ * Contains file handling functions
+ * writeToFile is used to write a game board to the given file pointer
+ * readFromFile is used to read a game board from the given file pointer
  */
 
 #ifndef FILE_HANDLER_H_

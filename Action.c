@@ -110,6 +110,7 @@ void freeActionsBefore(Action *action) {
 		freeChanges(prev->changes);
 		free(prev);
 	}
+	action->prev_action = NULL;
 }
 
 /*Recursively frees all action after the given action (not included)*/
@@ -120,6 +121,7 @@ void freeActionsAfter(Action *action) {
 		freeChanges(next->changes);
 		free(next);
 	}
+	action->next_action = NULL;
 }
 
 /*

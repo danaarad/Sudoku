@@ -1,8 +1,13 @@
 /*
  * commands.h
  *
- *  Created on:
- *      Author: yael sapir
+ * Contains:
+ * getCommand - receives and parses the command from the user.
+ * The respective command_e enum is returnd, and x, y, z values are placed in the
+ * given pointers
+ *
+ * executeCommand - execute the command implementation as described in the project
+ * documents. this command uses inner static functions which implement each command seperatly
  */
 
 #ifndef COMMANDS_H_
