@@ -358,7 +358,6 @@ static int doAutofill(Game *game) {
 
 	if (isErroneousBoard(game) == 1) {
 		printf("Error: board contains erroneous values\n");
-		printBoard(game, VALUE);
 		return 0;
 	}
 
@@ -432,7 +431,6 @@ static int doHint(Game *game, char *x, char *y) {
 	y_val = atoi(y);
 	if (validate_values_for_hint(x, y, N) != 1) {
 		printf("Error: value not in range 1-%d\n", N);
-		printBoard(game, VALUE);
 		return 0;
 	}
 
@@ -441,17 +439,14 @@ static int doHint(Game *game, char *x, char *y) {
 
 	if (isErroneousBoard(game) == 1) {
 		printf("Error: board contains erroneous values\n");
-		printBoard(game, VALUE);
 		return 0;
 	}
 	if (getNodeValByType(game, ISGIVEN, x_val, y_val) == 1) {
 		printf("Error: cell is fixed\n");
-		printBoard(game, VALUE);
 		return 0;
 	}
 	if (getNodeValByType(game, VALUE, x_val, y_val) != 0) {
 		printf("Error: cell already contains a value\n");
-		printBoard(game, VALUE);
 		return 0;
 	}
 
@@ -459,17 +454,13 @@ static int doHint(Game *game, char *x, char *y) {
 	if (ILP_result == GRB_OPTIMAL) {
 		hint_val = getNodeValByType(game, TEMP, x_val, y_val);
 		printf("Hint: set cell to %d\n", hint_val);
-		printBoard(game, VALUE);
 		return 1;
 	} else if (ILP_result == -1) {
 		return -1;
 	} else {
 		printf("Error: board is unsolvable\n");
-		printBoard(game, VALUE);
 		return 1;
 	}
-
-	printBoard(game, VALUE);
 	return 0;
 
 }
@@ -597,7 +588,6 @@ static int doValidate(Game *game) {
 
 	if (isErroneousBoard(game) == 1) {
 		printf("Error: board contains erroneous values\n");
-		printBoard(game, VALUE);
 		return 1;
 	}
 	solvable = isSolvable(game);
@@ -626,7 +616,6 @@ static int doSet(Game *game, char *x, char *y, char *z) {
 	/*cast to int and validate values*/
 	if (validate_values_for_set(x, y, z, N) != 1) {
 		printf("Error: value not in range 0-%d\n", N);
-		printBoard(game, VALUE);
 		return 0;
 	}
 	x_val = atoi(x) - 1;
@@ -636,7 +625,6 @@ static int doSet(Game *game, char *x, char *y, char *z) {
 	/*if cell is fixed*/
 	if (getNodeValByType(game, ISGIVEN, x_val, y_val) == 1) {
 		printf("Error: cell is fixed\n");
-		printBoard(game, VALUE);
 		return 0;
 	}
 
@@ -678,7 +666,6 @@ static int doGenerate(Game *game, char *x, char *y) {
 
 	if (validate_values_for_generate(x, y, E) != 1) {
 		printf("Error: value not in range 0-%d\n", E);
-		printBoard(game, VALUE);
 		return 0;
 	}
 	x_val = atoi(x);
@@ -686,7 +673,6 @@ static int doGenerate(Game *game, char *x, char *y) {
 
 	if (filled_nodes != 0) {
 		printf("Error: board is not empty\n");
-		printBoard(game, VALUE);
 		return 0;
 	}
 	for (attempt = 0; attempt < RETRY_ATTEMPTS_FOR_GENERATE; ++attempt) {
@@ -715,7 +701,6 @@ static int doGenerate(Game *game, char *x, char *y) {
 		return 1;
 	}
 	printf("Error: puzzle generator failed\n");
-	printBoard(game, VALUE);
 	return 0;
 
 }
