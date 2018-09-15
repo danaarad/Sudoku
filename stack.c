@@ -12,6 +12,7 @@
 
 /*
  * Inject node to top of stack.
+ * Returns the new stack top.
  */
 stack_node *push(stack_node *top, int x, int y, int value) {
     struct node *nptr = malloc(sizeof(struct node));

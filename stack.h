@@ -16,8 +16,15 @@ typedef struct node
     struct node *next;
 } stack_node;
 
-
+/*
+ * Inject node to top of stack.
+ * The new node will become the new stack top and will be returned.
+ */
 stack_node *push(stack_node *top, int x, int y, int value);
+
+/*
+ * Return and remove stack top.
+ */
 stack_node *pop(stack_node *top, int *x, int *y, int *value);
 
 
