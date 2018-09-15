@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include "settings.h"
 #include "Action.h"
+#include "Game.h"
 
 /********************* SETTERS *********************/
 
