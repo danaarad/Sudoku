@@ -1,9 +1,3 @@
-/*
- * Game.h
- *
- *  Created on: 17 баев 2018
- *      Author: yael sapir
- */
 
 #ifndef GAME_H_
 #define GAME_H_

@@ -1,8 +1,14 @@
 /*
  * commands.c
  *
- *  Created on: 11 баев 2018
- *      Author: yael sapir
+ * contains getCommand and exectueCommand documented in h file.
+ * each command is implemented in a static Do function,
+ * and has related static util functions above it.
+ *
+ * this file is divided into:
+ * - Validators
+ * - Inner command functions (Do)
+ * - Outer interface functions
  */
 
 #include <stdio.h>

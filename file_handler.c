@@ -1,8 +1,7 @@
 /*
  * file_handler.c
  *
- *  Created on: 10 баев 2018
- *      Author: yael sapir
+ *  contains file handling functions
  */
 
 #include <errno.h>

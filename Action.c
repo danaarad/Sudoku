@@ -1,8 +1,8 @@
 /*
  * Action.c
  *
- *  Created on: 25 баев 2018
- *      Author: yael sapir
+ * Contains the Action and Changes interface
+ *This interface contains init and free functions, and also redo / undo and print functions.
  */
 
 #include <stdio.h>
