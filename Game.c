@@ -336,7 +336,7 @@ int CountErrorsInBoard(Game* gp) {
 }
 
 /*
- * Creates a check table foe every row, col and block.
+ * Creates a check table for every row, col and block.
  * A check table is a 3D array that contains x,y values by value.
  * The check table is then sent to "updateErrorsFromCheckTable"
  * that updates the errors respectively.
