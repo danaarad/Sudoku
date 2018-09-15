@@ -2,7 +2,15 @@
  * Action.c
  *
  * Contains the Action and Changes interface
- *This interface contains init and free functions, and also redo / undo and print functions.
+ * This interface contains init and free functions, and also redo / undo and print functions.
+ *
+ * This file contains:
+ *  - Setters
+ *  - Init functions
+ *  - Free functions
+ *  - Undo an Redo functions (outer interface)
+ *  - Print functions
+ *
  */
 
 #include <stdio.h>
