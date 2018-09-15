@@ -87,12 +87,12 @@ static int GurobiToSolution(Game *gp, double* solFromGurobi){
  * Returns the Nth non-zero index in arr
  * index is normalized to [1, len(arr)] scale
  */
-static int getNthValOfArray(int *arr, int n) {
+static int getNthValOfArray(int *arr, int len, int n) {
 	int i = 0;
 	int count = 0;
 
-	for (i = 0; i < (int)(sizeof(arr)/sizeof(int)); ++i) {
-		if (arr[i] != 0) {
+	for (i = 0; i < len; ++i) {
+		if (arr[i] == 1) {
 			if (count == n) {
 				return i+1;
 			}
@@ -174,9 +174,9 @@ int fill_nodes_random(Game *game, valType_e val_type, int num_of_cells) {
 			}
 
 			random_val = (rand() % (num_of_possible_vals));
-			random_val = getNthValOfArray(possible_vals_arr, random_val);
+			random_val = getNthValOfArray(possible_vals_arr, game->N, random_val);
 
-			setNodeValByType(game, val_type, x, y, (random_val+1));
+			setNodeValByType(game, val_type, x, y, random_val);
 			++filled;
 			free(possible_vals_arr);
 		}

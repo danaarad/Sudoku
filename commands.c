@@ -689,19 +689,16 @@ static int doGenerate(Game *game, char *x, char *y) {
 			return -1;
 		} else if (return_val != 1) {
 			continue; }
-		printBoard(game, TEMP);
 
 		if ((return_val = fill_nodes_ILP(game, TEMP)) == -1) {
 			return -1;
 		} else if (return_val != GRB_OPTIMAL){
 			continue; }
-		printBoard(game, TEMP);
 
-		if ((return_val = clear_nodes(game, TEMP, (N - y_val))) == -1) {
+		if ((return_val = clear_nodes(game, TEMP, ((N*N) - y_val))) == -1) {
 			return -1;
 		} else if (return_val != 1) {
 			continue; }
-		printBoard(game, TEMP);
 
 		if ((return_val = moveTempToValue(game, GENERATE_A)) == -1){
 			return -1;;
