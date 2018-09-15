@@ -1,3 +1,10 @@
+/*
+ * Game.h
+ *
+ *  Contains our Game interface implementation
+ *  Each function is documented below
+ *
+ */
 
 #ifndef GAME_H_
 #define GAME_H_

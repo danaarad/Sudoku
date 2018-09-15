@@ -1,8 +1,14 @@
 /*
  * settings.h
  *
- *  Created on: Aug 10, 2018
- *      Author: Dana Arad
+ *  Contains default settings and configurations for our project implementation
+ *
+ *  This includes:
+ *  - Default error messages on system errors
+ *  - Default block dimensions used in edit mode
+ *  - Number of retry attempts in Generate command
+ *  - Max command size and buffer size
+ *  - Gurobi status codes
  */
 
 #ifndef SETTINGS_H_

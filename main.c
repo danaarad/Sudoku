@@ -1,3 +1,15 @@
+/*
+ *
+ * sudoku-console by Yael Sapir and Dana Arad
+ *
+ *
+ * Entry point for the program,
+ * Runs the main game loop
+ *
+ *
+ */
+
+
 #include "Game_structs.h"
 #include "commands.h"
 #include "settings.h"

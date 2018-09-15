@@ -1,8 +1,9 @@
 /*
  * Game.c
  *
- *  Created on: Aug 24, 2018
- *      Author: Dana Arad
+ *  Contains our Game interface implementation
+ *  Each function is documented below
+ *
  */
 
 #include <stdlib.h>

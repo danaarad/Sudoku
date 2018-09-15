@@ -1,3 +1,13 @@
+/*
+ * printer.c
+ *
+ * contains our printer implementation
+ * contains a print board function, that is used all throughout the project,
+ * as well as an inner print saperator function to print the
+ * seperator between lines of the board.
+ *
+ */
+
 #include "printer.h"
 #include "Node.h"
 #include <stdio.h>

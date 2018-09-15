@@ -1,8 +1,10 @@
 /*
  * stack.h
  *
- *  Created on: Sep 1, 2018
- *      Author: Dana Arad
+ *  Contains our simple stack implementation.
+ *  Exposed:
+ *   - push
+ *   - pop
  */
 
 #ifndef STACK_H_

@@ -1,3 +1,17 @@
+/*
+ *
+ * parser.c
+ *
+ * Parses string into a command_e enum and parameters,
+ * using a conversion function and struct.
+ *
+ * Note that parameters are not validated in this module
+ *
+ *
+ */
+
+
+
 #include "Game_structs.h"
 #include "settings.h"
 #include "parser.h"
@@ -5,6 +19,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
+
 
 static const struct {
     command_e command;
@@ -27,6 +42,12 @@ static const struct {
 		{edit, "edit"}
 };
 
+/*
+ * converts str into the corresponding command_e enum,
+ * or not_found if not found.
+ *
+ * Uses the conversions struct defined above.
+ */
 command_e strToCommandEnum (char *str) {
 	int j;
     for (j = 0;  j < (int)(sizeof (conversion) / sizeof (conversion[0]));  ++j)
@@ -36,6 +57,16 @@ command_e strToCommandEnum (char *str) {
     return not_found;
 }
 
+/*
+ * Parses str into a command_e enum and parameters
+ * Argument values are places in corresponding pointers
+ * Extra parameters are ignored
+ *
+ * Returns 1 if str contains a valid command and correct number of parameters
+ * else 0.
+ *
+ * Note that parameters are not validated in this function.
+ */
 int parse(char str[], command_e *command_pointer, char *x_pointer, char *y_pointer, char *z_pointer) {
 	const char delim[2] = " ";
 	char *token = {0};
@@ -56,6 +87,7 @@ int parse(char str[], command_e *command_pointer, char *x_pointer, char *y_point
 	case not_found:
 		*command_pointer = command_enum;
 		return 0;
+	/*zero argument commands:*/
 	case print_board:
 	case validate:
 	case undo:
@@ -66,6 +98,7 @@ int parse(char str[], command_e *command_pointer, char *x_pointer, char *y_point
 	case exit_game:
 		*command_pointer = command_enum;
 		return 1;
+	/*one or more argument commands*/
 	case solve:
 	case edit:
 	case save:
@@ -82,9 +115,7 @@ int parse(char str[], command_e *command_pointer, char *x_pointer, char *y_point
 			}
 			return 0;
 		}
-		if (command_enum == generate ||
-				command_enum == hint ||
-				command_enum == set) {
+		if (command_enum == generate || command_enum == hint || command_enum == set) {
 			token = strtok(NULL, delim);
 			if ((token == NULL) || (sscanf(token, "%s", y_pointer) != 1)) {
 				return 0;

@@ -1,9 +1,27 @@
 /*
- * solver.c
+ * solver.h
  *
- *  Created on: Aug 31, 2018
- *      Author: Dana Arad
+ *  Contains our solver interface:
+ *   - isSolvable: validates if the board has a solutions using ILP and Gurobi
+ *     this functoin calls fill_nodes_ILP for the given game board and returns the
+ *     optimstatus from Gurobi
+ *
+ *   - fill_nodes_random: fill the boards with random legal values.
+ *     cells are chosen at random, then a value is chosen from possible values
+ *     array using a random index.
+ *
+ *   - fill_nodes_ILP: fill the boards with legal values using ILP.
+ *     calls the BoardToGurobi function to create constraints for the
+ *     current board,
+ *     and GurobiToSolution function to translate the solution from a
+ *     Gurobi format to our game board.
+ *
+ *   - clear_nodes: clear random nodes from a full board
+ *
+ *   - exhaustive_backtracking: our exhaustive backtracking implementations using a stack for
+ *     recursive calls.
  */
+
 #include "solver.h"
 #include "Node.h"
 #include "Game.h"

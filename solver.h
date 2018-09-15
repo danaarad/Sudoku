@@ -1,8 +1,13 @@
 /*
  * solver.h
  *
- *  Created on: Aug 31, 2018
- *      Author: Dana Arad
+ *  Contains our solver interface:
+ *   - isSolvable: validates if the board has a solutions using ILP and Gurobi
+ *   - fill_nodes_random: fill the boards with random legal values as described in project documents
+ *   - fill_nodes_ILP: fill the boards with legal values using ILP as described in project documents
+ *   - clear_nodes: clear random nodes from a full board
+ *   - exhaustive_backtracking: our exhaustive backtracking implementations using a stack for
+ *     recursive calls.
  */
 
 #ifndef SOLVER_H_
