@@ -9,7 +9,8 @@
  */
 
 #include "printer.h"
-#include "Game.h"
+#include "game.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
