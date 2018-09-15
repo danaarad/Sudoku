@@ -16,7 +16,19 @@
 
 #define RETRY_ATTEMPTS_FOR_GENERATE 1000
 
+/*
+ * get command from user.
+ * Returns the compatible command_e enum,
+ * and sets x_ptr, y_ptr and z_ptr to command parameters
+ *
+ * returns -1 on system function failure
+ *
+ */
 command_e getCommand(mode_e mode, char *x_p, char *y_p, char *z_p);
+/*
+ * Executes the command recieved from the user (using the "getCommand" function)
+ * Returns 1 on success, 0 on failure, -1 on error.
+ */
 int executeCommand(Game **game_p, command_e command, char *x, char *y, char *z);
 
 #endif /* COMMANDS_H_ */
