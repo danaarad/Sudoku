@@ -41,13 +41,14 @@ stack_node *pop(stack_node *top, int *x, int *y, int *value) {
 		poped_x = top->x;
 		poped_y = top->y;
 		poped_value = top->value;
-		*x = poped_x;
-		*y = poped_y;
-		*value = poped_value;
 		top = top->next;
 		free(temp);
 		return top;
     }
+
+	*x = poped_x;
+	*y = poped_y;
+	*value = poped_value;
     return NULL;
 }
 
