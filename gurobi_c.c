@@ -240,14 +240,16 @@ int get_gurobi_solution(double *sol, int *ConstraintsFromBoard, int block_h, int
 	  return -1;
   }
 
-  /* get the solution - the assignment to each variable */
-  error = GRBgetdblattrarray(model, GRB_DBL_ATTR_X, 0, num_vars, sol);
-  if (error) {
-	  printf("ERROR %d GRBgetdblattrarray(): %s\n", error, GRBgeterrormsg(env));
-	  GRBfreemodel(model); GRBfreeenv(env);
-	  free(ind); free(val); free(vtype); free(const_name);
-	  return -1;
-  }
+	if (optimstatus == GRB_OPTIMAL) {
+		/* get the solution - the assignment to each variable */
+		error = GRBgetdblattrarray(model, GRB_DBL_ATTR_X, 0, num_vars, sol);
+		if (error) {
+			printf("ERROR %d GRBgetdblattrarray(): %s\n", error, GRBgeterrormsg(env));
+			GRBfreemodel(model); GRBfreeenv(env);
+			free(ind); free(val); free(vtype); free(const_name);
+			return -1;
+		}
+	}
 
   /* print results
   printf("\nOptimization complete\n");
