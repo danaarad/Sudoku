@@ -49,11 +49,15 @@ int main() {
 			return -1;
 		}
 		while (1) {
+			/*Init x y z*/
 			bzero(x, MAX_SIZE);
 			bzero(y, MAX_SIZE);
 			bzero(z, MAX_SIZE);
 
+			/*Get the command from the user*/
 			command = getCommand(game->mode, x, y, z);
+
+			/*Execute the command*/
 			if (command == exit_game) {
 				exit = 1;
 				break;
@@ -61,6 +65,7 @@ int main() {
 				if (executeCommand(&game, command, x, y, z) == -1){
 					return -1;
 				}
+				/*Check if the user won the game*/
 				if ((command == set ||
 					 command == autofill ||
 					 command == redo)
