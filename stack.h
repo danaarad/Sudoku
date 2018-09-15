@@ -17,13 +17,16 @@ typedef struct node
 } stack_node;
 
 /*
- * Inject node to top of stack.
- * The new node will become the new stack top and will be returned.
+ * Injects node to top of stack.
+ * A new node with attributes x, y and value will become
+ * the new stack top and will be returned.
  */
 stack_node *push(stack_node *top, int x, int y, int value);
 
 /*
- * Return and remove stack top.
+ * Fills the x, y and value attributes with the attributes of the stack top.
+ * Returns the new stack top.
+ * In case the stack top is NULL, NULL is returned, x, y and value are set to -1.
  */
 stack_node *pop(stack_node *top, int *x, int *y, int *value);
 

@@ -11,9 +11,11 @@
 #include "settings.h"
 
 /*
- * Inject node to top of stack.
- * Returns the new stack top.
+ * Injects node to top of stack.
+ * A new node with attributes x, y and value will become
+ * the new stack top and will be returned.
  */
+
 stack_node *push(stack_node *top, int x, int y, int value) {
     struct node *nptr = malloc(sizeof(struct node));
     if (nptr == NULL) {
@@ -28,8 +30,11 @@ stack_node *push(stack_node *top, int x, int y, int value) {
 }
 
 /*
- * Return and remove stack top.
+ * Fills the x, y and value attributes with the attributes of the stack top.
+ * Returns the new stack top.
+ * In case the stack top is NULL, NULL is returned, x, y and value are set to -1.
  */
+
 stack_node *pop(stack_node *top, int *x, int *y, int *value) {
 	stack_node *temp;
 	int poped_x = -1;
@@ -43,13 +48,12 @@ stack_node *pop(stack_node *top, int *x, int *y, int *value) {
 		poped_value = top->value;
 		top = top->next;
 		free(temp);
-		return top;
     }
 
 	*x = poped_x;
 	*y = poped_y;
 	*value = poped_value;
-    return NULL;
+    return top;
 }
 
 
