@@ -16,7 +16,7 @@
 #include "Game.h"
 
 /*
- * Writes board into given file.
+ * Writes board into the given file.
  * The file is written according to the structure specified in the project assignment.
  */
 int writeToFile (Game* gp, FILE *file_ptr){
