@@ -1,6 +1,6 @@
 CC = gcc
 EXEC = sudoku-console
-OBJS = Action.o commands.o file_handler.o Game.o gurobi_c.o main.o parser.o printer.o solver.o stack.o
+OBJS = action.o commands.o file_handler.o game.o gurobi.o main.o parser.o printer.o solver.o stack.o
 COMP_FLAGS = -ansi -O3 -Wall -Wextra -Werror -pedantic-errors -g
 GUROBI_COMP = -I /usr/local/lib/gurobi563/include
 GUROBI_LIB = -L /usr/local/lib/gurobi563/lib -lgurobi56
@@ -8,23 +8,23 @@ GUROBI_LIB = -L /usr/local/lib/gurobi563/lib -lgurobi56
 all : sudoku-console
 $(EXEC): $(OBJS)
 	$(CC) $(OBJS) $(GUROBI_LIB) -o $@ -lm
-main.o: main.c commands.h settings.h Game.h
+main.o: main.c commands.h settings.h game.h
 	$(CC) $(COMP_FLAGS) $(GUROBI_COMP) -c $*.c
-Action.o: Action.c settings.h Action.h
+action.o: action.c settings.h action.h
 	$(CC) $(COMP_FLAGS) $(GUROBI_COMP) -c $*.c
-commands.o: commands.c commands.h settings.h Game.h Action.h solver.h printer.h file_handler.h parser.h
+commands.o: commands.c commands.h settings.h game.h action.h solver.h printer.h file_handler.h parser.h
 	$(CC) $(COMP_FLAGS) $(GUROBI_COMP) -c $*.c
-file_handler.o: file_handler.c file_handler.h Game.h
+file_handler.o: file_handler.c file_handler.h game.h
 	$(CC) $(COMP_FLAGS) $(GUROBI_COMP) -c $*.c
-Game.o: Game.c Game.h Action.h settings.h   
+game.o: game.c game.h action.h settings.h   
 	$(CC) $(COMP_FLAGS) $(GUROBI_COMP) -c $*.c
-gurobi_c.o: gurobi_c.c gurobi_c.h
+gurobi.o: gurobi.c gurobi.h
 	$(CC) $(COMP_FLAGS) $(GUROBI_COMP) -c $*.c
 parser.o: parser.c parser.h settings.h
 	$(CC) $(COMP_FLAGS) $(GUROBI_COMP) -c $*.c
 printer.o: printer.c printer.h 
 	$(CC) $(COMP_FLAGS) $(GUROBI_COMP) -c $*.c
-solver.o: solver.c solver.h Game.h printer.h stack.h settings.h
+solver.o: solver.c solver.h game.h printer.h stack.h settings.h
 	$(CC) $(COMP_FLAGS) $(GUROBI_COMP) -c $*.c
 stack.o: stack.c stack.h
 	$(CC) $(COMP_FLAGS) $(GUROBI_COMP) -c $*.c
