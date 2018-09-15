@@ -17,7 +17,6 @@
 
 #include "settings.h"
 #include "Game.h"
-#include "Node.h"
 #include "Action.h"
 #include "solver.h"
 #include "printer.h"
