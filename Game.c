@@ -4,6 +4,17 @@
  *  Contains our Game interface implementation
  *  Each function is documented below
  *
+ *  This file contains:
+ *  - Node getters and setters
+ *  - Check Table function:
+ *  	A Check Table object is used to update the errors in the game board.
+ *  	This sections contains it's init, free and operational functions
+ *  - Game functions:
+ *  	functions that are used to perform operation on a game object
+ *  - Free functions
+ *  - Error handling functions:
+ *  	Function that are used to handle errors in the game board
+ *
  */
 
 #include <stdlib.h>
