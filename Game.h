@@ -10,6 +10,23 @@
 
 #include "Game_structs.h"
 
+
+/************************* NODE GETTER AND SETTER FUNCTIONS ******************************/
+/*
+ * The function gets type, x, y and returns
+ * the value (by type) of the node in position x,y.
+ */
+int getNodeValByType(Game* gp, valType_e valType, int x, int y);
+
+/*
+ * The function gets type, x, y, val and sets
+ * the value (by type) of the node in position x,y.
+ */
+void setNodeValByType(Game* gp, valType_e valType, int x, int y, int val) ;
+
+/************************* CHECK TABLE FUNCTIONS ******************************/
+
+
 Game* initGame(int block_height, int block_width);
 int setLatestAction(Game* gp, Action *action);
 int isErroneousBoard(Game* gp);
