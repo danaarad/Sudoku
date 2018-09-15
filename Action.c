@@ -188,9 +188,9 @@ void redoAction(Game *gp) {
 static void printVal(int val) {
 	/*replace 0 with '_'*/
 	if(val == 0){
-		printf("_ ");
+		printf("_");
 	}else{
-		printf("%d ",val);
+		printf("%d",val);
 	}
 }
 
@@ -200,7 +200,7 @@ static void printChangeInner(int x, int y, int val_before, int val_after) {
 	printf("from ");
 	printVal(val_before);
 
-	printf("to ");
+	printf(" to ");
 	printVal(val_after);
 
 	printf("\n");
