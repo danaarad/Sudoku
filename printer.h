@@ -9,7 +9,13 @@
 #define PRINTER_H_
 #include "Game_structs.h"
 
+/*
+ * Prints the game board as described in the project documents.
+ * If a value is fixed it is marked by '.'.
+ * If a value is erroneus and the "mark_errors" flag is on,
+ * the value is marked by '*'.
+ * If game mode is EDIT the "mark_errors" flag is ignored and errors are marked.
+ */
 void printBoard(Game* gp, valType_e valType);
-/*void printSaperator(int block_h, int block_w);*/
 
 #endif /* PRINTER_H_ */
