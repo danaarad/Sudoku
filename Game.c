@@ -17,11 +17,13 @@
  *
  */
 
+#include "game.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "Game.h"
-#include "Action.h"
+
+#include "action.h"
 #include "settings.h"
 #include "solver.h"
 

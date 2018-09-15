@@ -8,9 +8,11 @@
      x, y, z binary
 */
 
+#include "gurobi.h"
+
 #include <stdlib.h>
 #include <stdio.h>
-#include "gurobi_c.h"
+
 #include "settings.h"
 
 

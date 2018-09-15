@@ -11,13 +11,14 @@
  */
 
 
-#include "settings.h"
 #include "parser.h"
 
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
+
+#include "settings.h"
 
 
 static const struct {

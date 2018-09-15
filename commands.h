@@ -12,7 +12,7 @@
 
 #ifndef COMMANDS_H_
 #define COMMANDS_H_
-#include "Game_structs.h"
+#include "game_structs.h"
 
 #define RETRY_ATTEMPTS_FOR_GENERATE 1000
 

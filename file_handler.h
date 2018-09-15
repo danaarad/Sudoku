@@ -8,8 +8,8 @@
 
 #ifndef FILE_HANDLER_H_
 #define FILE_HANDLER_H_
-#include "Game_structs.h"
 #include <stdio.h>
+#include "game_structs.h"
 
 /*
  * Writes board into the given file.

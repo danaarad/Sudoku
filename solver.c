@@ -23,13 +23,14 @@
  */
 
 #include "solver.h"
-#include "Game.h"
 #include "printer.h"
 #include "stack.h"
-#include "settings.h"
-#include "gurobi_c.h"
 #include <stdlib.h>
 #include <stdio.h>
+
+#include "game.h"
+#include "gurobi.h"
+#include "settings.h"
 
 
 

@@ -13,11 +13,13 @@
  *
  */
 
+#include "action.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "settings.h"
-#include "Action.h"
-#include "Game.h"
+#include "action.h"
+#include "game.h"
 
 /********************* SETTERS *********************/
 
