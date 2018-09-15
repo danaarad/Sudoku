@@ -8,9 +8,9 @@
 /*
  * Prints the separator according to block height and width.
  */
-static void printSaperator(int BLOCK_HEIGHT, int BLOCK_WIDTH){
+static void printSaperator(int block_h, int block_w) {
 	int  i = 0;
-	int numofchars = ( 4*BLOCK_HEIGHT*BLOCK_WIDTH + BLOCK_HEIGHT + 1 );
+	int numofchars = ( 4*block_h*block_w + block_h + 1 );
 
 	for (i = 0; i < numofchars; ++i) {
 		printf("-");
@@ -34,7 +34,7 @@ void printBoard(Game* gp, valType_e valType) {
 
 	/* i is the block y this runs for every block n the col*/
 	for (i = 0; i < BLOCK_WIDTH; ++i) {
-		printSeparator(BLOCK_HEIGHT, BLOCK_WIDTH);
+		printSaperator(BLOCK_HEIGHT, BLOCK_WIDTH);
 		/* j is the local y  this runs for every block n the row*/
 		for (j = 0; j < BLOCK_HEIGHT; ++j) {
 			printf("|");
@@ -64,5 +64,5 @@ void printBoard(Game* gp, valType_e valType) {
 			printf("\n");
 		}
 	}
-	printSeperator(BLOCK_HEIGHT, BLOCK_WIDTH);
+	printSaperator(BLOCK_HEIGHT, BLOCK_WIDTH);
 }
