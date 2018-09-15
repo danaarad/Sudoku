@@ -23,7 +23,6 @@
  */
 
 #include "solver.h"
-#include "Node.h"
 #include "Game.h"
 #include "printer.h"
 #include "stack.h"

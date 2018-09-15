@@ -21,7 +21,6 @@
 #include <stdio.h>
 #include <string.h>
 #include "Game.h"
-#include "Node.h"
 #include "Action.h"
 #include "settings.h"
 #include "solver.h"

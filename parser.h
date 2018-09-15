@@ -13,6 +13,7 @@
 
 #ifndef PARSER_H_
 #define PARSER_H_
+#include "Game_structs.h"
 
 int parse(char str[], command_e *command_pointer, char *x_pointer, char *y_pointer, char *z_pointer);
 

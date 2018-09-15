@@ -11,7 +11,6 @@
 #include <ctype.h>
 #include "file_handler.h"
 #include "settings.h"
-#include "Node.h"
 #include "Game.h"
 
 /*

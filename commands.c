@@ -17,7 +17,6 @@
 
 #include "settings.h"
 #include "Game.h"
-#include "Node.h"
 #include "Action.h"
 #include "solver.h"
 #include "printer.h"
@@ -211,6 +210,7 @@ static int doUndo(Game *game) {
 			printf("Undo Generate\n");
 		} else {
 			printUndoChanges(action_to_undo);
+
 		}
 
 	} else {
@@ -246,7 +246,6 @@ static int doRedo(Game *game) {
 		}
 	}
 	printf("Error: no moves to redo\n");
-	printBoard(game, VALUE);
 	return 1;
 }
 

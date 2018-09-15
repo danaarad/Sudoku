@@ -11,10 +11,9 @@
  */
 
 
-
-#include "Game_structs.h"
 #include "settings.h"
 #include "parser.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>

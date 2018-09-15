@@ -15,8 +15,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "Game_structs.h"
-#include "Node.h"
 #include "settings.h"
 #include "Action.h"
 
