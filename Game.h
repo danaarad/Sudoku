@@ -9,7 +9,7 @@
 #ifndef GAME_H_
 #define GAME_H_
 
-#include "Game_structs.h"
+#include "game_structs.h"
 
 
 /************************* NODE GETTER AND SETTER FUNCTIONS ******************************/

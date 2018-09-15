@@ -4,6 +4,7 @@
 #define _GUROBI_C_H
 
 #include <stdio.h>
+
 #include "settings.h"
 
 typedef struct _GRBmodel GRBmodel;

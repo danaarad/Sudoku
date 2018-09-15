@@ -10,16 +10,16 @@
  */
 
 
-#include "Game_structs.h"
 #include "commands.h"
-#include "settings.h"
-#include "Game.h"
-
 #include <stdio.h>
 #include <string.h>
 #include <strings.h>
 #include <stdlib.h>
 #include <time.h>
+
+#include "game.h"
+#include "game_structs.h"
+#include "settings.h"
 
 /*
  * Returns 1 if game board is solved successfully

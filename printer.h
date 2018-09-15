@@ -12,7 +12,7 @@
 
 #ifndef PRINTER_H_
 #define PRINTER_H_
-#include "Game_structs.h"
+#include "game_structs.h"
 
 void printBoard(Game* gp, valType_e valType);
 

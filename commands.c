@@ -15,14 +15,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "settings.h"
-#include "Game.h"
-#include "Action.h"
 #include "solver.h"
 #include "printer.h"
 #include "file_handler.h"
 #include "parser.h"
 #include "commands.h"
+
+#include "action.h"
+#include "game.h"
+#include "settings.h"
 
 
 /****************** VALIDATORS ****************/

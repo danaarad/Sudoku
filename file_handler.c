@@ -10,8 +10,9 @@
 #include <string.h>
 #include <ctype.h>
 #include "file_handler.h"
+
+#include "game.h"
 #include "settings.h"
-#include "Game.h"
 
 /*
  * Writes board into the given file.

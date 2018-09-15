@@ -11,7 +11,7 @@
 
 #ifndef ACTION_H_
 #define ACTION_H_
-#include "Game_structs.h"
+#include "game_structs.h"
 
 /********************* FREE FUNCTIONS *********************/
 

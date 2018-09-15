@@ -12,7 +12,7 @@
 
 #ifndef SOLVER_H_
 #define SOLVER_H_
-#include "Game_structs.h"
+#include "game_structs.h"
 
 /*
  * Checks if board is solvable using LP.
