@@ -51,7 +51,7 @@ static void setNextAction(Action *action, Action *next_action) {
 /********************* INIT FUNCTIONS *********************/
 
 /*
- * Creates a change and adds it after previous change.
+ * Creates a Change object and adds it after previous Change (prev).
  * This change should be set after the last change in the change chain.
  */
 Change *initChange(int x, int y, int val_before, int val_after, Change *prev) {
@@ -102,7 +102,9 @@ void freeChanges(Change *change) {
 	}
 }
 
-/*Recursively frees all action before the given action (not included)*/
+/*
+ * Recursively frees all actions before the given action (not included)
+ */
 void freeActionsBefore(Action *action) {
 	Action *prev = action->prev_action;
 	if (prev != NULL){
@@ -113,7 +115,9 @@ void freeActionsBefore(Action *action) {
 	action->prev_action = NULL;
 }
 
-/*Recursively frees all action after the given action (not included)*/
+/*
+ * Recursively frees all actions after the given action (not included)
+ */
 void freeActionsAfter(Action *action) {
 	Action *next = action->next_action;
 	if (next != NULL){
@@ -156,7 +160,6 @@ void undoAction(Game *gp) {
 /*
  * Redo the latest action change by change.
  * Every change is redone by changing the value of node x,y from val before to val after.
- * The function returns the number of changes that were redone.
  */
 void redoAction(Game *gp) {
 	int x = 0, y = 0, val_after = 0;
