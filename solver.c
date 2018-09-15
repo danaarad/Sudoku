@@ -17,9 +17,9 @@
 /*
  * Runs Gurobi solver
  * Returns:
- *  1 if Gorubi found an optimal solution
- * -1 if Gurobi encountered a memory error
- *  0 else
+ *  1 if Gorubi found an optimal solution.
+ * -1 if Gurobi encountered a memory error.
+ *  0 else.
  */
 int isSolvable(Game *gp) {
 	int solvable =  fill_nodes_ILP(gp, VALUE);
@@ -57,7 +57,6 @@ static int* BoardToGurobi(Game *gp, valType_e val_type){
 	}
 	return forGurobi;
 }
-
 
 /*
  * Translate Gurobi solution array to values in the current game board.
@@ -103,9 +102,9 @@ static int getNthValOfArray(int *arr, int len, int n) {
 }
 
 /*
- * Builds constraints from board,
- * Run Gurobi solve,
- * Translates Gurobi solution to board
+ * Builds constraints from board.
+ * Run Gurobi solve.
+ * Translates Gurobi solution to board.
  *
  * Returns -1 on memory error else optimstatus
  */
