@@ -746,6 +746,7 @@ command_e getCommand(mode_e mode, char *x_p, char *y_p, char *z_p){
 		}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 		/*
 		if ((int)strlen(str) > MAX_COMMAND_SIZE) {
 			printf("ERROR: invalid command\n");
@@ -759,6 +760,8 @@ command_e getCommand(mode_e mode, char *x_p, char *y_p, char *z_p){
 			}
 		}*/
 
+=======
+>>>>>>> parent of e852336... 256
 =======
 >>>>>>> parent of e852336... 256
 		if ((parsed = parse(str, &command, x_p, y_p, z_p)) == 0) {

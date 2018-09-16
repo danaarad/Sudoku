@@ -76,7 +76,11 @@ int parse(char str[], command_e *command_pointer, char *x_pointer, char *y_point
 	if ((int) strlen(str) > MAX_COMMAND_SIZE) {
 			return 0;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	}
+=======
+		}
+>>>>>>> parent of e852336... 256
 =======
 		}
 >>>>>>> parent of e852336... 256
