@@ -745,17 +745,18 @@ command_e getCommand(mode_e mode, char *x_p, char *y_p, char *z_p){
 			}
 		}
 
-		if ((int)strlen(str) > MAX_COMMAND_SIZE){
+		/*
+		if ((int)strlen(str) > MAX_COMMAND_SIZE) {
 			printf("ERROR: invalid command\n");
 			do {chr = getc(stdin);
-			}while(chr != '\n' || chr != EOF);
+			} while (chr != '\n' || chr != EOF);
 
-			if(chr == EOF){
+			if (chr == EOF) {
 				return exit_game;
-			}else{
+			} else {
 				continue;
 			}
-		}
+		}*/
 
 		if ((parsed = parse(str, &command, x_p, y_p, z_p)) == 0) {
 			printf("ERROR: invalid command\n");
