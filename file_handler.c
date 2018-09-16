@@ -22,21 +22,36 @@ int writeToFile (Game* gp, FILE *file_ptr){
 	int blockHeight = gp->blockHeight, blockWidth = gp->blockWidth, N = gp->N;
 	int x = 0, y = 0, val = 0;
 
-	fprintf(file_ptr, "%d %d\n", blockHeight, blockWidth);
+	if (fprintf(file_ptr, "%d %d\n", blockHeight, blockWidth) < 0){
+		printf(FSCANF_ERROR);
+		return 0;
+	}
 
 	for(y = 0; y < N; y++){
 		for(x = 0; x < N; x++){
 			if(x > 0){
-				fprintf(file_ptr," ");
+				if (fprintf(file_ptr," ") < 0){
+					printf(FSCANF_ERROR);
+					return 0;
+				}
 			}
 			val = getNodeValByType(gp, VALUE, x, y);
-			fprintf(file_ptr,"%d",val);
+			if (fprintf(file_ptr,"%d",val) < 0){
+				printf(FSCANF_ERROR);
+				return 0;
+			}
 
 			if(getNodeValByType(gp, ISGIVEN, x, y)||((gp->mode == EDIT) && val != 0)){
-				fprintf(file_ptr,".");
+				if (fprintf(file_ptr,".") < 0){
+					printf(FSCANF_ERROR);
+					return 0;
+				}
 			}
 		}
-		fprintf(file_ptr,"\n");
+		if (fprintf(file_ptr,"\n") < 0){
+			printf(FSCANF_ERROR);
+			return 0;
+		}
 	}
 
 	return 1;

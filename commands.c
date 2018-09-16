@@ -154,7 +154,10 @@ static int validate_values_for_hint(char *x_str, char *y_str, int N) {
 static int save_file(Game *gp, char *filename) {
 	FILE* file_ptr = fopen(filename,"w");
 	if (file_ptr != NULL){
-		writeToFile(gp, file_ptr);
+		/*write to file check if failed*/
+		if (writeToFile(gp, file_ptr) == 0){
+			return 0;
+		}
 		printf("Saved to: %s\n",filename);
 		fclose(file_ptr);
 	} else {
@@ -170,7 +173,7 @@ static int save_file(Game *gp, char *filename) {
  * Returns 1 on success, 0 on failure
  */
 static int doSave(Game* gp, char *fileName){
-	int solvable = 0;
+	int solvable = 0, fileSuccess = 0;
 	if (gp->mode == SOLVE) {
 		save_file(gp, fileName);
 	} else if (gp->mode == EDIT) {
@@ -179,7 +182,10 @@ static int doSave(Game* gp, char *fileName){
 			if (solvable == -1) {
 				return -1;
 			} else if (solvable) {
-				save_file(gp, fileName);
+				fileSuccess = save_file(gp, fileName);
+				if (fileSuccess == 0){
+					return 0;
+				}
 			} else {
 				/*board is not solvable*/
 				printf("Error: board validation failed\n");
