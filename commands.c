@@ -721,8 +721,8 @@ static int doGenerate(Game *game, char *x, char *y) {
  *
  */
 command_e getCommand(mode_e mode, char *x_p, char *y_p, char *z_p){
-	char str[MAX_SIZE] = {0};
-	int valid = 0;
+	char str[DEFAULT_BUFFER_SIZE] = {0};
+	int valid = 0, chr;
 	int parsed;
 	int valid_command = 0;
 	command_e command = 0;
@@ -732,16 +732,28 @@ command_e getCommand(mode_e mode, char *x_p, char *y_p, char *z_p){
 	 */
 	while (valid == 0) {
 		printf("Enter your command:\n");
-		if (fgets(str, MAX_SIZE, stdin) == NULL){
+		if (fgets(str, DEFAULT_BUFFER_SIZE, stdin) == NULL){
 			command = exit_game;
 			break;
 		}
 
 		while ((strcmp(str,"\n") == 0)  || (strcmp(str,"\r\n") == 0)) {
 			printf("Enter your command:\n");
-			if (fgets(str, MAX_SIZE, stdin) == NULL){
+			if (fgets(str, DEFAULT_BUFFER_SIZE, stdin) == NULL){
 				return exit_game;
 
+			}
+		}
+
+		if ((int)strlen(str) > MAX_COMMAND_SIZE){
+			printf("ERROR: invalid command\n");
+			do {chr = getc(stdin);
+			}while(chr != '\n' || chr != EOF);
+
+			if(chr == EOF){
+				return exit_game;
+			}else{
+				continue;
 			}
 		}
 
