@@ -721,8 +721,8 @@ static int doGenerate(Game *game, char *x, char *y) {
  *
  */
 command_e getCommand(mode_e mode, char *x_p, char *y_p, char *z_p){
-	char str[DEFAULT_BUFFER_SIZE] = {0};
-	int valid = 0, chr;
+	char str[MAX_SIZE] = {0};
+	int valid = 0;
 	int parsed;
 	int valid_command = 0;
 	command_e command = 0;
@@ -732,19 +732,20 @@ command_e getCommand(mode_e mode, char *x_p, char *y_p, char *z_p){
 	 */
 	while (valid == 0) {
 		printf("Enter your command:\n");
-		if (fgets(str, DEFAULT_BUFFER_SIZE, stdin) == NULL){
+		if (fgets(str, MAX_SIZE, stdin) == NULL){
 			command = exit_game;
 			break;
 		}
 
 		while ((strcmp(str,"\n") == 0)  || (strcmp(str,"\r\n") == 0)) {
 			printf("Enter your command:\n");
-			if (fgets(str, DEFAULT_BUFFER_SIZE, stdin) == NULL){
+			if (fgets(str, MAX_SIZE, stdin) == NULL){
 				return exit_game;
 
 			}
 		}
 
+<<<<<<< HEAD
 		/*
 		if ((int)strlen(str) > MAX_COMMAND_SIZE) {
 			printf("ERROR: invalid command\n");
@@ -758,6 +759,8 @@ command_e getCommand(mode_e mode, char *x_p, char *y_p, char *z_p){
 			}
 		}*/
 
+=======
+>>>>>>> parent of e852336... 256
 		if ((parsed = parse(str, &command, x_p, y_p, z_p)) == 0) {
 			printf("ERROR: invalid command\n");
 		} else if (parsed == 1) {

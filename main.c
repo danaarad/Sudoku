@@ -47,9 +47,9 @@ int main() {
 	int exit = 0;
 	Game *game;
 	command_e command;
-	char  x[DEFAULT_BUFFER_SIZE] = {0};
-	char  y[DEFAULT_BUFFER_SIZE] = {0};
-	char  z[DEFAULT_BUFFER_SIZE] = {0};
+	char  x[MAX_SIZE] = {0};
+	char  y[MAX_SIZE] = {0};
+	char  z[MAX_SIZE] = {0};
 
 	srand(time(NULL));
 
@@ -63,9 +63,9 @@ int main() {
 		}
 		while (1) {
 			/*Init x y z*/
-			bzero(x, DEFAULT_BUFFER_SIZE);
-			bzero(y, DEFAULT_BUFFER_SIZE);
-			bzero(z, DEFAULT_BUFFER_SIZE);
+			bzero(x, MAX_SIZE);
+			bzero(y, MAX_SIZE);
+			bzero(z, MAX_SIZE);
 
 			/*Get the command from the user*/
 			command = getCommand(game->mode, x, y, z);
